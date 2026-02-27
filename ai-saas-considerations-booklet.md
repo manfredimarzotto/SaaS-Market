@@ -1000,10 +1000,10 @@ Step 4: "Acceleration Pricing Assessment"
 
 ---
 
-## OPEN QUESTIONS
+## RESOLVED NOTES
 
-1. **Outcome-Based sub-breakdown units (Page 4)**: The values "Cost Savings 36", "Revenue Generated 18", "Rev. Gen. & Cost Savings 18", "Other 11", "Buyer CSAT 9" are listed without an explicit unit (e.g., %). They are reproduced verbatim as provided.
+1. **Outcome-Based sub-breakdown units (Page 4)**: Keep exactly "Cost Savings 36", "Revenue Generated 18", "Rev. Gen. & Cost Savings 18", "Other 11", "Buyer CSAT 9". Units not explicitly labeled on breakdown lines; reproduce verbatim as printed. Do not append "%" that is not present in the source text.
 
-2. **EV/LTM Premium symbol (Page 5)**: The values "19 Premium", "12 Premium", "15 Premium" are reproduced verbatim as provided. It is unclear whether these represent percentages (19%, 12%, 15%) — the instructions do not include the "%" symbol.
+2. **EV/LTM Premium symbol (Page 5)**: Keep exactly "19 Premium", "12 Premium", "15 Premium". Display "Premium" as shown; do not append "%" unless present in the slide artwork.
 
-3. **Financial checklist threshold symbol (Page 5)**: "Gross Margins Above 80" is reproduced verbatim. Whether this means 80% is not stated explicitly in the instructions.
+3. **Financial checklist threshold symbol (Page 5)**: Keep exactly "Gross Margins Above 80". Do not normalize numeric thresholds; preserve as written.
