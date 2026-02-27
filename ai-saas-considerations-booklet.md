@@ -32,7 +32,7 @@ This document is the authoritative build specification for a single-page Tailwin
 |---|---|
 | Page section (white card with "Page N" label) | All pages |
 | Header block (headline + subtitle) | Pages 1–6 |
-| Callout box (highlighted text block) | Pages 1, 2 |
+| Callout box (highlighted text block) | Page 1 |
 | Horizontal bar chart (div-based) | Page 1 |
 | Flow diagram (labeled nodes + arrows, left-to-right) | Page 1 (×2 paradigms) |
 | Chip / side-legend labels | Page 1 |
@@ -152,6 +152,10 @@ Group: "Traditional Drivers of Software Spend" (Decrease)
 - "Limited learning from execution"
 - "Cloud-native systems are increasingly being refactored to optimize user experience and workflow steps for agents"
 - "Cloud-native incumbents have a head start, with clean, modern tech stacks an advantage if they move fast enough to capitalize on it"
+
+**Cloud-Native + AI — chip / side-legend labels**
+
+- "User System Actions"
 
 ### Visuals to recreate (no images)
 
@@ -462,8 +466,41 @@ Quadrant: "Co-Pilot, Assistive Zone"
 
 **Vendor pricing spectrum — rows**
 
-- Pricing model line per vendor (row describing each vendor's pricing approach)
-- Explanatory lines per vendor (additional detail per vendor's model)
+ServiceNow
+- "Per-User Module Pricing"
+- "Historically priced per named user workflow module"
+- "AI co-pilots reduce manual interaction time"
+- "AI efficiency may reduce users required per unit of output"
+
+Zendesk
+- "Per-Agent User"
+- "Core model priced per support agent"
+- "AI agents resolve tickets autonomously"
+- "Automation may compress agent user growth over time"
+
+Salesforce
+- "User-Based AI Add-Ons"
+- "Traditional user pricing for CRM users"
+- "Co-pilot agent force layers priced separately"
+- "Gradual experiments with action- and outcome-based monetization"
+
+Snowflake
+- "Usage-Based Consumption"
+- "Priced per compute storage usage"
+- "AI workloads increase query intensity"
+- "Model already aligned with inference economics"
+
+UiPath
+- "Bot Automation-Based"
+- "Priced per automation bot"
+- "AI agents extend RPA into decision workflows"
+- "Revenue scales with automations executed"
+
+Intercom
+- "Outcome Resolution-Based"
+- "Priced per AI-resolved conversation"
+- "Aligns monetization with customer outcomes, not usage volume"
+- "Revenue scales with value delivered"
 
 **Spectrum ruler**
 
@@ -485,9 +522,9 @@ Quadrant: "Co-Pilot, Assistive Zone"
 **Visual 2: Vendor Pricing Spectrum Table**
 
 - **Purpose**: Compare how six major vendors approach AI pricing across a spectrum from per-seat to outcome-based.
-- **Layout blueprint**: HTML table with 6 vendor columns (ServiceNow, Zendesk, Salesforce, Snowflake, UiPath, Intercom). Rows contain each vendor's pricing model line and explanatory lines. Above or below the table, render a visual ruler showing the spectrum: "Per Seat ------ Hybrid ------ Usage ------ Outcome" as a horizontal bar or styled text strip with markers.
-- **Data/labels (verbatim)**: Column headers: ServiceNow, Zendesk, Salesforce, Snowflake, UiPath, Intercom. Rows: pricing model line and explanatory lines per vendor. Ruler text: "Per Seat ------ Hybrid ------ Usage ------ Outcome". Sentence: "AI shifts value creation from access to output, pushing pricing toward usage and outcomes".
-- **Acceptance criteria**: All 6 vendor columns present. Pricing model and explanatory rows present for each vendor. Spectrum ruler rendered as a visual element. Sentence present.
+- **Layout blueprint**: HTML table with 6 vendor columns (ServiceNow, Zendesk, Salesforce, Snowflake, UiPath, Intercom). Rows: each vendor has a pricing model name row and three explanatory bullet rows (see Required text above). Above or below the table, render a visual ruler showing the spectrum: "Per Seat ------ Hybrid ------ Usage ------ Outcome" as a horizontal bar or styled text strip with markers.
+- **Data/labels (verbatim)**: Column headers: ServiceNow, Zendesk, Salesforce, Snowflake, UiPath, Intercom. Rows: per-vendor pricing model name + 3 explanatory lines each (see "Vendor pricing spectrum — rows" above for verbatim text). Ruler text: "Per Seat ------ Hybrid ------ Usage ------ Outcome". Sentence: "AI shifts value creation from access to output, pushing pricing toward usage and outcomes".
+- **Acceptance criteria**: All 6 vendor columns present. Each vendor column has its pricing model name and 3 explanatory lines verbatim. Spectrum ruler rendered as a visual element. Sentence present.
 
 ### Implementation notes (non-content)
 
@@ -965,10 +1002,8 @@ Step 4: "Acceleration Pricing Assessment"
 
 ## OPEN QUESTIONS
 
-1. **Vendor pricing spectrum row content (Page 4)**: The instructions specify a table with vendors as columns (ServiceNow, Zendesk, Salesforce, Snowflake, UiPath, Intercom) and state rows should match "the PDF text (pricing model line + the explanatory lines)." The specific per-vendor pricing model descriptions and explanatory text are referenced from a source PDF but are not reproduced verbatim in the provided instructions. The column headers, spectrum ruler, and framing sentence are all captured above. The per-vendor row content must be sourced from the original PDF to complete this table.
+1. **Outcome-Based sub-breakdown units (Page 4)**: The values "Cost Savings 36", "Revenue Generated 18", "Rev. Gen. & Cost Savings 18", "Other 11", "Buyer CSAT 9" are listed without an explicit unit (e.g., %). They are reproduced verbatim as provided.
 
-2. **Outcome-Based sub-breakdown units (Page 4)**: The values "Cost Savings 36", "Revenue Generated 18", "Rev. Gen. & Cost Savings 18", "Other 11", "Buyer CSAT 9" are listed without an explicit unit (e.g., %). They are reproduced verbatim as provided.
+2. **EV/LTM Premium symbol (Page 5)**: The values "19 Premium", "12 Premium", "15 Premium" are reproduced verbatim as provided. It is unclear whether these represent percentages (19%, 12%, 15%) — the instructions do not include the "%" symbol.
 
-3. **EV/LTM Premium symbol (Page 5)**: The values "19 Premium", "12 Premium", "15 Premium" are reproduced verbatim as provided. It is unclear whether these represent percentages (19%, 12%, 15%) — the instructions do not include the "%" symbol.
-
-4. **Financial checklist threshold symbol (Page 5)**: "Gross Margins Above 80" is reproduced verbatim. Whether this means 80% is not stated explicitly in the instructions.
+3. **Financial checklist threshold symbol (Page 5)**: "Gross Margins Above 80" is reproduced verbatim. Whether this means 80% is not stated explicitly in the instructions.
