@@ -4,144 +4,563 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI SaaS Considerations Booklet</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            navy: { 900: '#0f2b46', 800: '#1e3a5f', 700: '#2a4a72', 600: '#3b5f8a' },
-            brand: { teal: '#0d9488', light: '#14b8a6', accent: '#2dd4bf' }
-          }
-        }
-      }
-    }
-  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: #0a0a0f;
+      color: #f1f1f4;
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Syne', sans-serif;
+      letter-spacing: -0.02em;
+      color: #f1f1f4;
+    }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    .label-caps {
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 11px;
+      color: rgba(255,255,255,0.45);
+    }
+    .text-secondary { color: rgba(255,255,255,0.55); }
+    .text-body { color: rgba(255,255,255,0.8); }
+    .gradient-text {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6, #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .gradient-border {
+      height: 2px;
+      background: linear-gradient(90deg, #6366f1, #8b5cf6, #a855f7);
+      border-radius: 1px;
+    }
+    .gradient-border-thin {
+      height: 1px;
+      background: linear-gradient(90deg, rgba(99,102,241,0.3), rgba(139,92,246,0.5), rgba(168,85,247,0.3));
+    }
+
+    /* Nav */
+    .pill-nav {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(10,10,15,0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .pill-nav a {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: rgba(255,255,255,0.55);
+      text-decoration: none;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .pill-nav a:hover, .pill-nav a.active {
+      color: #f1f1f4;
+      background: rgba(99,102,241,0.15);
+    }
+
+    /* Cards */
+    .section-card {
+      background: #12121a;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px;
+      box-shadow: 0 0 60px rgba(99,102,241,0.03);
+      padding: 48px 40px;
+      margin-bottom: 24px;
+    }
+    .page-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.05em;
+      margin-bottom: 24px;
+    }
+
+    /* Tables */
+    .dark-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .dark-table thead { background: rgba(255,255,255,0.04); }
+    .dark-table th {
+      padding: 12px 16px; text-align: left;
+      font-weight: 600; color: #f1f1f4;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .dark-table td {
+      padding: 10px 16px; color: rgba(255,255,255,0.75);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .dark-table tbody tr:nth-child(even) { background: rgba(255,255,255,0.02); }
+    .dark-table tbody tr:hover { background: rgba(99,102,241,0.05); }
+
+    /* Blockquotes */
+    .dark-quote {
+      border-left: 3px solid;
+      border-image: linear-gradient(180deg, #6366f1, #a855f7) 1;
+      background: rgba(99,102,241,0.05);
+      padding: 20px 24px;
+      border-radius: 0 12px 12px 0;
+      margin: 16px 0;
+    }
+    .dark-quote p { font-style: italic; font-size: 16px; color: rgba(255,255,255,0.85); }
+    .dark-quote .attribution {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: rgba(255,255,255,0.45);
+      margin-top: 8px;
+    }
+
+    /* Category cards */
+    .cat-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 24px;
+      transition: border-color 0.2s ease;
+    }
+    .cat-card:hover { border-color: rgba(255,255,255,0.15); }
+
+    /* Callout box */
+    .callout-box {
+      border-left: 3px solid;
+      border-image: linear-gradient(180deg, #6366f1, #a855f7) 1;
+      background: rgba(99,102,241,0.06);
+      padding: 20px 24px;
+      border-radius: 0 12px 12px 0;
+    }
+
+    /* Badge */
+    .letter-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 24px; height: 24px; border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      color: white; font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; font-weight: 600; flex-shrink: 0;
+      margin-right: 8px;
+    }
+    .step-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      color: white; font-family: 'JetBrains Mono', monospace;
+      font-size: 14px; font-weight: 700; flex-shrink: 0;
+    }
+    .premium-pill {
+      display: inline-block;
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      color: white; font-family: 'JetBrains Mono', monospace;
+      font-size: 12px; font-weight: 600;
+      padding: 4px 12px; border-radius: 20px;
+    }
+
+    /* Bar animations */
+    .bar-animate { transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    .bar-v-animate { transition: height 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+
+    /* Scroll animations */
+    .fade-in-up {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .stagger-child {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .stagger-child.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Hero */
+    .hero-bg {
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(ellipse at 30% 20%, rgba(99,102,241,0.08) 0%, transparent 50%),
+                  radial-gradient(ellipse at 70% 60%, rgba(168,85,247,0.06) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .dot-grid {
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 24px 24px;
+      pointer-events: none;
+    }
+
+    /* Pricing spectrum */
+    .spectrum-bar {
+      background: linear-gradient(90deg, #6366f1, #8b5cf6, #a855f7);
+      border-radius: 24px;
+      padding: 12px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .spectrum-bar span {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px; color: white; font-weight: 600;
+    }
+
+    /* Conclusion flow */
+    .flow-card {
+      border-radius: 12px; padding: 20px;
+      color: white; font-size: 14px; line-height: 1.5;
+      position: relative;
+    }
+    .flow-connector {
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; color: rgba(255,255,255,0.3);
+      padding: 0 4px; flex-shrink: 0;
+    }
+
+    /* Grid */
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+
+    /* Data funnel trapezoids */
+    .funnel-level {
+      text-align: center; padding: 14px 16px;
+      font-size: 13px; font-weight: 600; color: white;
+      clip-path: polygon(var(--inset) 0, calc(100% - var(--inset)) 0, calc(100% - var(--inset-bottom)) 100%, var(--inset-bottom) 100%);
+      margin: 0 auto;
+    }
+    .funnel-sub { font-weight: 400; font-size: 11px; opacity: 0.7; display: block; margin-top: 2px; }
+
+    /* Scrollable tables on mobile */
+    .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+    /* Matrix quadrants */
+    .quad { border-radius: 12px; padding: 20px; }
+    .quad-fastest { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.15); }
+    .quad-governed { background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.15); }
+    .quad-copilot { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.15); }
+    .quad-slowest { background: rgba(244,63,94,0.08); border: 1px solid rgba(244,63,94,0.15); }
+
+    /* Hub-and-spoke diagram */
+    .hub-spoke { position: relative; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .layer-box {
+      background: rgba(99,102,241,0.1);
+      border: 1px solid rgba(99,102,241,0.2);
+      border-radius: 10px;
+      padding: 12px 20px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.9);
+      width: 100%;
+      max-width: 420px;
+    }
+    .hub-center {
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      border-radius: 12px;
+      padding: 14px 24px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: white;
+      margin: 8px 0;
+    }
+    .spoke-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      width: 100%;
+      max-width: 500px;
+    }
+    .spoke-node {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 10px 14px;
+      text-align: center;
+      font-size: 12px;
+      color: rgba(255,255,255,0.8);
+      font-weight: 500;
+    }
+
+    /* Cloud-native diagram */
+    .cloud-diagram {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .cloud-inputs {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .cloud-node {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 10px 18px;
+      text-align: center;
+      font-size: 13px;
+      color: rgba(255,255,255,0.85);
+      font-weight: 600;
+    }
+    .cloud-core {
+      background: rgba(34,211,238,0.1);
+      border: 1px solid rgba(34,211,238,0.25);
+      border-radius: 12px;
+      padding: 16px 24px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #22d3ee;
+      text-align: center;
+    }
+    .cloud-arrow {
+      font-size: 20px;
+      color: rgba(255,255,255,0.25);
+    }
+
+    /* Vertical bar chart */
+    .v-bar-chart {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 24px;
+      height: 280px;
+      padding-bottom: 40px;
+      position: relative;
+    }
+    .v-bar-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      height: 100%;
+      position: relative;
+    }
+    .v-bar {
+      width: 56px;
+      border-radius: 4px 4px 0 0;
+      position: relative;
+    }
+    .v-bar-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      font-weight: 700;
+      color: #f1f1f4;
+      margin-bottom: 6px;
+    }
+    .v-bar-name {
+      font-size: 11px;
+      color: rgba(255,255,255,0.55);
+      text-align: center;
+      margin-top: 10px;
+      width: 80px;
+    }
+    .gridlines {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+    .gridline {
+      border-top: 1px solid rgba(255,255,255,0.05);
+      position: relative;
+    }
+    .gridline-label {
+      position: absolute;
+      right: 100%;
+      margin-right: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: rgba(255,255,255,0.25);
+      top: -6px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .section-card { padding: 24px 20px; }
+      h2 { font-size: 24px !important; }
+      h3 { font-size: 20px !important; }
+      .grid-3 { grid-template-columns: 1fr; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .pill-nav .nav-links { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .flow-horizontal { flex-direction: column !important; }
+      .flow-connector { transform: rotate(90deg); padding: 4px 0; }
+      .spoke-container { grid-template-columns: 1fr; }
+      .cloud-diagram { flex-direction: column; }
+      .v-bar-chart { gap: 12px; }
+      .v-bar { width: 40px; }
+      .v-bar-name { width: 60px; font-size: 10px; }
+      .hub-spoke { align-items: stretch; }
+      .layer-box { max-width: 100%; }
+    }
     @media print {
       section { page-break-before: always; }
       section:first-of-type { page-break-before: avoid; }
       nav { display: none; }
-    }
-    .chevron-shape {
-      clip-path: polygon(0 0, 90% 0, 100% 50%, 90% 100%, 0 100%, 10% 50%);
-    }
-    .chevron-shape:first-child {
-      clip-path: polygon(0 0, 90% 0, 100% 50%, 90% 100%, 0 100%);
+      body { background: white; color: #1a1a1a; }
     }
   </style>
 </head>
-<body class="bg-gray-100 text-gray-800 font-sans">
+<body>
 
-  <!-- Persistent Top Navigation -->
-  <nav class="sticky top-0 z-50 bg-navy-900 text-white shadow-lg">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-      <span class="text-lg font-bold tracking-wide">Booklet</span>
-      <div class="flex gap-3 text-sm flex-wrap">
-        <a href="#page-1" class="hover:text-brand-accent transition">Page 1</a>
-        <a href="#page-2" class="hover:text-brand-accent transition">Page 2</a>
-        <a href="#page-3" class="hover:text-brand-accent transition">Page 3</a>
-        <a href="#page-4" class="hover:text-brand-accent transition">Page 4</a>
-        <a href="#page-5" class="hover:text-brand-accent transition">Page 5</a>
-        <a href="#page-6" class="hover:text-brand-accent transition">Page 6</a>
-        <a href="#page-7" class="hover:text-brand-accent transition">Page 7</a>
+  <!-- Pill Navigation -->
+  <nav class="pill-nav">
+    <div style="max-width:1080px; margin:0 auto; padding:10px 20px; display:flex; align-items:center; justify-content:space-between;">
+      <span style="font-family:'Syne',sans-serif; font-weight:700; font-size:14px; color:#f1f1f4;">AI SaaS</span>
+      <div class="nav-links" style="display:flex; gap:4px; overflow-x:auto;">
+        <a href="#page-1">AI Budgets</a>
+        <a href="#page-2">Data Moats</a>
+        <a href="#page-3">Unit Economics</a>
+        <a href="#page-4">Pricing</a>
+        <a href="#page-5">Vertical SaaS</a>
+        <a href="#page-6">Diligence</a>
+        <a href="#page-7">Conclusion</a>
       </div>
     </div>
   </nav>
 
-  <main class="max-w-6xl mx-auto px-4 py-8 space-y-10">
+  <main style="max-width:1080px; margin:0 auto; padding:24px 20px;">
 
     <!-- ============================================================ -->
     <!-- PAGE 1 — AI Budgets and Architectural Paradigms               -->
     <!-- ============================================================ -->
-    <section id="page-1" class="bg-white border border-gray-200 rounded-xl shadow-md p-8">
-      <span class="inline-block text-xs font-semibold text-gray-400 uppercase tracking-widest mb-6">Page 1</span>
+    <section id="page-1" class="section-card fade-in-up hero-bg">
+      <div class="dot-grid"></div>
+      <div class="page-label">01 — AI Budgets</div>
 
-      <!-- Header Block -->
-      <h2 class="text-2xl md:text-3xl font-bold text-navy-900 mb-2">Organizations Have Begun Dramatically Scaling AI Budgets</h2>
-      <p class="text-gray-600 mb-8 max-w-4xl">Capital is flowing into AI-native application spend at unprecedented speed, but durable value will accrue where AI is embedded into governed, system-of-record workflows</p>
+      <!-- Hero Header -->
+      <h2 style="font-size:40px; font-weight:800; line-height:1.15; margin-bottom:12px; position:relative;">Organizations Have Begun Dramatically Scaling AI Budgets</h2>
+      <p class="text-body" style="font-size:16px; max-width:720px; margin-bottom:40px; font-weight:300; position:relative;">Capital is flowing into AI-native application spend at unprecedented speed, but durable value will accrue where AI is embedded into governed, system-of-record workflows</p>
 
       <!-- Bar Chart: Likely to Increase / Decrease Spend -->
-      <h3 class="text-lg font-semibold text-navy-800 mb-4">Likely to Increase / Decrease Spend</h3>
+      <h3 style="font-size:20px; font-weight:700; margin-bottom:16px;">Likely to Increase / Decrease Spend</h3>
 
       <!-- Group 1: AI and Related Enablers -->
-      <p class="text-sm font-semibold text-navy-700 mb-2">AI and Related Enablers</p>
-      <div class="space-y-2 mb-6">
-        <div class="flex items-center gap-3">
-          <span class="w-64 text-sm text-right shrink-0">AI/ML, Including GenAI</span>
-          <div class="bg-brand-teal h-7 rounded-r flex items-center justify-end pr-2 text-white text-xs font-bold" style="width:45%">45%</div>
+      <p class="label-caps" style="margin-bottom:10px;">AI and Related Enablers</p>
+      <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:24px;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="width:200px; text-align:right; font-size:13px; color:rgba(255,255,255,0.7); flex-shrink:0;">AI/ML, Including GenAI</span>
+          <div class="bar-animate" style="background:linear-gradient(90deg, #10b981, #059669); height:28px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; width:45%;">
+            <span class="mono" style="font-size:12px; font-weight:700; color:white;">45%</span>
+          </div>
         </div>
-        <div class="flex items-center gap-3">
-          <span class="w-64 text-sm text-right shrink-0">Cloud Services</span>
-          <div class="bg-brand-teal h-7 rounded-r flex items-center justify-end pr-2 text-white text-xs font-bold" style="width:27%">27%</div>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="width:200px; text-align:right; font-size:13px; color:rgba(255,255,255,0.7); flex-shrink:0;">Cloud Services</span>
+          <div class="bar-animate" style="background:linear-gradient(90deg, #10b981, #059669); height:28px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; width:27%;">
+            <span class="mono" style="font-size:12px; font-weight:700; color:white;">27%</span>
+          </div>
         </div>
-        <div class="flex items-center gap-3">
-          <span class="w-64 text-sm text-right shrink-0">Security Infrastructure</span>
-          <div class="bg-brand-teal h-7 rounded-r flex items-center justify-end pr-2 text-white text-xs font-bold" style="width:23%">23%</div>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="width:200px; text-align:right; font-size:13px; color:rgba(255,255,255,0.7); flex-shrink:0;">Security Infrastructure</span>
+          <div class="bar-animate" style="background:linear-gradient(90deg, #10b981, #059669); height:28px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; width:23%;">
+            <span class="mono" style="font-size:12px; font-weight:700; color:white;">23%</span>
+          </div>
         </div>
-        <div class="flex items-center gap-3">
-          <span class="w-64 text-sm text-right shrink-0">IT Services</span>
-          <div class="bg-brand-teal h-7 rounded-r flex items-center justify-end pr-2 text-white text-xs font-bold" style="width:16%">16%</div>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="width:200px; text-align:right; font-size:13px; color:rgba(255,255,255,0.7); flex-shrink:0;">IT Services</span>
+          <div class="bar-animate" style="background:linear-gradient(90deg, #10b981, #059669); height:28px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; width:16%;">
+            <span class="mono" style="font-size:12px; font-weight:700; color:white;">16%</span>
+          </div>
         </div>
-        <div class="flex items-center gap-3">
-          <span class="w-64 text-sm text-right shrink-0">Analytics</span>
-          <div class="bg-brand-teal h-7 rounded-r flex items-center justify-end pr-2 text-white text-xs font-bold" style="width:16%">16%</div>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="width:200px; text-align:right; font-size:13px; color:rgba(255,255,255,0.7); flex-shrink:0;">Analytics</span>
+          <div class="bar-animate" style="background:linear-gradient(90deg, #10b981, #059669); height:28px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; width:16%;">
+            <span class="mono" style="font-size:12px; font-weight:700; color:white;">16%</span>
+          </div>
         </div>
       </div>
 
       <!-- Group 2: Traditional Drivers (Increase) -->
-      <p class="text-sm font-semibold text-navy-700 mb-2">Traditional Drivers of Software Spend <span class="text-gray-400 font-normal">(Increase)</span></p>
-      <div class="space-y-2 mb-6">
-        <div class="flex items-center gap-3">
-          <span class="w-64 text-sm text-right shrink-0">ERP</span>
-          <div class="bg-navy-700 h-7 rounded-r flex items-center justify-end pr-2 text-white text-xs font-bold" style="width:5%"><span class="ml-2">5%</span></div>
+      <p class="label-caps" style="margin-bottom:10px;">Traditional Drivers of Software Spend <span style="color:rgba(255,255,255,0.3); text-transform:none; letter-spacing:normal;">(Increase)</span></p>
+      <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:24px;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="width:200px; text-align:right; font-size:13px; color:rgba(255,255,255,0.7); flex-shrink:0;">ERP</span>
+          <div class="bar-animate" style="background:linear-gradient(90deg, #6366f1, #8b5cf6); height:28px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; min-width:48px; width:5%;">
+            <span class="mono" style="font-size:12px; font-weight:700; color:white;">5%</span>
+          </div>
         </div>
-        <div class="flex items-center gap-3">
-          <span class="w-64 text-sm text-right shrink-0">CRM</span>
-          <div class="bg-navy-700 h-7 rounded-r flex items-center justify-end pr-2 text-white text-xs font-bold" style="width:5%"><span class="ml-2">4%</span></div>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="width:200px; text-align:right; font-size:13px; color:rgba(255,255,255,0.7); flex-shrink:0;">CRM</span>
+          <div class="bar-animate" style="background:linear-gradient(90deg, #6366f1, #8b5cf6); height:28px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; min-width:48px; width:4%;">
+            <span class="mono" style="font-size:12px; font-weight:700; color:white;">4%</span>
+          </div>
         </div>
-        <div class="flex items-center gap-3">
-          <span class="w-64 text-sm text-right shrink-0">App Dev / DevOps</span>
-          <div class="bg-navy-700 h-7 rounded-r flex items-center justify-end pr-2 text-white text-xs font-bold" style="width:4%"><span class="ml-2">2%</span></div>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="width:200px; text-align:right; font-size:13px; color:rgba(255,255,255,0.7); flex-shrink:0;">App Dev / DevOps</span>
+          <div class="bar-animate" style="background:linear-gradient(90deg, #6366f1, #8b5cf6); height:28px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; min-width:48px; width:2%;">
+            <span class="mono" style="font-size:12px; font-weight:700; color:white;">2%</span>
+          </div>
         </div>
       </div>
 
       <!-- Group 3: Traditional Drivers (Decrease) -->
-      <p class="text-sm font-semibold text-navy-700 mb-2">Traditional Drivers of Software Spend <span class="text-gray-400 font-normal">(Decrease)</span></p>
-      <div class="space-y-2 mb-8">
-        <div class="flex items-center gap-3">
-          <span class="w-64 text-sm text-right shrink-0">Network Infrastructure</span>
-          <div class="bg-red-500 h-7 rounded-r flex items-center justify-end pr-2 text-white text-xs font-bold" style="width:5%"><span class="ml-2">-5%</span></div>
+      <p class="label-caps" style="margin-bottom:10px;">Traditional Drivers of Software Spend <span style="color:rgba(255,255,255,0.3); text-transform:none; letter-spacing:normal;">(Decrease)</span></p>
+      <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:32px;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="width:200px; text-align:right; font-size:13px; color:rgba(255,255,255,0.7); flex-shrink:0;">Network Infrastructure</span>
+          <div class="bar-animate" style="background:linear-gradient(90deg, #f43f5e, #e11d48); height:28px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; min-width:48px; width:5%;">
+            <span class="mono" style="font-size:12px; font-weight:700; color:white;">-5%</span>
+          </div>
         </div>
-        <div class="flex items-center gap-3">
-          <span class="w-64 text-sm text-right shrink-0">System &amp; Service Mgmt.</span>
-          <div class="bg-red-500 h-7 rounded-r flex items-center justify-end pr-2 text-white text-xs font-bold" style="width:7%"><span class="ml-2">-7%</span></div>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="width:200px; text-align:right; font-size:13px; color:rgba(255,255,255,0.7); flex-shrink:0;">System &amp; Service Mgmt.</span>
+          <div class="bar-animate" style="background:linear-gradient(90deg, #f43f5e, #e11d48); height:28px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; min-width:48px; width:7%;">
+            <span class="mono" style="font-size:12px; font-weight:700; color:white;">-7%</span>
+          </div>
         </div>
-        <div class="flex items-center gap-3">
-          <span class="w-64 text-sm text-right shrink-0">Storage Infrastructure</span>
-          <div class="bg-red-500 h-7 rounded-r flex items-center justify-end pr-2 text-white text-xs font-bold" style="width:8%"><span class="ml-2">-8%</span></div>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="width:200px; text-align:right; font-size:13px; color:rgba(255,255,255,0.7); flex-shrink:0;">Storage Infrastructure</span>
+          <div class="bar-animate" style="background:linear-gradient(90deg, #f43f5e, #e11d48); height:28px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; min-width:48px; width:8%;">
+            <span class="mono" style="font-size:12px; font-weight:700; color:white;">-8%</span>
+          </div>
         </div>
-        <div class="flex items-center gap-3">
-          <span class="w-64 text-sm text-right shrink-0">IT Operations Mgmt.</span>
-          <div class="bg-red-500 h-7 rounded-r flex items-center justify-end pr-2 text-white text-xs font-bold" style="width:9%"><span class="ml-2">-9%</span></div>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="width:200px; text-align:right; font-size:13px; color:rgba(255,255,255,0.7); flex-shrink:0;">IT Operations Mgmt.</span>
+          <div class="bar-animate" style="background:linear-gradient(90deg, #f43f5e, #e11d48); height:28px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; min-width:48px; width:9%;">
+            <span class="mono" style="font-size:12px; font-weight:700; color:white;">-9%</span>
+          </div>
         </div>
-        <div class="flex items-center gap-3">
-          <span class="w-64 text-sm text-right shrink-0">Comm., Collab., &amp; Content Mgmt.</span>
-          <div class="bg-red-500 h-7 rounded-r flex items-center justify-end pr-2 text-white text-xs font-bold" style="width:10%"><span class="ml-2">-10%</span></div>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="width:200px; text-align:right; font-size:13px; color:rgba(255,255,255,0.7); flex-shrink:0;">Comm., Collab., &amp; Content Mgmt.</span>
+          <div class="bar-animate" style="background:linear-gradient(90deg, #f43f5e, #e11d48); height:28px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; min-width:56px; width:10%;">
+            <span class="mono" style="font-size:12px; font-weight:700; color:white;">-10%</span>
+          </div>
         </div>
-        <div class="flex items-center gap-3">
-          <span class="w-64 text-sm text-right shrink-0">Devices</span>
-          <div class="bg-red-500 h-7 rounded-r flex items-center justify-end pr-2 text-white text-xs font-bold" style="width:17%"><span class="ml-2">-17%</span></div>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="width:200px; text-align:right; font-size:13px; color:rgba(255,255,255,0.7); flex-shrink:0;">Devices</span>
+          <div class="bar-animate" style="background:linear-gradient(90deg, #f43f5e, #e11d48); height:28px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; min-width:56px; width:17%;">
+            <span class="mono" style="font-size:12px; font-weight:700; color:white;">-17%</span>
+          </div>
         </div>
-        <div class="flex items-center gap-3">
-          <span class="w-64 text-sm text-right shrink-0">Server Infrastructure</span>
-          <div class="bg-red-500 h-7 rounded-r flex items-center justify-end pr-2 text-white text-xs font-bold" style="width:24%"><span class="ml-2">-24%</span></div>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="width:200px; text-align:right; font-size:13px; color:rgba(255,255,255,0.7); flex-shrink:0;">Server Infrastructure</span>
+          <div class="bar-animate" style="background:linear-gradient(90deg, #f43f5e, #e11d48); height:28px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; min-width:56px; width:24%;">
+            <span class="mono" style="font-size:12px; font-weight:700; color:white;">-24%</span>
+          </div>
         </div>
       </div>
 
       <!-- Key Themes -->
-      <h3 class="text-lg font-semibold text-navy-800 mb-3">Key Themes</h3>
-      <ul class="list-disc list-inside space-y-1 text-sm text-gray-700 mb-6">
+      <h3 style="font-size:20px; font-weight:700; margin-bottom:12px;">Key Themes</h3>
+      <ul style="list-style:disc; padding-left:20px; color:rgba(255,255,255,0.75); font-size:14px; margin-bottom:24px; display:flex; flex-direction:column; gap:6px;">
         <li>AI has moved from discretionary experiment to core line item</li>
         <li>IT spend is being both expanded and reallocated</li>
         <li>Incumbents face near-term budget pressure without AI-driven ROI</li>
@@ -150,244 +569,202 @@
       </ul>
 
       <!-- Callout Box -->
-      <div class="bg-blue-50 border-l-4 border-brand-teal rounded-r-lg p-5 mb-8">
-        <p class="text-sm text-navy-800 font-medium">Net IT budgets will grow modestly, but we expect that growth to be concentrated in applied AI and automation spending</p>
+      <div class="callout-box" style="margin-bottom:40px;">
+        <p class="text-body" style="font-size:15px; font-weight:500;">Net IT budgets will grow modestly, but we expect that growth to be concentrated in applied AI and automation spending</p>
       </div>
+
+      <div class="gradient-border" style="margin-bottom:40px;"></div>
 
       <!-- Flow Diagrams -->
-      <h3 class="text-xl font-bold text-navy-900 mb-2">Two Architectural Paradigms are Emerging in the Agentic Landscape</h3>
-      <p class="text-sm text-gray-500 mb-6">Engineering teams are shifting from feature factories to AI integration and data pipeline specialists</p>
+      <h3 style="font-size:24px; font-weight:700; margin-bottom:8px;">Two Architectural Paradigms are Emerging in the Agentic Landscape</h3>
+      <p class="text-secondary" style="font-size:14px; margin-bottom:32px;">Engineering teams are shifting from feature factories to AI integration and data pipeline specialists</p>
 
-      <!-- AI-Native Architecture -->
-      <div class="mb-8 bg-gray-50 rounded-lg p-6 border border-gray-200">
-        <h4 class="text-md font-bold text-navy-800 mb-4">AI-Native Architecture</h4>
-        <!-- Flow nodes -->
-        <div class="flex flex-wrap items-center gap-3 mb-4 overflow-x-auto">
-          <div class="bg-navy-800 text-white px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap">AI Agents</div>
-          <span class="text-navy-700 text-xl font-bold">&rarr;</span>
-          <div class="bg-navy-800 text-white px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap">Execution Engine</div>
-          <span class="text-navy-700 text-xl font-bold">&rarr;</span>
-          <div class="bg-navy-800 text-white px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap">Operational State</div>
-          <span class="text-navy-700 text-xl font-bold">&rarr;</span>
-          <div class="bg-navy-800 text-white px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap">Outcome Feedback</div>
+      <!-- AI-Native Architecture: Hub-and-Spoke -->
+      <div class="cat-card" style="margin-bottom:24px; border-top:2px solid #6366f1;">
+        <h4 style="font-size:18px; font-weight:700; margin-bottom:20px;">AI-Native Architecture</h4>
+        <div class="hub-spoke" style="margin-bottom:20px;">
+          <!-- Top layer -->
+          <div class="layer-box">Operational Data + Semantic Memory</div>
+          <!-- Middle layer -->
+          <div class="layer-box">Model Orchestration &amp; Inference</div>
+          <!-- Bottom layer -->
+          <div class="layer-box">Workflow Orchestration &amp; Decision Logic</div>
+          <!-- Hub -->
+          <div class="hub-center">Execution Engine</div>
+          <!-- Spokes -->
+          <div class="spoke-container">
+            <div class="spoke-node">Live Operational State</div>
+            <div class="spoke-node">User &amp; System Actions</div>
+            <div class="spoke-node">Outcome Feedback</div>
+            <div class="spoke-node">Third-Party Systems</div>
+          </div>
         </div>
-        <!-- Bullets -->
-        <ul class="list-disc list-inside text-sm text-gray-700 space-y-1 mb-4">
+        <ul style="list-style:disc; padding-left:20px; color:rgba(255,255,255,0.75); font-size:14px; display:flex; flex-direction:column; gap:6px;">
           <li>Natural language is becoming a primary interface for initiating/supervising workflow</li>
           <li>AI-native architectures are designed from the ground up for tasks to be agent-first from start to finish rather than human-first</li>
+          <li>Agentic systems enable software to act within guardrails, not just inform users</li>
         </ul>
-        <!-- Chip labels -->
-        <div class="flex flex-wrap gap-2">
-          <span class="inline-block bg-teal-100 text-teal-800 text-xs px-3 py-1 rounded-full">AI as the Execution Layer</span>
-          <span class="inline-block bg-teal-100 text-teal-800 text-xs px-3 py-1 rounded-full">Operational Data</span>
-          <span class="inline-block bg-teal-100 text-teal-800 text-xs px-3 py-1 rounded-full">Semantic Memory</span>
-          <span class="inline-block bg-teal-100 text-teal-800 text-xs px-3 py-1 rounded-full">Model Orchestration</span>
-          <span class="inline-block bg-teal-100 text-teal-800 text-xs px-3 py-1 rounded-full">Inference</span>
-          <span class="inline-block bg-teal-100 text-teal-800 text-xs px-3 py-1 rounded-full">Workflow Orchestration</span>
-          <span class="inline-block bg-teal-100 text-teal-800 text-xs px-3 py-1 rounded-full">Decision Logic</span>
-          <span class="inline-block bg-teal-100 text-teal-800 text-xs px-3 py-1 rounded-full">Execution Engine</span>
-          <span class="inline-block bg-teal-100 text-teal-800 text-xs px-3 py-1 rounded-full">Live Operational State</span>
-          <span class="inline-block bg-teal-100 text-teal-800 text-xs px-3 py-1 rounded-full">Outcome Feedback</span>
-          <span class="inline-block bg-teal-100 text-teal-800 text-xs px-3 py-1 rounded-full">Third-Party Systems</span>
-        </div>
       </div>
 
-      <!-- Cloud-Native + AI -->
-      <div class="bg-gray-50 rounded-lg p-6 border border-gray-200">
-        <h4 class="text-md font-bold text-navy-800 mb-4">Cloud-Native + AI</h4>
-        <!-- Flow nodes -->
-        <div class="flex flex-wrap items-center gap-3 mb-4 overflow-x-auto">
-          <div class="bg-navy-700 text-white px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap">User &amp; System Actions</div>
-          <span class="text-navy-700 text-xl font-bold">&rarr;</span>
-          <div class="bg-navy-700 text-white px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap">Core Application (AI Co-Pilot &amp; Traditional Business Logic)</div>
-          <span class="text-navy-700 text-xl font-bold">&rarr;</span>
-          <div class="bg-navy-700 text-white px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap">Data Layer (System of Record)</div>
+      <!-- Cloud-Native + AI: Two inputs into Core Application -->
+      <div class="cat-card" style="border-top:2px solid #22d3ee;">
+        <h4 style="font-size:18px; font-weight:700; margin-bottom:20px;">Cloud-Native + AI</h4>
+        <div class="cloud-diagram" style="margin-bottom:20px;">
+          <div class="cloud-inputs">
+            <div class="cloud-node">AI Co-Pilot</div>
+            <div class="cloud-node">AI Agents</div>
+          </div>
+          <div class="cloud-arrow">&rarr;</div>
+          <div class="cloud-core">Core Application</div>
+          <div class="cloud-arrow">&rarr;</div>
+          <div class="cloud-node">Data Layer (System of Record)</div>
         </div>
-        <!-- Bullets -->
-        <ul class="list-disc list-inside text-sm text-gray-700 space-y-1 mb-4">
+        <ul style="list-style:disc; padding-left:20px; color:rgba(255,255,255,0.75); font-size:14px; display:flex; flex-direction:column; gap:6px;">
           <li>Predictions are commoditizing, advantage shifts to execution, feedback loops</li>
-          <li>AI informs actions, but does not execute them.</li>
+          <li>AI informs actions, but does not execute them</li>
           <li>Limited learning from execution</li>
           <li>Cloud-native systems are increasingly being refactored to optimize user experience and workflow steps for agents</li>
           <li>Cloud-native incumbents have a head start, with clean, modern tech stacks an advantage if they move fast enough to capitalize on it</li>
         </ul>
-        <!-- Chip labels -->
-        <div class="flex flex-wrap gap-2">
-          <span class="inline-block bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full">User System Actions</span>
-        </div>
       </div>
     </section>
 
     <!-- ============================================================ -->
     <!-- PAGE 2 — Model Choice and Data Moats                         -->
     <!-- ============================================================ -->
-    <section id="page-2" class="bg-white border border-gray-200 rounded-xl shadow-md p-8">
-      <span class="inline-block text-xs font-semibold text-gray-400 uppercase tracking-widest mb-6">Page 2</span>
+    <section id="page-2" class="section-card fade-in-up">
+      <div class="page-label">02 — Data Moats</div>
 
-      <!-- Header Block 1 -->
-      <h2 class="text-2xl md:text-3xl font-bold text-navy-900 mb-2">Model Choice is an Architectural Decision, Not a Capability Race</h2>
-      <p class="text-gray-600 mb-8 max-w-4xl">LLMs, MLMs, and SLMs reflect different tradeoffs across cost, control, and scalability</p>
+      <h2 style="font-size:32px; font-weight:800; margin-bottom:8px;">Model Choice is an Architectural Decision, Not a Capability Race</h2>
+      <p class="text-body" style="max-width:720px; margin-bottom:32px;">LLMs, MLMs, and SLMs reflect different tradeoffs across cost, control, and scalability</p>
 
       <!-- Comparison Table -->
-      <div class="overflow-x-auto mb-8">
-        <table class="min-w-full text-sm border border-gray-200">
-          <thead class="bg-navy-900 text-white">
+      <div class="table-wrap" style="margin-bottom:24px;">
+        <table class="dark-table">
+          <thead>
             <tr>
-              <th class="px-4 py-3 text-left font-semibold">Dimension</th>
-              <th class="px-4 py-3 text-left font-semibold">General-Purpose LLMs (RAG-Based)</th>
-              <th class="px-4 py-3 text-left font-semibold">Task-Specific MLMs (Decision-Focused)</th>
-              <th class="px-4 py-3 text-left font-semibold">Embedded SLMs (Deterministic Execution)</th>
+              <th>Dimension</th>
+              <th>General-Purpose LLMs (RAG-Based)</th>
+              <th>Task-Specific MLMs (Decision-Focused)</th>
+              <th>Embedded SLMs (Deterministic Execution)</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-gray-200">
-            <tr class="bg-white">
-              <td class="px-4 py-3 font-medium text-navy-800">Primary Role</td>
-              <td class="px-4 py-3">Broad reasoning, language understanding, and flexibility</td>
-              <td class="px-4 py-3">Narrow decision-making within defined workflows</td>
-              <td class="px-4 py-3">Real-time execution and embedded decisions</td>
-            </tr>
-            <tr class="bg-gray-50">
-              <td class="px-4 py-3 font-medium text-navy-800">Typical Use Case</td>
-              <td class="px-4 py-3">Search, copilots, explanations, synthesis</td>
-              <td class="px-4 py-3">Classification, scoring, routing, validation</td>
-              <td class="px-4 py-3">Control loops, edge inference, deterministic actions</td>
-            </tr>
-            <tr class="bg-white">
-              <td class="px-4 py-3 font-medium text-navy-800">Reliability Profile</td>
-              <td class="px-4 py-3">Probabilistic, requires guardrails</td>
-              <td class="px-4 py-3">High within constrained domains</td>
-              <td class="px-4 py-3">Very high for fixed tasks</td>
-            </tr>
-            <tr class="bg-gray-50">
-              <td class="px-4 py-3 font-medium text-navy-800">Cost</td>
-              <td class="px-4 py-3">Lowest fixed costs / Highest variable token costs</td>
-              <td class="px-4 py-3">Moderate fixed costs / Moderate variable costs</td>
-              <td class="px-4 py-3">Highest fixed costs / Lowest variable costs</td>
-            </tr>
-            <tr class="bg-white">
-              <td class="px-4 py-3 font-medium text-navy-800">Latency</td>
-              <td class="px-4 py-3">Greatest inference and network latency / GPU/TPU-heavy workflows</td>
-              <td class="px-4 py-3">Moderate inference and network latency / GPU or CPU-capable workflows</td>
-              <td class="px-4 py-3">Minimal inference latency / CPU or edge-computing workflows</td>
-            </tr>
-            <tr class="bg-gray-50">
-              <td class="px-4 py-3 font-medium text-navy-800">Explainability &amp; Auditability</td>
-              <td class="px-4 py-3">Limited without heavy scaffolding</td>
-              <td class="px-4 py-3">Strong within task boundaries</td>
-              <td class="px-4 py-3">Strong and deterministic</td>
-            </tr>
-            <tr class="bg-white">
-              <td class="px-4 py-3 font-medium text-navy-800">Control &amp; Customization</td>
-              <td class="px-4 py-3">Low-moderate vendor-dependent</td>
-              <td class="px-4 py-3">High</td>
-              <td class="px-4 py-3">Very high</td>
-            </tr>
-            <tr class="bg-gray-50">
-              <td class="px-4 py-3 font-medium text-navy-800">Learning from Execution</td>
-              <td class="px-4 py-3">Weak unless deeply instrumented</td>
-              <td class="px-4 py-3">Strong via outcome feedback</td>
-              <td class="px-4 py-3">Strong via closed-loop control</td>
-            </tr>
+          <tbody>
+            <tr><td style="font-weight:600; color:#f1f1f4;">Primary Role</td><td>Broad reasoning, language understanding, and flexibility</td><td>Narrow decision-making within defined workflows</td><td>Real-time execution and embedded decisions</td></tr>
+            <tr><td style="font-weight:600; color:#f1f1f4;">Typical Use Case</td><td>Search, copilots, explanations, synthesis</td><td>Classification, scoring, routing, validation</td><td>Control loops, edge inference, deterministic actions</td></tr>
+            <tr><td style="font-weight:600; color:#f1f1f4;">Reliability Profile</td><td>Probabilistic, requires guardrails</td><td>High within constrained domains</td><td>Very high for fixed tasks</td></tr>
+            <tr><td style="font-weight:600; color:#f1f1f4;">Cost</td><td>Lowest fixed costs / Highest variable token costs</td><td>Moderate fixed costs / Moderate variable costs</td><td>Highest fixed costs / Lowest variable costs</td></tr>
+            <tr><td style="font-weight:600; color:#f1f1f4;">Latency</td><td>Greatest inference and network latency / GPU/TPU-heavy workflows</td><td>Moderate inference and network latency / GPU or CPU-capable workflows</td><td>Minimal inference latency / CPU or edge-computing workflows</td></tr>
+            <tr><td style="font-weight:600; color:#f1f1f4;">Explainability &amp; Auditability</td><td>Limited without heavy scaffolding</td><td>Strong within task boundaries</td><td>Strong and deterministic</td></tr>
+            <tr><td style="font-weight:600; color:#f1f1f4;">Control &amp; Customization</td><td>Low-moderate vendor-dependent</td><td>High</td><td>Very high</td></tr>
+            <tr><td style="font-weight:600; color:#f1f1f4;">Learning from Execution</td><td>Weak unless deeply instrumented</td><td>Strong via outcome feedback</td><td>Strong via closed-loop control</td></tr>
           </tbody>
         </table>
       </div>
 
-      <!-- Quote Callout -->
-      <blockquote class="border-l-4 border-brand-teal bg-teal-50 px-6 py-4 mb-10 rounded-r-lg">
-        <p class="text-sm italic text-navy-800">We believe the winners will treat LLMs as interface, MLMs as decision-making engines, and SLMs as control systems</p>
-      </blockquote>
+      <!-- Quote -->
+      <div class="dark-quote" style="margin-bottom:40px;">
+        <p>We believe the winners will treat LLMs as interface, MLMs as decision-making engines, and SLMs as control systems</p>
+      </div>
 
-      <!-- Header Block 2 -->
-      <h2 class="text-2xl md:text-3xl font-bold text-navy-900 mb-2">Data Matters, But Not All Data is Created Equal</h2>
-      <p class="text-gray-600 mb-8 max-w-4xl">Data only becomes a moat when it is proprietary, contextual, and directly tied to execution outcomes over time</p>
+      <div class="gradient-border" style="margin-bottom:40px;"></div>
 
-      <!-- Data Funnel -->
-      <div class="flex flex-col items-center mb-8 space-y-2">
-        <div class="bg-navy-900 text-white text-center text-xs font-semibold py-3 px-4 rounded w-48">
-          Cumulative Impact<br><span class="font-normal text-gray-300">(Decision Linked, Outcome-Labeled, Reinforced Over Time)</span>
+      <!-- Data Moats Section -->
+      <h2 style="font-size:32px; font-weight:800; margin-bottom:8px;">Data Matters, But Not All Data is Created Equal</h2>
+      <p class="text-body" style="max-width:720px; margin-bottom:32px;">Data only becomes a moat when it is proprietary, contextual, and directly tied to execution outcomes over time</p>
+
+      <!-- Data Funnel: Widest at bottom (Raw Data), Narrowest at top (Cumulative Impact) -->
+      <div style="display:flex; flex-direction:column; align-items:center; gap:2px; margin-bottom:40px;">
+        <!-- Top: Cumulative Impact (narrowest, most vivid) -->
+        <div style="width:35%; min-width:200px; background:linear-gradient(135deg, #6366f1, #a855f7); padding:14px 16px; text-align:center; font-size:13px; font-weight:600; color:white; border-radius:6px 6px 0 0; box-shadow:0 0 20px rgba(99,102,241,0.2); clip-path:polygon(5% 0, 95% 0, 100% 100%, 0 100%);">
+          Cumulative Impact<span class="funnel-sub">(Decision Linked, Outcome-Labeled, Reinforced Over Time)</span>
         </div>
-        <div class="bg-navy-800 text-white text-center text-xs font-semibold py-3 px-4 rounded w-56">
-          Level 5: Context<br><span class="font-normal text-gray-300">(Workflow relevance and codification is required)</span>
+        <!-- Level 5 -->
+        <div style="width:45%; min-width:240px; background:rgba(99,102,241,0.5); padding:12px 16px; text-align:center; font-size:13px; font-weight:600; color:white; clip-path:polygon(4% 0, 96% 0, 100% 100%, 0 100%);">
+          Level 5: Context<span class="funnel-sub">(Workflow relevance and codification is required)</span>
         </div>
-        <div class="bg-navy-700 text-white text-center text-xs font-semibold py-3 px-4 rounded w-72">
-          Level 4: Unification<br><span class="font-normal text-gray-300">(Unified data across workflows and application)</span>
+        <!-- Level 4 -->
+        <div style="width:58%; min-width:280px; background:rgba(99,102,241,0.35); padding:12px 16px; text-align:center; font-size:13px; font-weight:600; color:white; clip-path:polygon(3% 0, 97% 0, 100% 100%, 0 100%);">
+          Level 4: Unification<span class="funnel-sub">(Unified data across workflows and application)</span>
         </div>
-        <div class="bg-navy-600 text-white text-center text-xs font-semibold py-3 px-4 rounded w-80">
-          Level 3: Freshness<br><span class="font-normal text-gray-300">(High-frequency, low-latency data sustains value)</span>
+        <!-- Level 3 -->
+        <div style="width:72%; min-width:320px; background:rgba(99,102,241,0.25); padding:12px 16px; text-align:center; font-size:13px; font-weight:600; color:white; clip-path:polygon(2% 0, 98% 0, 100% 100%, 0 100%);">
+          Level 3: Freshness<span class="funnel-sub">(High-frequency, low-latency data sustains value)</span>
         </div>
-        <div class="bg-brand-teal text-white text-center text-xs font-semibold py-3 px-4 rounded w-96">
-          Level 2: Ownership &amp; Rights<br><span class="font-normal text-teal-100">(Shared, scraped, or non-exclusive less interesting alone)</span>
+        <!-- Level 2 -->
+        <div style="width:85%; min-width:360px; background:rgba(99,102,241,0.17); padding:12px 16px; text-align:center; font-size:13px; font-weight:600; color:rgba(255,255,255,0.9); clip-path:polygon(1% 0, 99% 0, 100% 100%, 0 100%);">
+          Level 2: Ownership &amp; Rights<span class="funnel-sub">(Shared, scraped, or non-exclusive less interesting alone)</span>
         </div>
-        <div class="bg-brand-light text-white text-center text-xs font-semibold py-3 px-4 rounded w-full max-w-lg">
-          Level 1: Raw Data<br><span class="font-normal text-teal-100">(Logs, clicks, assets, and transactions)</span>
+        <!-- Bottom: Raw Data (widest, most muted) -->
+        <div style="width:100%; background:rgba(99,102,241,0.1); padding:12px 16px; text-align:center; font-size:13px; font-weight:600; color:rgba(255,255,255,0.8); border-radius:0 0 6px 6px; clip-path:polygon(0 0, 100% 0, 100% 100%, 0 100%);">
+          Level 1: Raw Data<span class="funnel-sub">(Logs, clicks, assets, and transactions)</span>
         </div>
       </div>
 
-      <!-- Durable Data Advantages -->
-      <h3 class="text-lg font-semibold text-navy-800 mb-4">&hellip;When Durable Data Advantages Are Present</h3>
-      <ol class="space-y-4 text-sm text-gray-700">
-        <li>
-          <p class="font-semibold text-navy-800">1. Proprietary Data Generated Through Daily Workflows</p>
-          <p class="ml-4">Data as a byproduct of customers doing the work, not passively logging</p>
-          <p class="ml-6 text-gray-500">Switching costs increase as execution history accumulates</p>
-        </li>
-        <li>
-          <p class="font-semibold text-navy-800">2. Outcome-Labeled Feedback Embedded in the Product</p>
-          <p class="ml-4">Decisions tied to measurable results success, failure, override, delay</p>
-          <p class="ml-6 text-gray-500">Models learn from what actually happened, not just predictions</p>
-        </li>
-        <li>
-          <p class="font-semibold text-navy-800">3. High-Frequency, Low-Latency Data Refresh Cycles</p>
-          <p class="ml-4">Data freshness measured in minutes or hours, not weeks</p>
-          <p class="ml-6 text-gray-500">Value decays quickly if learning loops are slow</p>
-        </li>
-        <li>
-          <p class="font-semibold text-navy-800">4. Deep Context Encoded at the Point of Execution</p>
-          <p class="ml-4">Includes workflow state, timing, user intent, and constraints</p>
-          <p class="ml-6 text-gray-500">Context is difficult for third parties to replicate or scrape</p>
-        </li>
-        <li>
-          <p class="font-semibold text-navy-800">5. Evidence of Learning Reinforcing Over Time</p>
-          <p class="ml-4">Accuracy, automation rates, or decision quality improve with tenure</p>
-          <p class="ml-6 text-gray-500">Older customers are meaningfully better than new ones</p>
-        </li>
-      </ol>
+      <!-- Durable Data Advantages (fixed single numbering) -->
+      <h3 style="font-size:20px; font-weight:700; margin-bottom:20px;">&hellip;When Durable Data Advantages Are Present</h3>
+      <div style="display:flex; flex-direction:column; gap:20px;">
+        <div>
+          <p style="font-weight:600; color:#f1f1f4; font-size:14px; margin-bottom:4px;">1. Proprietary Data Generated Through Daily Workflows</p>
+          <p style="color:rgba(255,255,255,0.75); font-size:14px; padding-left:20px;">Data as a byproduct of customers doing the work, not passively logging</p>
+          <p class="text-secondary" style="font-size:13px; padding-left:28px;">Switching costs increase as execution history accumulates</p>
+        </div>
+        <div>
+          <p style="font-weight:600; color:#f1f1f4; font-size:14px; margin-bottom:4px;">2. Outcome-Labeled Feedback Embedded in the Product</p>
+          <p style="color:rgba(255,255,255,0.75); font-size:14px; padding-left:20px;">Decisions tied to measurable results success, failure, override, delay</p>
+          <p class="text-secondary" style="font-size:13px; padding-left:28px;">Models learn from what actually happened, not just predictions</p>
+        </div>
+        <div>
+          <p style="font-weight:600; color:#f1f1f4; font-size:14px; margin-bottom:4px;">3. High-Frequency, Low-Latency Data Refresh Cycles</p>
+          <p style="color:rgba(255,255,255,0.75); font-size:14px; padding-left:20px;">Data freshness measured in minutes or hours, not weeks</p>
+          <p class="text-secondary" style="font-size:13px; padding-left:28px;">Value decays quickly if learning loops are slow</p>
+        </div>
+        <div>
+          <p style="font-weight:600; color:#f1f1f4; font-size:14px; margin-bottom:4px;">4. Deep Context Encoded at the Point of Execution</p>
+          <p style="color:rgba(255,255,255,0.75); font-size:14px; padding-left:20px;">Includes workflow state, timing, user intent, and constraints</p>
+          <p class="text-secondary" style="font-size:13px; padding-left:28px;">Context is difficult for third parties to replicate or scrape</p>
+        </div>
+        <div>
+          <p style="font-weight:600; color:#f1f1f4; font-size:14px; margin-bottom:4px;">5. Evidence of Learning Reinforcing Over Time</p>
+          <p style="color:rgba(255,255,255,0.75); font-size:14px; padding-left:20px;">Accuracy, automation rates, or decision quality improve with tenure</p>
+          <p class="text-secondary" style="font-size:13px; padding-left:28px;">Older customers are meaningfully better than new ones</p>
+        </div>
+      </div>
     </section>
 
     <!-- ============================================================ -->
     <!-- PAGE 3 — Category Divergence and Software Unit Economics      -->
     <!-- ============================================================ -->
-    <section id="page-3" class="bg-white border border-gray-200 rounded-xl shadow-md p-8">
-      <span class="inline-block text-xs font-semibold text-gray-400 uppercase tracking-widest mb-6">Page 3</span>
+    <section id="page-3" class="section-card fade-in-up">
+      <div class="page-label">03 — Unit Economics</div>
 
-      <!-- Header Block -->
-      <h2 class="text-2xl md:text-3xl font-bold text-navy-900 mb-2">We Believe Outcomes Will Diverge By Category and By Segment</h2>
-      <p class="text-gray-600 mb-8 max-w-4xl">Value accrues unevenly across multiple dimensions including category, segment, and scale, with systems of action positioned to capture outsized value</p>
+      <h2 style="font-size:32px; font-weight:800; margin-bottom:8px;">We Believe Outcomes Will Diverge By Category and By Segment</h2>
+      <p class="text-body" style="max-width:720px; margin-bottom:32px;">Value accrues unevenly across multiple dimensions including category, segment, and scale, with systems of action positioned to capture outsized value</p>
 
       <!-- Category Divergence Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+      <div class="grid-3" style="margin-bottom:40px;">
         <!-- Systems of Action -->
-        <div class="border border-gray-200 rounded-lg p-5 border-t-4 border-t-brand-teal">
-          <h4 class="font-bold text-navy-900 mb-3">Systems of Action</h4>
-          <ul class="list-disc list-inside text-sm text-gray-700 space-y-2">
+        <div class="cat-card stagger-child" style="border-top:2px solid; border-image:linear-gradient(90deg, #6366f1, #a855f7) 1;">
+          <h4 style="font-size:16px; font-weight:700; margin-bottom:12px;">Systems of Action</h4>
+          <ul style="list-style:disc; padding-left:18px; color:rgba(255,255,255,0.75); font-size:13px; display:flex; flex-direction:column; gap:8px;">
             <li>Capture disproportionate levels of value as AI directly drives outcomes and decisions</li>
             <li>Platforms that sit close to doing the work benefit the most from AI-driven efficiency</li>
             <li>Value creation compounds as models learn from execution data and closed-loop feedback</li>
           </ul>
         </div>
         <!-- Systems of Record -->
-        <div class="border border-gray-200 rounded-lg p-5 border-t-4 border-t-navy-700">
-          <h4 class="font-bold text-navy-900 mb-3">Systems of Record</h4>
-          <ul class="list-disc list-inside text-sm text-gray-700 space-y-2">
+        <div class="cat-card stagger-child" style="border-top:2px solid rgba(255,255,255,0.2);">
+          <h4 style="font-size:16px; font-weight:700; margin-bottom:12px;">Systems of Record</h4>
+          <ul style="list-style:disc; padding-left:18px; color:rgba(255,255,255,0.75); font-size:13px; display:flex; flex-direction:column; gap:8px;">
             <li>Face slower disruption, with AI improving efficiency, but also limiting incremental platform differentiation</li>
             <li>Core data integrity, compliance, and reliability requirements constrain the pace of AI-driven change</li>
             <li>AI enhances workflows, rather than instituting step-function changes in product functionality</li>
           </ul>
         </div>
         <!-- Systems of Engagement -->
-        <div class="border border-gray-200 rounded-lg p-5 border-t-4 border-t-red-400">
-          <h4 class="font-bold text-navy-900 mb-3">Systems of Engagement</h4>
-          <ul class="list-disc list-inside text-sm text-gray-700 space-y-2">
+        <div class="cat-card stagger-child" style="border-top:2px solid #f43f5e;">
+          <h4 style="font-size:16px; font-weight:700; margin-bottom:12px;">Systems of Engagement</h4>
+          <ul style="list-style:disc; padding-left:18px; color:rgba(255,255,255,0.75); font-size:13px; display:flex; flex-direction:column; gap:8px;">
             <li>Most crowded and dangerous place to be in 2026</li>
             <li>AI commoditizes the surface layer quickly</li>
             <li>Sustainable differentiation requires deep workflow integration and measurable ROI</li>
@@ -397,155 +774,156 @@
         </div>
       </div>
 
+      <div class="gradient-border-thin" style="margin-bottom:32px;"></div>
+
       <!-- Adoption Matrix -->
-      <p class="text-sm text-gray-500 mb-3">Organization and task complexity impact adoption rates</p>
-      <div class="relative mb-10">
+      <p class="text-secondary" style="font-size:14px; margin-bottom:16px;">Organization and task complexity impact adoption rates</p>
+      <div style="margin-bottom:40px;">
         <!-- Axis labels -->
-        <div class="flex justify-between text-xs text-gray-500 mb-1 ml-40">
-          <span>Low</span>
-          <span class="font-semibold text-navy-800">Task Complexity</span>
-          <span>High</span>
+        <div style="display:flex; justify-content:space-between; margin-left:140px; margin-bottom:8px;">
+          <span class="mono" style="font-size:11px; color:rgba(255,255,255,0.4);">Low</span>
+          <span class="mono" style="font-size:11px; color:rgba(255,255,255,0.7); font-weight:600;">Task Complexity</span>
+          <span class="mono" style="font-size:11px; color:rgba(255,255,255,0.4);">High</span>
         </div>
-        <div class="flex">
+        <div style="display:flex;">
           <!-- Vertical axis -->
-          <div class="flex flex-col justify-between items-center w-36 pr-3 shrink-0">
-            <span class="text-xs text-gray-500">High</span>
-            <span class="text-xs text-navy-800 font-semibold [writing-mode:vertical-lr] rotate-180">Regulation Technology Maturity</span>
-            <span class="text-xs text-gray-500">Low</span>
+          <div style="display:flex; flex-direction:column; justify-content:space-between; align-items:center; width:130px; padding-right:12px; flex-shrink:0;">
+            <span class="mono" style="font-size:11px; color:rgba(255,255,255,0.4);">High</span>
+            <span class="mono" style="font-size:11px; color:rgba(255,255,255,0.7); font-weight:600; writing-mode:vertical-lr; transform:rotate(180deg);">Regulation &amp; Technology Maturity</span>
+            <span class="mono" style="font-size:11px; color:rgba(255,255,255,0.4);">Low</span>
           </div>
           <!-- 2x2 Grid -->
-          <div class="grid grid-cols-2 gap-3 flex-1">
-            <!-- Top-left: Governed Rollout Zone -->
-            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <h5 class="font-bold text-navy-800 text-sm mb-2">Governed Rollout Zone</h5>
-              <p class="text-xs text-gray-600"><span class="font-semibold">Illustrative Verticals</span> Legal, Compliance</p>
-              <p class="text-xs text-gray-600 mt-1"><span class="font-semibold">Use Cases</span> Research Contract Workflows, Outage Support Chatbots, Transaction Monitoring Audit</p>
+          <div class="grid-2" style="flex:1; gap:12px;">
+            <div class="quad quad-governed">
+              <h5 style="font-size:14px; font-weight:700; margin-bottom:8px;">Governed Rollout Zone</h5>
+              <p style="font-size:12px; color:rgba(255,255,255,0.7);"><span style="font-weight:600;">Illustrative Verticals:</span> Legal, Compliance</p>
+              <p style="font-size:12px; color:rgba(255,255,255,0.6); margin-top:4px;"><span style="font-weight:600;">Use Cases:</span> Research Contract Workflows, Outage Support Chatbots, Transaction Monitoring Audit</p>
             </div>
-            <!-- Top-right: Slowest Adoption Zone -->
-            <div class="bg-red-50 border border-red-200 rounded-lg p-4">
-              <h5 class="font-bold text-navy-800 text-sm mb-2">Slowest Adoption Zone</h5>
-              <p class="text-xs text-gray-600"><span class="font-semibold">Illustrative Verticals</span> Banking Finance, Construction Industrial, Medicine</p>
-              <p class="text-xs text-gray-600 mt-1"><span class="font-semibold">Use Cases</span> Autonomous Underwriting, Construction Ops. Analysis, Surgical Automation</p>
+            <div class="quad quad-slowest">
+              <h5 style="font-size:14px; font-weight:700; margin-bottom:8px;">Slowest Adoption Zone</h5>
+              <p style="font-size:12px; color:rgba(255,255,255,0.7);"><span style="font-weight:600;">Illustrative Verticals:</span> Banking Finance, Construction Industrial, Medicine</p>
+              <p style="font-size:12px; color:rgba(255,255,255,0.6); margin-top:4px;"><span style="font-weight:600;">Use Cases:</span> Autonomous Underwriting, Construction Ops. Analysis, Surgical Automation</p>
             </div>
-            <!-- Bottom-left: Fastest Adoption Zone -->
-            <div class="bg-green-50 border border-green-200 rounded-lg p-4">
-              <h5 class="font-bold text-navy-800 text-sm mb-2">Fastest Adoption Zone</h5>
-              <p class="text-xs text-gray-600"><span class="font-semibold">Illustrative Verticals</span> Marketing E-Commerce, Customer Support, Human Resources</p>
-              <p class="text-xs text-gray-600 mt-1"><span class="font-semibold">Use Cases</span> Chatbots FAQ Automation, Content Center Routing, Marketing Content Generation</p>
+            <div class="quad quad-fastest">
+              <h5 style="font-size:14px; font-weight:700; margin-bottom:8px;">Fastest Adoption Zone</h5>
+              <p style="font-size:12px; color:rgba(255,255,255,0.7);"><span style="font-weight:600;">Illustrative Verticals:</span> Marketing E-Commerce, Customer Support, Human Resources</p>
+              <p style="font-size:12px; color:rgba(255,255,255,0.6); margin-top:4px;"><span style="font-weight:600;">Use Cases:</span> Chatbots FAQ Automation, Content Center Routing, Marketing Content Generation</p>
             </div>
-            <!-- Bottom-right: Co-Pilot, Assistive Zone -->
-            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-              <h5 class="font-bold text-navy-800 text-sm mb-2">Co-Pilot, Assistive Zone</h5>
-              <p class="text-xs text-gray-600"><span class="font-semibold">Illustrative Verticals</span> Enterprise ITSM, Verticalized ERP CRM</p>
-              <p class="text-xs text-gray-600 mt-1"><span class="font-semibold">Use Cases</span> Incident Resolution Automation, Lead Qualification Scoring</p>
+            <div class="quad quad-copilot">
+              <h5 style="font-size:14px; font-weight:700; margin-bottom:8px;">Co-Pilot, Assistive Zone</h5>
+              <p style="font-size:12px; color:rgba(255,255,255,0.7);"><span style="font-weight:600;">Illustrative Verticals:</span> Enterprise ITSM, Verticalized ERP CRM</p>
+              <p style="font-size:12px; color:rgba(255,255,255,0.6); margin-top:4px;"><span style="font-weight:600;">Use Cases:</span> Incident Resolution Automation, Lead Qualification Scoring</p>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Unit Economics -->
-      <h3 class="text-xl font-bold text-navy-900 mb-2">Examining AI's Impact on Software Unit Economics</h3>
-      <p class="text-sm text-gray-600 mb-6">Tokenization costs may lead to pressure on gross margins, but winners will likely see revenue acceleration and expanded operating margins</p>
+      <div class="gradient-border-thin" style="margin-bottom:32px;"></div>
 
-      <div class="overflow-x-auto mb-8">
-        <table class="min-w-full text-sm border border-gray-200">
-          <thead class="bg-navy-900 text-white">
+      <!-- Unit Economics -->
+      <h3 style="font-size:24px; font-weight:700; margin-bottom:8px;">Examining AI's Impact on Software Unit Economics</h3>
+      <p class="text-secondary" style="font-size:14px; margin-bottom:24px;">Tokenization costs may lead to pressure on gross margins, but winners will likely see revenue acceleration and expanded operating margins</p>
+
+      <!-- P&L Table with header, letter badges, $ and % signs -->
+      <div class="table-wrap" style="margin-bottom:32px;">
+        <p style="font-size:14px; font-weight:600; color:#f1f1f4; margin-bottom:12px;">Illustrative P&amp;L (USD in millions)</p>
+        <table class="dark-table">
+          <thead>
             <tr>
-              <th class="px-4 py-3 text-left font-semibold"></th>
-              <th class="px-4 py-3 text-left font-semibold">Pre-AI Adoption</th>
-              <th class="px-4 py-3 text-left font-semibold">Post-AI Adoption</th>
+              <th></th>
+              <th>Pre-AI Adoption</th>
+              <th>Post-AI Adoption</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-gray-200">
-            <tr class="bg-blue-50">
-              <td class="px-4 py-2 font-medium text-navy-800">A Revenue</td>
-              <td class="px-4 py-2">100</td>
-              <td class="px-4 py-2">115</td>
+          <tbody>
+            <tr>
+              <td style="font-weight:600; color:#f1f1f4;"><span class="letter-badge">A</span> Revenue</td>
+              <td class="mono">$100</td>
+              <td class="mono">$115</td>
             </tr>
-            <tr class="bg-white">
-              <td class="px-4 py-2 font-medium text-navy-800">Revenue Growth</td>
-              <td class="px-4 py-2">10</td>
-              <td class="px-4 py-2">25</td>
+            <tr>
+              <td style="color:rgba(255,255,255,0.75);">Revenue Growth</td>
+              <td class="mono">$10</td>
+              <td class="mono">$25</td>
             </tr>
-            <tr class="bg-blue-50">
-              <td class="px-4 py-2 font-medium text-navy-800">B Hosting &amp; Infrastructure Costs</td>
-              <td class="px-4 py-2">10</td>
-              <td class="px-4 py-2">18</td>
+            <tr>
+              <td style="font-weight:600; color:#f1f1f4;"><span class="letter-badge">B</span> Hosting &amp; Infrastructure Costs</td>
+              <td class="mono">$10</td>
+              <td class="mono">$18</td>
             </tr>
-            <tr class="bg-blue-50">
-              <td class="px-4 py-2 font-medium text-navy-800">C Customer Support &amp; Professional Services Headcount</td>
-              <td class="px-4 py-2">10</td>
-              <td class="px-4 py-2">6</td>
+            <tr>
+              <td style="color:rgba(255,255,255,0.75);">Customer Support &amp; Professional Services Headcount</td>
+              <td class="mono">$10</td>
+              <td class="mono">$6</td>
             </tr>
-            <tr class="bg-white">
-              <td class="px-4 py-2 font-medium text-navy-800">Total COGS</td>
-              <td class="px-4 py-2">20</td>
-              <td class="px-4 py-2">24</td>
+            <tr>
+              <td style="color:rgba(255,255,255,0.75);">Total COGS</td>
+              <td class="mono">$20</td>
+              <td class="mono">$24</td>
             </tr>
-            <tr class="bg-white">
-              <td class="px-4 py-2 font-medium text-navy-800">Gross Profit</td>
-              <td class="px-4 py-2">80</td>
-              <td class="px-4 py-2">92</td>
+            <tr>
+              <td style="color:rgba(255,255,255,0.75);">Gross Profit</td>
+              <td class="mono">$80</td>
+              <td class="mono">$92</td>
             </tr>
-            <tr class="bg-white">
-              <td class="px-4 py-2 font-medium text-navy-800">Gross Margin</td>
-              <td class="px-4 py-2">80</td>
-              <td class="px-4 py-2">80</td>
+            <tr>
+              <td style="color:rgba(255,255,255,0.75);">Gross Margin</td>
+              <td class="mono">80%</td>
+              <td class="mono">80%</td>
             </tr>
-            <tr class="bg-white">
-              <td class="px-4 py-2 font-medium text-navy-800">Sales &amp; Marketing Headcount</td>
-              <td class="px-4 py-2">15</td>
-              <td class="px-4 py-2">14</td>
+            <tr>
+              <td style="color:rgba(255,255,255,0.75);">Sales &amp; Marketing Headcount</td>
+              <td class="mono">$15</td>
+              <td class="mono">$14</td>
             </tr>
-            <tr class="bg-white">
-              <td class="px-4 py-2 font-medium text-navy-800">Research &amp; Development Headcount</td>
-              <td class="px-4 py-2">15</td>
-              <td class="px-4 py-2">11</td>
+            <tr>
+              <td style="color:rgba(255,255,255,0.75);">Research &amp; Development Headcount</td>
+              <td class="mono">$15</td>
+              <td class="mono">$11</td>
             </tr>
-            <tr class="bg-white">
-              <td class="px-4 py-2 font-medium text-navy-800">General &amp; Administrative Headcount</td>
-              <td class="px-4 py-2">10</td>
-              <td class="px-4 py-2">8</td>
+            <tr>
+              <td style="color:rgba(255,255,255,0.75);">General &amp; Administrative Headcount</td>
+              <td class="mono">$10</td>
+              <td class="mono">$8</td>
             </tr>
-            <tr class="bg-white">
-              <td class="px-4 py-2 font-medium text-navy-800">Non-Headcount OpEx</td>
-              <td class="px-4 py-2">10</td>
-              <td class="px-4 py-2">12</td>
+            <tr>
+              <td style="color:rgba(255,255,255,0.75);">Non-Headcount OpEx</td>
+              <td class="mono">$10</td>
+              <td class="mono">$12</td>
             </tr>
-            <tr class="bg-blue-50">
-              <td class="px-4 py-2 font-medium text-navy-800">C Total Operating Expenses</td>
-              <td class="px-4 py-2">50</td>
-              <td class="px-4 py-2">45</td>
+            <tr>
+              <td style="font-weight:600; color:#f1f1f4;"><span class="letter-badge">C</span> Total Operating Expenses</td>
+              <td class="mono">$50</td>
+              <td class="mono">$45</td>
             </tr>
-            <tr class="bg-white">
-              <td class="px-4 py-2 font-medium text-navy-800">EBITDA</td>
-              <td class="px-4 py-2">30</td>
-              <td class="px-4 py-2">47</td>
+            <tr>
+              <td style="color:rgba(255,255,255,0.75);">EBITDA</td>
+              <td class="mono">$30</td>
+              <td class="mono">$47</td>
             </tr>
-            <tr class="bg-blue-50">
-              <td class="px-4 py-2 font-medium text-navy-800">D EBITDA Margin</td>
-              <td class="px-4 py-2">30</td>
-              <td class="px-4 py-2">41</td>
+            <tr>
+              <td style="font-weight:600; color:#f1f1f4;"><span class="letter-badge">D</span> EBITDA Margin</td>
+              <td class="mono">30%</td>
+              <td class="mono">41%</td>
             </tr>
           </tbody>
         </table>
-        <p class="text-xs text-gray-400 mt-1">USD in millions</p>
       </div>
 
       <!-- Key Financial Metrics -->
-      <h3 class="text-lg font-semibold text-navy-800 mb-4">Key Financial Metrics Impacted by AI</h3>
-      <div class="space-y-4 text-sm text-gray-700">
-        <div class="border-l-4 border-brand-teal pl-4">
-          <p><span class="font-semibold text-navy-800">A. Revenue Growth: Addressable Market</span> Complementary AI products will be sold alongside existing SaaS solutions particularly those with system of record status, leading to product-led TAM expansion and an acceleration to topline growth</p>
+      <h3 style="font-size:20px; font-weight:700; margin-bottom:16px;">Key Financial Metrics Impacted by AI</h3>
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <div class="callout-box">
+          <p style="color:rgba(255,255,255,0.85); font-size:14px;"><span style="font-weight:600; color:#f1f1f4;">A. Revenue Growth: Addressable Market</span> Complementary AI products will be sold alongside existing SaaS solutions particularly those with system of record status, leading to product-led TAM expansion and an acceleration to topline growth</p>
         </div>
-        <div class="border-l-4 border-brand-teal pl-4">
-          <p><span class="font-semibold text-navy-800">B. Hosting &amp; Infrastructure Costs: Gross Margin</span> While dependent on the model choice, AI products typically have lower unit economics compared to SaaS offerings given tokenization costs 50 vs. 85 today however, optimization of model use will likely lead to expanding margins over time</p>
+        <div class="callout-box">
+          <p style="color:rgba(255,255,255,0.85); font-size:14px;"><span style="font-weight:600; color:#f1f1f4;">B. Hosting &amp; Infrastructure Costs: Gross Margin</span> While dependent on the model choice, AI products typically have lower unit economics compared to SaaS offerings given tokenization costs ~50% vs. ~85% today however, optimization of model use will likely lead to expanding margins over time</p>
         </div>
-        <div class="border-l-4 border-brand-teal pl-4">
-          <p><span class="font-semibold text-navy-800">C. Customer Support: Operating Expenses</span> Automation of human-centric roles tasks, particularly within customer support and software development will lead to sizeable cost savings at forwarding-thinking companies</p>
+        <div class="callout-box">
+          <p style="color:rgba(255,255,255,0.85); font-size:14px;"><span style="font-weight:600; color:#f1f1f4;">C. Customer Support: Operating Expenses</span> Automation of human-centric roles tasks, particularly within customer support and software development will lead to sizeable cost savings at forwarding-thinking companies</p>
         </div>
-        <div class="border-l-4 border-brand-teal pl-4">
-          <p><span class="font-semibold text-navy-800">D. EBITDA Margin: Investor KPIs</span> Operating margins will likely expand significantly, leading to a re-calibration of target KPIs such as the Rule of 40</p>
+        <div class="callout-box">
+          <p style="color:rgba(255,255,255,0.85); font-size:14px;"><span style="font-weight:600; color:#f1f1f4;">D. EBITDA Margin: Investor KPIs</span> Operating margins will likely expand significantly, leading to a re-calibration of target KPIs such as the Rule of 40</p>
         </div>
       </div>
     </section>
@@ -553,275 +931,294 @@
     <!-- ============================================================ -->
     <!-- PAGE 4 — Pricing Models                                       -->
     <!-- ============================================================ -->
-    <section id="page-4" class="bg-white border border-gray-200 rounded-xl shadow-md p-8">
-      <span class="inline-block text-xs font-semibold text-gray-400 uppercase tracking-widest mb-6">Page 4</span>
+    <section id="page-4" class="section-card fade-in-up">
+      <div class="page-label">04 — Pricing</div>
 
-      <!-- Header Block -->
-      <h2 class="text-2xl md:text-3xl font-bold text-navy-900 mb-2">Consumption and Outcome-Based Pricing Models Are Worthy of Consideration...</h2>
-      <p class="text-gray-600 mb-8 max-w-4xl">While subscription and platform pricing models remain common, alternative pricing models will make sense for most</p>
+      <h2 style="font-size:32px; font-weight:800; margin-bottom:8px;">Consumption and Outcome-Based Pricing Models Are Worthy of Consideration...</h2>
+      <p class="text-body" style="max-width:720px; margin-bottom:32px;">While subscription and platform pricing models remain common, alternative pricing models will make sense for most</p>
 
-      <!-- Vertical Bar Chart -->
-      <div class="flex items-end justify-center gap-6 md:gap-10 mb-4" style="height: 280px;">
-        <!-- Subscription / Platform -->
-        <div class="flex flex-col items-center justify-end h-full">
-          <span class="text-sm font-bold text-navy-900 mb-1">58%</span>
-          <div class="bg-navy-900 w-16 md:w-20 rounded-t" style="height:58%"></div>
-          <span class="text-xs text-center mt-2 w-20 md:w-24">Subscription / Platform</span>
+      <!-- Chart subtitle -->
+      <p class="label-caps" style="margin-bottom:16px;">% of Survey Respondents Selecting Active Pricing Model</p>
+
+      <!-- Vertical Bar Chart (reordered per PDF) with gridlines -->
+      <div style="position:relative; margin-bottom:8px; padding-left:40px;">
+        <div class="gridlines">
+          <div class="gridline"><span class="gridline-label">60%</span></div>
+          <div class="gridline"><span class="gridline-label">40%</span></div>
+          <div class="gridline"><span class="gridline-label">20%</span></div>
+          <div class="gridline"></div>
         </div>
-        <!-- Consumption-Based -->
-        <div class="flex flex-col items-center justify-end h-full">
-          <span class="text-sm font-bold text-navy-800 mb-1">35%</span>
-          <div class="bg-navy-800 w-16 md:w-20 rounded-t" style="height:35%"></div>
-          <span class="text-xs text-center mt-2 w-20 md:w-24">Consumption-Based</span>
-        </div>
-        <!-- Seat-Based -->
-        <div class="flex flex-col items-center justify-end h-full">
-          <span class="text-sm font-bold text-navy-700 mb-1">23%</span>
-          <div class="bg-navy-700 w-16 md:w-20 rounded-t" style="height:23%"></div>
-          <span class="text-xs text-center mt-2 w-20 md:w-24">Seat-Based</span>
-        </div>
-        <!-- Outcome-Based -->
-        <div class="flex flex-col items-center justify-end h-full">
-          <span class="text-sm font-bold text-brand-teal mb-1">18%</span>
-          <div class="bg-brand-teal w-16 md:w-20 rounded-t" style="height:18%"></div>
-          <span class="text-xs text-center mt-2 w-20 md:w-24">Outcome-Based</span>
-        </div>
-        <!-- AI Offered at No Extra Cost -->
-        <div class="flex flex-col items-center justify-end h-full">
-          <span class="text-sm font-bold text-gray-500 mb-1">17%</span>
-          <div class="bg-gray-400 w-16 md:w-20 rounded-t" style="height:17%"></div>
-          <span class="text-xs text-center mt-2 w-20 md:w-24">AI Offered at No Extra Cost</span>
+        <div class="v-bar-chart">
+          <!-- AI Offered at No Extra Cost (17%) -->
+          <div class="v-bar-col">
+            <span class="v-bar-label">17%</span>
+            <div class="v-bar bar-v-animate" style="height:28.3%; background:rgba(255,255,255,0.15);"></div>
+            <span class="v-bar-name">AI Offered at No Extra Cost</span>
+          </div>
+          <!-- Subscription / Platform (58%) -->
+          <div class="v-bar-col">
+            <span class="v-bar-label">58%</span>
+            <div class="v-bar bar-v-animate" style="height:96.7%; background:linear-gradient(180deg, #6366f1, #4f46e5);"></div>
+            <span class="v-bar-name">Subscription / Platform</span>
+          </div>
+          <!-- Consumption-Based (35%) -->
+          <div class="v-bar-col">
+            <span class="v-bar-label">35%</span>
+            <div class="v-bar bar-v-animate" style="height:58.3%; background:linear-gradient(180deg, #8b5cf6, #7c3aed);"></div>
+            <span class="v-bar-name">Consumption-Based</span>
+          </div>
+          <!-- Seat-Based (23%) -->
+          <div class="v-bar-col">
+            <span class="v-bar-label">23%</span>
+            <div class="v-bar bar-v-animate" style="height:38.3%; background:linear-gradient(180deg, #a855f7, #9333ea);"></div>
+            <span class="v-bar-name">Seat-Based</span>
+          </div>
+          <!-- Outcome-Based (18%) -->
+          <div class="v-bar-col">
+            <span class="v-bar-label">18%</span>
+            <div class="v-bar bar-v-animate" style="height:30%; background:linear-gradient(180deg, #22d3ee, #06b6d4);"></div>
+            <span class="v-bar-name">Outcome-Based</span>
+          </div>
         </div>
       </div>
 
       <!-- Outcome-Based Sub-breakdown -->
-      <div class="bg-teal-50 border border-teal-200 rounded-lg p-4 mb-8 max-w-sm mx-auto">
-        <p class="text-xs font-semibold text-teal-800 mb-2">Outcome-Based Breakdown</p>
-        <ul class="text-xs text-teal-700 space-y-1">
-          <li>Cost Savings 36</li>
-          <li>Revenue Generated 18</li>
-          <li>Rev. Gen. &amp; Cost Savings 18</li>
-          <li>Other 11</li>
-          <li>Buyer CSAT 9</li>
+      <div style="background:rgba(34,211,238,0.06); border:1px solid rgba(34,211,238,0.15); border-radius:12px; padding:16px 20px; margin-bottom:32px; max-width:320px; margin-left:auto; margin-right:auto;">
+        <p class="label-caps" style="margin-bottom:8px; color:#22d3ee;">Outcome-Based Breakdown</p>
+        <ul style="font-size:13px; color:rgba(255,255,255,0.75); display:flex; flex-direction:column; gap:4px; list-style:none;">
+          <li class="mono">Cost Savings — 36%</li>
+          <li class="mono">Revenue Generated — 18%</li>
+          <li class="mono">Rev. Gen. &amp; Cost Savings — 18%</li>
+          <li class="mono">Other — 11%</li>
+          <li class="mono">Buyer CSAT — 9%</li>
         </ul>
       </div>
 
+      <div class="gradient-border-thin" style="margin-bottom:32px;"></div>
+
       <!-- What Comes Next -->
-      <h3 class="text-lg font-semibold text-navy-800 mb-3">&hellip;and What Comes Next</h3>
-      <ol class="list-decimal list-inside text-sm text-gray-700 space-y-2 mb-8">
+      <h3 style="font-size:20px; font-weight:700; margin-bottom:12px;">&hellip;and What Comes Next</h3>
+      <ol style="list-style:decimal; padding-left:20px; color:rgba(255,255,255,0.75); font-size:14px; display:flex; flex-direction:column; gap:8px; margin-bottom:32px;">
         <li>Consensus is still forming, but token-driven margin compression may structurally challenge the license model long term</li>
         <li>Vendor pivots to outcome-based pricing will be difficult to substantiate for some given use-case specificity</li>
         <li>Revenue growth is decoupling from seat count the metric that defined SaaS valuation for a decade is losing its predictive power</li>
       </ol>
 
-      <!-- Quotes -->
-      <div class="space-y-4 mb-10">
-        <blockquote class="border-l-4 border-navy-700 bg-gray-50 px-6 py-4 rounded-r-lg">
-          <p class="text-sm italic text-gray-700">My take in most cases, it outcome-based pricing is just usage pricing with a marketing degree...</p>
-          <p class="text-xs text-gray-500 mt-2">Joey Quirk, Head of Monetization, Chargebee</p>
-        </blockquote>
-        <blockquote class="border-l-4 border-navy-700 bg-gray-50 px-6 py-4 rounded-r-lg">
-          <p class="text-sm italic text-gray-700">Our customers still want seat-based predictability, and we think its hybrid usage-based pricing the perfect goldilocks model</p>
-          <p class="text-xs text-gray-500 mt-2">Bill McDermott, CEO, ServiceNow</p>
-        </blockquote>
+      <!-- Quotes (fixed brackets and apostrophe) -->
+      <div style="display:flex; flex-direction:column; gap:16px; margin-bottom:40px;">
+        <div class="dark-quote">
+          <p>My take in most cases, it [outcome-based pricing] is just usage pricing with a marketing degree...</p>
+          <div class="attribution">Joey Quirk, Head of Monetization, Chargebee</div>
+        </div>
+        <div class="dark-quote">
+          <p>Our customers still want seat-based predictability, [and] we think it&rsquo;s [hybrid usage-based pricing] the perfect goldilocks model</p>
+          <div class="attribution">Bill McDermott, CEO, ServiceNow</div>
+        </div>
       </div>
 
-      <!-- Vendor Pricing Spectrum -->
-      <h3 class="text-xl font-bold text-navy-900 mb-6">&hellip;With Vendors Across the Ecosystem Taking Disparate Approaches...</h3>
+      <div class="gradient-border-thin" style="margin-bottom:32px;"></div>
 
-      <div class="overflow-x-auto mb-4">
-        <table class="min-w-full text-sm border border-gray-200">
-          <thead class="bg-navy-900 text-white">
+      <!-- Vendor Pricing Spectrum -->
+      <h3 style="font-size:24px; font-weight:700; margin-bottom:24px;">&hellip;With Vendors Across the Ecosystem Taking Disparate Approaches...</h3>
+
+      <div class="table-wrap" style="margin-bottom:16px;">
+        <table class="dark-table">
+          <thead>
             <tr>
-              <th class="px-4 py-3 text-left font-semibold">ServiceNow</th>
-              <th class="px-4 py-3 text-left font-semibold">Zendesk</th>
-              <th class="px-4 py-3 text-left font-semibold">Salesforce</th>
-              <th class="px-4 py-3 text-left font-semibold">Snowflake</th>
-              <th class="px-4 py-3 text-left font-semibold">UiPath</th>
-              <th class="px-4 py-3 text-left font-semibold">Intercom</th>
+              <th>ServiceNow</th>
+              <th>Zendesk</th>
+              <th>Salesforce</th>
+              <th>Snowflake</th>
+              <th>UiPath</th>
+              <th>Intercom</th>
             </tr>
           </thead>
           <tbody>
-            <tr class="bg-gray-50 border-b border-gray-200">
-              <td class="px-4 py-2 font-semibold text-navy-800">Per-User Module Pricing</td>
-              <td class="px-4 py-2 font-semibold text-navy-800">Per-Agent User</td>
-              <td class="px-4 py-2 font-semibold text-navy-800">User-Based AI Add-Ons</td>
-              <td class="px-4 py-2 font-semibold text-navy-800">Usage-Based Consumption</td>
-              <td class="px-4 py-2 font-semibold text-navy-800">Bot Automation-Based</td>
-              <td class="px-4 py-2 font-semibold text-navy-800">Outcome Resolution-Based</td>
+            <tr>
+              <td style="font-weight:600; color:#f1f1f4;">Per-User Module Pricing</td>
+              <td style="font-weight:600; color:#f1f1f4;">Per-Agent User</td>
+              <td style="font-weight:600; color:#f1f1f4;">User-Based AI Add-Ons</td>
+              <td style="font-weight:600; color:#f1f1f4;">Usage-Based Consumption</td>
+              <td style="font-weight:600; color:#f1f1f4;">Bot Automation-Based</td>
+              <td style="font-weight:600; color:#f1f1f4;">Outcome Resolution-Based</td>
             </tr>
-            <tr class="bg-white border-b border-gray-200">
-              <td class="px-4 py-2 text-gray-600">Historically priced per named user workflow module</td>
-              <td class="px-4 py-2 text-gray-600">Core model priced per support agent</td>
-              <td class="px-4 py-2 text-gray-600">Traditional user pricing for CRM users</td>
-              <td class="px-4 py-2 text-gray-600">Priced per compute storage usage</td>
-              <td class="px-4 py-2 text-gray-600">Priced per automation bot</td>
-              <td class="px-4 py-2 text-gray-600">Priced per AI-resolved conversation</td>
+            <tr>
+              <td>Historically priced per named user workflow module</td>
+              <td>Core model priced per support agent</td>
+              <td>Traditional user pricing for CRM users</td>
+              <td>Priced per compute storage usage</td>
+              <td>Priced per automation bot</td>
+              <td>Priced per AI-resolved conversation</td>
             </tr>
-            <tr class="bg-gray-50 border-b border-gray-200">
-              <td class="px-4 py-2 text-gray-600">AI co-pilots reduce manual interaction time</td>
-              <td class="px-4 py-2 text-gray-600">AI agents resolve tickets autonomously</td>
-              <td class="px-4 py-2 text-gray-600">Co-pilot agent force layers priced separately</td>
-              <td class="px-4 py-2 text-gray-600">AI workloads increase query intensity</td>
-              <td class="px-4 py-2 text-gray-600">AI agents extend RPA into decision workflows</td>
-              <td class="px-4 py-2 text-gray-600">Aligns monetization with customer outcomes, not usage volume</td>
+            <tr>
+              <td>AI co-pilots reduce manual interaction time</td>
+              <td>AI agents resolve tickets autonomously</td>
+              <td>Co-pilot agent force layers priced separately</td>
+              <td>AI workloads increase query intensity</td>
+              <td>AI agents extend RPA into decision workflows</td>
+              <td>Aligns monetization with customer outcomes, not usage volume</td>
             </tr>
-            <tr class="bg-white">
-              <td class="px-4 py-2 text-gray-600">AI efficiency may reduce users required per unit of output</td>
-              <td class="px-4 py-2 text-gray-600">Automation may compress agent user growth over time</td>
-              <td class="px-4 py-2 text-gray-600">Gradual experiments with action- and outcome-based monetization</td>
-              <td class="px-4 py-2 text-gray-600">Model already aligned with inference economics</td>
-              <td class="px-4 py-2 text-gray-600">Revenue scales with automations executed</td>
-              <td class="px-4 py-2 text-gray-600">Revenue scales with value delivered</td>
+            <tr>
+              <td>AI efficiency may reduce users required per unit of output</td>
+              <td>Automation may compress agent user growth over time</td>
+              <td>Gradual experiments with action- and outcome-based monetization</td>
+              <td>Model already aligned with inference economics</td>
+              <td>Revenue scales with automations executed</td>
+              <td>Revenue scales with value delivered</td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <!-- Spectrum Ruler -->
-      <div class="relative bg-gradient-to-r from-navy-900 via-navy-700 via-brand-teal to-brand-accent h-10 rounded-full mb-2 flex items-center justify-between px-6">
-        <span class="text-xs text-white font-semibold">Per Seat</span>
-        <span class="text-xs text-white font-semibold">Hybrid</span>
-        <span class="text-xs text-white font-semibold">Usage</span>
-        <span class="text-xs text-white font-semibold">Outcome</span>
+      <!-- Spectrum Bar -->
+      <div class="spectrum-bar" style="margin-bottom:8px;">
+        <span>Per Seat</span>
+        <span>Hybrid</span>
+        <span>Usage</span>
+        <span>Outcome</span>
       </div>
-      <p class="text-sm text-gray-600 text-center mb-4">AI shifts value creation from access to output, pushing pricing toward usage and outcomes</p>
+      <p class="text-secondary" style="font-size:13px; text-align:center;">AI shifts value creation from access to output, pushing pricing toward usage and outcomes</p>
     </section>
 
     <!-- ============================================================ -->
     <!-- PAGE 5 — Winning Vertical Software Platforms                  -->
     <!-- ============================================================ -->
-    <section id="page-5" class="bg-white border border-gray-200 rounded-xl shadow-md p-8">
-      <span class="inline-block text-xs font-semibold text-gray-400 uppercase tracking-widest mb-6">Page 5</span>
+    <section id="page-5" class="section-card fade-in-up">
+      <div class="page-label">05 — Vertical SaaS</div>
 
-      <!-- Headline -->
-      <h2 class="text-2xl md:text-3xl font-bold text-navy-900 mb-8">Key Attributes of Winning Vertical Software Platforms in an AI-Driven World</h2>
+      <h2 style="font-size:32px; font-weight:800; margin-bottom:8px;">Key Attributes of Winning Vertical Software Platforms in an AI-Driven World</h2>
+      <p class="text-body" style="max-width:760px; margin-bottom:32px;">Vertical software leaders that have established the requisite AI 'building blocks' are best-positioned to emerge as winners</p>
 
       <!-- Three Pillars -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+      <div class="grid-3" style="margin-bottom:40px;">
         <!-- Pillar 1 -->
-        <div class="border border-gray-200 rounded-lg p-5 border-t-4 border-t-navy-900">
-          <h4 class="font-bold text-navy-900 mb-4">Robust Technical Foundation</h4>
-          <div class="space-y-4 text-sm text-gray-700">
+        <div class="cat-card stagger-child" style="border-top:2px solid; border-image:linear-gradient(90deg, #6366f1, #a855f7) 1;">
+          <h4 style="font-size:16px; font-weight:700; margin-bottom:16px;">Robust Technical Foundation</h4>
+          <div style="display:flex; flex-direction:column; gap:16px; font-size:13px; color:rgba(255,255,255,0.75);">
             <div>
-              <p class="font-semibold text-navy-800">Proprietary, Unified Structured Data Assets</p>
+              <p style="font-weight:600; color:#f1f1f4; margin-bottom:4px;">Proprietary, Unified Structured Data Assets</p>
               <p>Domain-specific datasets accumulated over years of usage, supporting differentiated AI deployment purpose-built for vertical-specific workflows</p>
             </div>
             <div>
-              <p class="font-semibold text-navy-800">AI-Native, AI-Forward Architecture</p>
+              <p style="font-weight:600; color:#f1f1f4; margin-bottom:4px;">AI-Native, AI-Forward Architecture</p>
               <p>Platform architected to integrate AI directly into core workflows, enabling true automation rather than surface-level copilots</p>
             </div>
             <div>
-              <p class="font-semibold text-navy-800">System-of-Record &amp; Action Control</p>
+              <p style="font-weight:600; color:#f1f1f4; margin-bottom:4px;">System-of-Record &amp; Action Control</p>
               <p>Deeply embedded, workflow-critical systems with operational dependency where switching costs are high and deployments are complex</p>
             </div>
           </div>
         </div>
 
         <!-- Pillar 2 -->
-        <div class="border border-gray-200 rounded-lg p-5 border-t-4 border-t-brand-teal">
-          <h4 class="font-bold text-navy-900 mb-4">Structural Platform Moats</h4>
-          <div class="space-y-4 text-sm text-gray-700">
+        <div class="cat-card stagger-child" style="border-top:2px solid #22d3ee;">
+          <h4 style="font-size:16px; font-weight:700; margin-bottom:16px;">Structural Platform Moats</h4>
+          <div style="display:flex; flex-direction:column; gap:16px; font-size:13px; color:rgba(255,255,255,0.75);">
             <div>
-              <p class="font-semibold text-navy-800">Hardware Embed</p>
+              <p style="font-weight:600; color:#f1f1f4; margin-bottom:4px;">Hardware Embed</p>
               <p>Real-world workflows and proprietary data capture collide, creating switching friction and unique first-party signal that general-purpose AI cannot replicate</p>
             </div>
             <div>
-              <p class="font-semibold text-navy-800">Network Effects</p>
+              <p style="font-weight:600; color:#f1f1f4; margin-bottom:4px;">Network Effects</p>
               <p>Multi-sided networks customers, partners, developers, data contributors that reinforce value and increase defensibility over time</p>
             </div>
             <div>
-              <p class="font-semibold text-navy-800">Embedded Fintech Capabilities</p>
+              <p style="font-weight:600; color:#f1f1f4; margin-bottom:4px;">Embedded Fintech Capabilities</p>
               <p>Integrated payments, lending, or financial workflows increase platform stickiness, monetization potential, and control over transaction data</p>
             </div>
           </div>
         </div>
 
         <!-- Pillar 3 -->
-        <div class="border border-gray-200 rounded-lg p-5 border-t-4 border-t-brand-accent">
-          <h4 class="font-bold text-navy-900 mb-4">Distribution &amp; Organizational Positioning</h4>
-          <div class="space-y-4 text-sm text-gray-700">
+        <div class="cat-card stagger-child" style="border-top:2px solid #10b981;">
+          <h4 style="font-size:16px; font-weight:700; margin-bottom:16px;">Distribution &amp; Organizational Positioning</h4>
+          <div style="display:flex; flex-direction:column; gap:16px; font-size:13px; color:rgba(255,255,255,0.75);">
             <div>
-              <p class="font-semibold text-navy-800">Technical Leadership Team</p>
+              <p style="font-weight:600; color:#f1f1f4; margin-bottom:4px;">Technical Leadership Team</p>
               <p>High-agency leaders with proven ability to launch agentic features and execute on rapidly compressing platform roadmaps</p>
             </div>
             <div>
-              <p class="font-semibold text-navy-800">Robust Usage &amp; Engagement</p>
+              <p style="font-weight:600; color:#f1f1f4; margin-bottom:4px;">Robust Usage &amp; Engagement</p>
               <p>Strong distribution rigor and platform extensibility across multiple user personas and constituents within an organization</p>
             </div>
             <div>
-              <p class="font-semibold text-navy-800">Trusted Brand</p>
+              <p style="font-weight:600; color:#f1f1f4; margin-bottom:4px;">Trusted Brand</p>
               <p>In regulated industries, trust is a prerequisite incumbents with established relationships have a real head start that new entrants cannot shortcut</p>
             </div>
           </div>
         </div>
       </div>
 
+      <div class="gradient-border-thin" style="margin-bottom:32px;"></div>
+
       <!-- Fundamentals Section -->
-      <h3 class="text-lg font-semibold text-navy-800 mb-3">Fundamentals will Continue to Matter in Vertical SaaS &amp; AI</h3>
-      <p class="text-sm text-gray-600 mb-8">Truly integrated platforms with embedded fintech capabilities and sticky customer bases are well equipped to defend against AI-native newcomers, while simultaneously offering a superior platform to drive further innovation</p>
+      <h3 style="font-size:20px; font-weight:700; margin-bottom:8px;">Fundamentals will Continue to Matter in Vertical SaaS &amp; AI</h3>
+      <p class="text-secondary" style="font-size:14px; margin-bottom:32px;">Truly integrated platforms with embedded fintech capabilities and sticky customer bases are well equipped to defend against AI-native newcomers, while simultaneously offering a superior platform to drive further innovation</p>
 
       <!-- EV/LTM Revenue Multiples -->
-      <div class="space-y-4 mb-8">
-        <div class="bg-gray-50 rounded-lg p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3 border border-gray-200">
+      <div style="display:flex; flex-direction:column; gap:16px; margin-bottom:32px;">
+        <!-- FinTech Premium -->
+        <div class="cat-card" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
           <div>
-            <p class="text-sm font-semibold text-navy-800">VSaaS with Embedded FinTech Premium</p>
-            <div class="flex gap-6 mt-1">
-              <span class="text-xs text-gray-500">No Embedded FinTech <span class="font-bold text-navy-800">9.3x</span></span>
-              <span class="text-xs text-gray-500">Embedded FinTech <span class="font-bold text-navy-800">11.1x</span></span>
+            <p style="font-size:14px; font-weight:600; color:#f1f1f4; margin-bottom:6px;">VSaaS with Embedded FinTech Premium</p>
+            <div style="display:flex; gap:24px;">
+              <span class="text-secondary" style="font-size:13px;">No Embedded FinTech <span class="mono" style="font-weight:700; color:#f1f1f4; font-size:16px;">9.3x</span></span>
+              <span class="text-secondary" style="font-size:13px;">Embedded FinTech <span class="mono" style="font-weight:700; color:#f1f1f4; font-size:16px;">11.1x</span></span>
             </div>
           </div>
-          <span class="inline-block bg-brand-teal text-white text-xs font-bold px-3 py-1 rounded-full">19 Premium</span>
+          <span class="premium-pill">~19% Premium</span>
         </div>
 
-        <div class="bg-gray-50 rounded-lg p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3 border border-gray-200">
+        <!-- Gross Retention -->
+        <div class="cat-card" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
           <div>
-            <p class="text-sm font-semibold text-navy-800">Gross Retention Premium</p>
-            <div class="flex gap-6 mt-1">
-              <span class="text-xs text-gray-500">&lt;90 Gross Retention <span class="font-bold text-navy-800">8.0x</span></span>
-              <span class="text-xs text-gray-500">&gt;90 Gross Retention <span class="font-bold text-navy-800">9.0x</span></span>
+            <p style="font-size:14px; font-weight:600; color:#f1f1f4; margin-bottom:6px;">Gross Retention Premium</p>
+            <div style="display:flex; gap:24px;">
+              <span class="text-secondary" style="font-size:13px;">&lt;90 Gross Retention <span class="mono" style="font-weight:700; color:#f1f1f4; font-size:16px;">8.0x</span></span>
+              <span class="text-secondary" style="font-size:13px;">&gt;90 Gross Retention <span class="mono" style="font-weight:700; color:#f1f1f4; font-size:16px;">9.0x</span></span>
             </div>
           </div>
-          <span class="inline-block bg-brand-teal text-white text-xs font-bold px-3 py-1 rounded-full">12 Premium</span>
+          <span class="premium-pill">~12% Premium</span>
         </div>
 
-        <div class="bg-gray-50 rounded-lg p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3 border border-gray-200">
+        <!-- Organic Platform -->
+        <div class="cat-card" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
           <div>
-            <p class="text-sm font-semibold text-navy-800">Premium for Organic Platform Roll-up</p>
-            <div class="flex gap-6 mt-1">
-              <span class="text-xs text-gray-500">Roll-up <span class="font-bold text-navy-800">8.5x</span></span>
-              <span class="text-xs text-gray-500">Fully Integrated Organic Platform <span class="font-bold text-navy-800">9.8x</span></span>
+            <p style="font-size:14px; font-weight:600; color:#f1f1f4; margin-bottom:6px;">Premium for Organic Platform Roll-up</p>
+            <div style="display:flex; gap:24px;">
+              <span class="text-secondary" style="font-size:13px;">Roll-up <span class="mono" style="font-weight:700; color:#f1f1f4; font-size:16px;">8.5x</span></span>
+              <span class="text-secondary" style="font-size:13px;">Fully Integrated Organic Platform <span class="mono" style="font-weight:700; color:#f1f1f4; font-size:16px;">9.8x</span></span>
             </div>
           </div>
-          <span class="inline-block bg-brand-teal text-white text-xs font-bold px-3 py-1 rounded-full">15 Premium</span>
+          <span class="premium-pill">~15% Premium</span>
         </div>
       </div>
 
       <!-- Financial Profile Checklist -->
-      <h4 class="text-md font-semibold text-navy-800 mb-3">Financial Profile Attributes</h4>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-        <div class="flex items-center gap-2 text-sm text-gray-700">
-          <svg class="w-5 h-5 text-brand-teal shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+      <h4 style="font-size:16px; font-weight:600; margin-bottom:12px;">Financial Profile Attributes</h4>
+      <div class="grid-2">
+        <div style="display:flex; align-items:center; gap:8px; font-size:14px; color:rgba(255,255,255,0.75);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg>
           High LTV CAC
         </div>
-        <div class="flex items-center gap-2 text-sm text-gray-700">
-          <svg class="w-5 h-5 text-brand-teal shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+        <div style="display:flex; align-items:center; gap:8px; font-size:14px; color:rgba(255,255,255,0.75);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg>
           Expanding EBITDA Margins
         </div>
-        <div class="flex items-center gap-2 text-sm text-gray-700">
-          <svg class="w-5 h-5 text-brand-teal shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-          Gross Margins Above 80
+        <div style="display:flex; align-items:center; gap:8px; font-size:14px; color:rgba(255,255,255,0.75);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg>
+          Gross Margins Above 80%
         </div>
-        <div class="flex items-center gap-2 text-sm text-gray-700">
-          <svg class="w-5 h-5 text-brand-teal shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+        <div style="display:flex; align-items:center; gap:8px; font-size:14px; color:rgba(255,255,255,0.75);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg>
           Predictable ARR Growth Trends
         </div>
-        <div class="flex items-center gap-2 text-sm text-gray-700">
-          <svg class="w-5 h-5 text-brand-teal shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+        <div style="display:flex; align-items:center; gap:8px; font-size:14px; color:rgba(255,255,255,0.75);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg>
           Consistently Expanding NRR
         </div>
-        <div class="flex items-center gap-2 text-sm text-gray-700">
-          <svg class="w-5 h-5 text-brand-teal shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+        <div style="display:flex; align-items:center; gap:8px; font-size:14px; color:rgba(255,255,255,0.75);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg>
           Operating Expense Discipline
         </div>
       </div>
@@ -830,61 +1227,60 @@
     <!-- ============================================================ -->
     <!-- PAGE 6 — Diligence Framework and Roadmap                      -->
     <!-- ============================================================ -->
-    <section id="page-6" class="bg-white border border-gray-200 rounded-xl shadow-md p-8">
-      <span class="inline-block text-xs font-semibold text-gray-400 uppercase tracking-widest mb-6">Page 6</span>
+    <section id="page-6" class="section-card fade-in-up">
+      <div class="page-label">06 — Diligence</div>
 
-      <!-- Headline 1 -->
-      <h2 class="text-2xl md:text-3xl font-bold text-navy-900 mb-6">AI Diligence Framework for Software Investors</h2>
+      <h2 style="font-size:32px; font-weight:800; margin-bottom:24px;">AI Diligence Framework for Software Investors</h2>
 
       <!-- Diligence Table -->
-      <div class="overflow-x-auto mb-4">
-        <table class="min-w-full text-sm border border-gray-200">
-          <thead class="bg-navy-900 text-white">
+      <div class="table-wrap" style="margin-bottom:16px;">
+        <table class="dark-table">
+          <thead>
             <tr>
-              <th class="px-4 py-3 text-left font-semibold">Topic</th>
-              <th class="px-4 py-3 text-left font-semibold">Area of Focus</th>
-              <th class="px-4 py-3 text-left font-semibold">Evaluation Criteria</th>
+              <th>Topic</th>
+              <th>Area of Focus</th>
+              <th>Evaluation Criteria</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-gray-200">
-            <tr class="bg-white">
-              <td class="px-4 py-3 font-medium text-navy-800 align-top">Strategic Positioning</td>
-              <td class="px-4 py-3 align-top">Is AI value-creating or defensive for this business?</td>
-              <td class="px-4 py-3">
-                <ul class="list-disc list-inside space-y-1">
+          <tbody>
+            <tr>
+              <td style="font-weight:600; color:#f1f1f4; vertical-align:top;">Strategic Positioning</td>
+              <td style="vertical-align:top;">Is AI value-creating or defensive for this business?</td>
+              <td>
+                <ul style="list-style:disc; padding-left:16px; display:flex; flex-direction:column; gap:4px;">
                   <li>Clear thesis for how AI drives revenue, margin, or retention</li>
                   <li>Defined use cases tied to measurable outcomes</li>
                   <li>Ideally real economic impact from AI products</li>
                 </ul>
               </td>
             </tr>
-            <tr class="bg-gray-50">
-              <td class="px-4 py-3 font-medium text-navy-800 align-top">Operational Readiness</td>
-              <td class="px-4 py-3 align-top">Can the company execute an AI strategy at scale?</td>
-              <td class="px-4 py-3">
-                <ul class="list-disc list-inside space-y-1">
+            <tr>
+              <td style="font-weight:600; color:#f1f1f4; vertical-align:top;">Operational Readiness</td>
+              <td style="vertical-align:top;">Can the company execute an AI strategy at scale?</td>
+              <td>
+                <ul style="list-style:disc; padding-left:16px; display:flex; flex-direction:column; gap:4px;">
                   <li>Clean, governed, workflow-relevant data</li>
                   <li>Evidence of efficiency gains or margin improvement</li>
                   <li>Architecture capable of supporting agentic workflows</li>
                 </ul>
               </td>
             </tr>
-            <tr class="bg-white">
-              <td class="px-4 py-3 font-medium text-navy-800 align-top">Product &amp; Moat Durability</td>
-              <td class="px-4 py-3 align-top">Does AI strengthen or weaken defensibility?</td>
-              <td class="px-4 py-3">
-                <ul class="list-disc list-inside space-y-1">
+            <tr>
+              <td style="font-weight:600; color:#f1f1f4; vertical-align:top;">Product &amp; Moat Durability</td>
+              <td style="vertical-align:top;">Does AI strengthen or weaken defensibility?</td>
+              <td>
+                <ul style="list-style:disc; padding-left:16px; display:flex; flex-direction:column; gap:4px;">
                   <li>AI embedded into core workflows not surface-level</li>
                   <li>Proprietary, outcome-linked data</li>
                   <li>Data advantage that grows with usage, not static</li>
                 </ul>
               </td>
             </tr>
-            <tr class="bg-gray-50">
-              <td class="px-4 py-3 font-medium text-navy-800 align-top">Market Exposure &amp; Competitive Dynamics</td>
-              <td class="px-4 py-3 align-top">Is the business structurally exposed or advantaged?</td>
-              <td class="px-4 py-3">
-                <ul class="list-disc list-inside space-y-1">
+            <tr>
+              <td style="font-weight:600; color:#f1f1f4; vertical-align:top;">Market Exposure &amp; Competitive Dynamics</td>
+              <td style="vertical-align:top;">Is the business structurally exposed or advantaged?</td>
+              <td>
+                <ul style="list-style:disc; padding-left:16px; display:flex; flex-direction:column; gap:4px;">
                   <li>Replaceable labor vs mission-critical workflow</li>
                   <li>Speed of AI-native entrants in the category</li>
                   <li>Ability to consolidate vs. risk of being displaced</li>
@@ -894,66 +1290,63 @@
           </tbody>
         </table>
       </div>
-      <p class="text-sm text-gray-600 mb-1">AI diligence should assess potential for both disruption risk and clear advantage</p>
-      <p class="text-xs text-gray-400 mb-10">Evaluating structural risk and upside in an AI-driven market</p>
+      <p class="text-body" style="font-size:14px; margin-bottom:4px;">AI diligence should assess potential for both disruption risk and clear advantage</p>
+      <p class="text-secondary" style="font-size:12px; margin-bottom:40px;">Evaluating structural risk and upside in an AI-driven market</p>
 
-      <!-- Headline 2 -->
-      <h2 class="text-2xl md:text-3xl font-bold text-navy-900 mb-2">For Operators, a Practical AI Roadmap</h2>
-      <p class="text-sm text-gray-500 mb-6">Disciplined, thoughtful execution beats feature velocity</p>
+      <div class="gradient-border" style="margin-bottom:40px;"></div>
 
-      <!-- Two-Column: Steps + Errors -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- Roadmap -->
+      <h2 style="font-size:32px; font-weight:800; margin-bottom:8px;">For Operators, a Practical AI Roadmap</h2>
+      <p class="text-secondary" style="font-size:14px; margin-bottom:24px;">Disciplined, thoughtful execution beats feature velocity</p>
+
+      <div class="grid-2">
         <!-- Key Action Items -->
         <div>
-          <h3 class="text-lg font-semibold text-navy-800 mb-4">Key Action Items</h3>
-
-          <div class="space-y-5">
+          <h3 style="font-size:20px; font-weight:700; margin-bottom:20px;">Key Action Items</h3>
+          <div style="display:flex; flex-direction:column; gap:24px;">
             <!-- Step 1 -->
-            <div>
-              <div class="flex items-center gap-2 mb-2">
-                <span class="bg-navy-900 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold shrink-0">1</span>
-                <span class="font-semibold text-navy-800">The Foundation</span>
+            <div class="cat-card stagger-child">
+              <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+                <span class="step-badge">1</span>
+                <span style="font-weight:700; font-size:15px;">The Foundation</span>
               </div>
-              <ul class="list-disc list-inside text-sm text-gray-700 ml-9 space-y-1">
+              <ul style="list-style:disc; padding-left:52px; color:rgba(255,255,255,0.75); font-size:13px; display:flex; flex-direction:column; gap:4px;">
                 <li>Audit proprietary data and workflow ownership</li>
                 <li>Establish governance and data hygiene</li>
                 <li>Ensure operational integration across the technology stack</li>
               </ul>
             </div>
-
             <!-- Step 2 -->
-            <div>
-              <div class="flex items-center gap-2 mb-2">
-                <span class="bg-navy-900 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold shrink-0">2</span>
-                <span class="font-semibold text-navy-800">Focused Deployment</span>
+            <div class="cat-card stagger-child">
+              <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+                <span class="step-badge">2</span>
+                <span style="font-weight:700; font-size:15px;">Focused Deployment</span>
               </div>
-              <ul class="list-disc list-inside text-sm text-gray-700 ml-9 space-y-1">
+              <ul style="list-style:disc; padding-left:52px; color:rgba(255,255,255,0.75); font-size:13px; display:flex; flex-direction:column; gap:4px;">
                 <li>Launch narrowly scoped use cases with measurable ROI</li>
                 <li>Align pricing and packaging with value delivered</li>
                 <li>Build internal AI fluency within product and ops teams</li>
               </ul>
             </div>
-
-            <!-- Step 3 -->
-            <div>
-              <div class="flex items-center gap-2 mb-2">
-                <span class="bg-navy-900 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold shrink-0">3</span>
-                <span class="font-semibold text-navy-800">Proof Points Scale</span>
+            <!-- Step 3 (fixed: & Scale) -->
+            <div class="cat-card stagger-child">
+              <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+                <span class="step-badge">3</span>
+                <span style="font-weight:700; font-size:15px;">Proof Points &amp; Scale</span>
               </div>
-              <ul class="list-disc list-inside text-sm text-gray-700 ml-9 space-y-1">
+              <ul style="list-style:disc; padding-left:52px; color:rgba(255,255,255,0.75); font-size:13px; display:flex; flex-direction:column; gap:4px;">
                 <li>Reinforce switching costs through system-of-record integration</li>
                 <li>Demonstrate measurable margin or revenue impact</li>
                 <li>Secure customer buy-in and reference wins</li>
               </ul>
             </div>
-
-            <!-- Step 4 -->
-            <div>
-              <div class="flex items-center gap-2 mb-2">
-                <span class="bg-navy-900 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold shrink-0">4</span>
-                <span class="font-semibold text-navy-800">Acceleration Pricing Assessment</span>
+            <!-- Step 4 (fixed: & Pricing Assessment) -->
+            <div class="cat-card stagger-child">
+              <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+                <span class="step-badge">4</span>
+                <span style="font-weight:700; font-size:15px;">Acceleration &amp; Pricing Assessment</span>
               </div>
-              <ul class="list-disc list-inside text-sm text-gray-700 ml-9 space-y-1">
+              <ul style="list-style:disc; padding-left:52px; color:rgba(255,255,255,0.75); font-size:13px; display:flex; flex-direction:column; gap:4px;">
                 <li>Design workflows optimized for AI agents, not just humans</li>
                 <li>Reinvest AI gains to widen moat before optimizing margin</li>
                 <li>Shift monetization toward usage outcome where practical</li>
@@ -964,33 +1357,33 @@
 
         <!-- Avoidable Errors -->
         <div>
-          <h3 class="text-lg font-semibold text-red-600 mb-4">Avoidable Errors</h3>
-          <ul class="space-y-3">
-            <li class="flex items-start gap-2 text-sm text-gray-700">
-              <svg class="w-5 h-5 text-red-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          <h3 style="font-size:20px; font-weight:700; margin-bottom:20px; color:#f43f5e;">Avoidable Errors</h3>
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <div style="display:flex; align-items:start; gap:10px; font-size:14px; color:rgba(255,255,255,0.75);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f43f5e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; margin-top:2px;"><path d="M6 18L18 6M6 6l12 12"></path></svg>
               Shipping features without workflow integration
-            </li>
-            <li class="flex items-start gap-2 text-sm text-gray-700">
-              <svg class="w-5 h-5 text-red-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </div>
+            <div style="display:flex; align-items:start; gap:10px; font-size:14px; color:rgba(255,255,255,0.75);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f43f5e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; margin-top:2px;"><path d="M6 18L18 6M6 6l12 12"></path></svg>
               Selling autonomy before proving reliability
-            </li>
-            <li class="flex items-start gap-2 text-sm text-gray-700">
-              <svg class="w-5 h-5 text-red-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </div>
+            <div style="display:flex; align-items:start; gap:10px; font-size:14px; color:rgba(255,255,255,0.75);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f43f5e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; margin-top:2px;"><path d="M6 18L18 6M6 6l12 12"></path></svg>
               Neglecting governance, explainability, and auditability
-            </li>
-            <li class="flex items-start gap-2 text-sm text-gray-700">
-              <svg class="w-5 h-5 text-red-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </div>
+            <div style="display:flex; align-items:start; gap:10px; font-size:14px; color:rgba(255,255,255,0.75);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f43f5e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; margin-top:2px;"><path d="M6 18L18 6M6 6l12 12"></path></svg>
               Using AI as narrative rather than a business case
-            </li>
-            <li class="flex items-start gap-2 text-sm text-gray-700">
-              <svg class="w-5 h-5 text-red-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </div>
+            <div style="display:flex; align-items:start; gap:10px; font-size:14px; color:rgba(255,255,255,0.75);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f43f5e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; margin-top:2px;"><path d="M6 18L18 6M6 6l12 12"></path></svg>
               Treating AI as a one-time initiative rather than an ongoing operational capability
-            </li>
-            <li class="flex items-start gap-2 text-sm text-gray-700">
-              <svg class="w-5 h-5 text-red-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </div>
+            <div style="display:flex; align-items:start; gap:10px; font-size:14px; color:rgba(255,255,255,0.75);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f43f5e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; margin-top:2px;"><path d="M6 18L18 6M6 6l12 12"></path></svg>
               Scaling before measurable customer validation
-            </li>
-          </ul>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -998,38 +1391,124 @@
     <!-- ============================================================ -->
     <!-- PAGE 7 — Conclusion                                           -->
     <!-- ============================================================ -->
-    <section id="page-7" class="bg-white border border-gray-200 rounded-xl shadow-md p-8">
-      <span class="inline-block text-xs font-semibold text-gray-400 uppercase tracking-widest mb-6">Page 7</span>
+    <section id="page-7" class="section-card fade-in-up">
+      <div class="page-label">07 — Conclusion</div>
 
-      <!-- Headline -->
-      <h2 class="text-2xl md:text-3xl font-bold text-navy-900 mb-8">The AI Era Will Create Durable Winners, Not Universal Disruption</h2>
+      <h2 style="font-size:32px; font-weight:800; margin-bottom:8px;">The AI Era Will Create Durable Winners, Not Universal Disruption</h2>
+      <p class="text-body" style="max-width:720px; margin-bottom:40px;">AI changes the tools, it does not change the importance of structural advantage</p>
 
-      <!-- Chevron Component -->
-      <div class="flex flex-col lg:flex-row gap-0 lg:gap-0">
-        <!-- Chevron 1 -->
-        <div class="bg-navy-900 text-white p-5 lg:p-4 rounded-lg lg:rounded-none lg:chevron-shape flex items-center text-sm lg:w-1/5 min-h-[100px]">
+      <!-- Conclusion Flow: horizontal connected rounded cards -->
+      <div class="flow-horizontal" style="display:flex; align-items:stretch; gap:0; margin-bottom:24px;">
+        <div class="flow-card" style="flex:1; background:rgba(99,102,241,0.12); border:1px solid rgba(99,102,241,0.2);">
           <p>Software remains foundational, AI will amplify the strongest platforms and expose the weakest</p>
         </div>
-        <!-- Chevron 2 -->
-        <div class="bg-navy-800 text-white p-5 lg:p-4 lg:pl-8 rounded-lg lg:rounded-none lg:chevron-shape flex items-center text-sm lg:w-1/5 min-h-[100px]">
+        <div class="flow-connector">&rarr;</div>
+        <div class="flow-card" style="flex:1; background:rgba(99,102,241,0.18); border:1px solid rgba(99,102,241,0.25);">
           <p>Vertical platforms with proprietary, execution-linked data are the most durable AI-era investments, particularly those serving highly regulated industries use cases</p>
         </div>
-        <!-- Chevron 3 -->
-        <div class="bg-navy-700 text-white p-5 lg:p-4 lg:pl-8 rounded-lg lg:rounded-none lg:chevron-shape flex items-center text-sm lg:w-1/5 min-h-[100px]">
+        <div class="flow-connector">&rarr;</div>
+        <div class="flow-card" style="flex:1; background:rgba(139,92,246,0.18); border:1px solid rgba(139,92,246,0.25);">
           <p>Growth-stage and middle-market companies are positioned to move fastest, large enough to matter but agile enough to adapt</p>
         </div>
-        <!-- Chevron 4 -->
-        <div class="bg-brand-teal text-white p-5 lg:p-4 lg:pl-8 rounded-lg lg:rounded-none lg:chevron-shape flex items-center text-sm lg:w-1/5 min-h-[100px]">
+        <div class="flow-connector">&rarr;</div>
+        <div class="flow-card" style="flex:1; background:rgba(168,85,247,0.2); border:1px solid rgba(168,85,247,0.25);">
           <p>M&amp;A will accelerate as platforms and strategics acquire AI capabilities in addition to building them internally</p>
         </div>
-        <!-- Chevron 5 -->
-        <div class="bg-brand-light text-white p-5 lg:p-4 lg:pl-8 rounded-lg lg:rounded-none lg:chevron-shape flex items-center text-sm lg:w-1/5 min-h-[100px]">
+        <div class="flow-connector">&rarr;</div>
+        <div class="flow-card" style="flex:1; background:linear-gradient(135deg, rgba(99,102,241,0.25), rgba(168,85,247,0.3)); border:1px solid rgba(168,85,247,0.35);">
           <p>The winners will not be those with the best models, but those closest to customer workflows and outcomes</p>
         </div>
       </div>
+
+      <!-- Mobile: vertical connecting line handled by CSS flex-direction change -->
     </section>
 
   </main>
+
+  <!-- Footer -->
+  <footer style="text-align:center; padding:40px 20px 32px;">
+    <span class="mono" style="font-size:12px; color:rgba(255,255,255,0.2);">AI SaaS Considerations — 2025</span>
+  </footer>
+
+  <!-- JavaScript: Scroll animations & active nav -->
+  <script>
+    // IntersectionObserver for fade-in-up sections
+    const fadeObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          // Stagger children
+          const children = entry.target.querySelectorAll('.stagger-child');
+          children.forEach((child, i) => {
+            setTimeout(() => child.classList.add('visible'), 100 * i);
+          });
+          fadeObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+
+    document.querySelectorAll('.fade-in-up').forEach(el => fadeObserver.observe(el));
+
+    // Bar chart animation on scroll
+    const barObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const bars = entry.target.querySelectorAll('.bar-animate, .bar-v-animate');
+          bars.forEach((bar, i) => {
+            const target = bar.style.width || bar.style.height;
+            if (bar.classList.contains('bar-v-animate')) {
+              const h = bar.style.height;
+              bar.style.height = '0';
+              setTimeout(() => { bar.style.height = h; }, 80 * i);
+            } else {
+              const w = bar.style.width;
+              bar.style.width = '0';
+              setTimeout(() => { bar.style.width = w; }, 50 * i);
+            }
+          });
+          barObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.section-card').forEach(el => barObserver.observe(el));
+
+    // Active nav pill on scroll
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.pill-nav a');
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(link => link.classList.remove('active'));
+          const activeLink = document.querySelector('.pill-nav a[href="#' + entry.target.id + '"]');
+          if (activeLink) activeLink.classList.add('active');
+        }
+      });
+    }, { threshold: 0.3, rootMargin: '-80px 0px -60% 0px' });
+
+    sections.forEach(s => navObserver.observe(s));
+
+    // Table row stagger animation
+    const tableObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const rows = entry.target.querySelectorAll('tbody tr');
+          rows.forEach((row, i) => {
+            row.style.opacity = '0';
+            row.style.transform = 'translateY(8px)';
+            row.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            setTimeout(() => {
+              row.style.opacity = '1';
+              row.style.transform = 'translateY(0)';
+            }, 60 * i);
+          });
+          tableObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.dark-table').forEach(t => tableObserver.observe(t));
+  </script>
 
 </body>
 </html>
