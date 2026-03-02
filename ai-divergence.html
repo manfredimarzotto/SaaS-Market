@@ -12,8 +12,24 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-    body { min-height: 100vh; }
+    html {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      scroll-behavior: smooth;
+    }
+    body {
+      min-height: 100vh;
+      background: #f8f6f1;
+      overflow-x: hidden;
+    }
+    ::selection {
+      background: rgba(14, 122, 113, 0.18);
+      color: #0a1628;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(20, 212, 195, 0.45); }
+      50% { opacity: 0.85; box-shadow: 0 0 0 4px rgba(20, 212, 195, 0); }
+    }
   </style>
 </head>
 <body>
@@ -93,7 +109,52 @@
             linear-gradient(90deg, rgba(0,0,0,0.012) 1px, transparent 1px)
           `,
           backgroundSize: "60px 60px",
+          maskImage: "radial-gradient(ellipse 80% 70% at 50% 40%, black 30%, transparent 75%)",
+          WebkitMaskImage: "radial-gradient(ellipse 80% 70% at 50% 40%, black 30%, transparent 75%)",
         }} />
+      );
+    }
+
+    /* ───────────────────────────────────────────
+       Decorative Gradient Blobs
+    ─────────────────────────────────────────── */
+    function GradientBlobs() {
+      return (
+        <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", zIndex: 0 }}>
+          {/* Top-right teal glow */}
+          <div style={{
+            position: "absolute",
+            top: -120,
+            right: -80,
+            width: 500,
+            height: 500,
+            borderRadius: "50%",
+            background: `radial-gradient(circle, ${COLORS.tealGlow}08 0%, transparent 70%)`,
+            filter: "blur(60px)",
+          }} />
+          {/* Left mid teal glow */}
+          <div style={{
+            position: "absolute",
+            top: 300,
+            left: -150,
+            width: 400,
+            height: 400,
+            borderRadius: "50%",
+            background: `radial-gradient(circle, ${COLORS.teal}06 0%, transparent 70%)`,
+            filter: "blur(50px)",
+          }} />
+          {/* Bottom-right warm glow */}
+          <div style={{
+            position: "absolute",
+            bottom: 100,
+            right: -100,
+            width: 450,
+            height: 450,
+            borderRadius: "50%",
+            background: `radial-gradient(circle, ${COLORS.warmGrey}08 0%, transparent 70%)`,
+            filter: "blur(55px)",
+          }} />
+        </div>
       );
     }
 
@@ -120,6 +181,7 @@
             borderRadius: "50%",
             background: COLORS.tealGlow,
             display: "inline-block",
+            animation: "pulse-dot 2.4s ease-in-out infinite",
           }} />
           <span style={{
             fontFamily: FONTS.mono,
@@ -270,21 +332,21 @@
             position: "relative",
             borderRadius: 16,
             padding: "22px 20px",
-            background: hovered ? "rgba(255,255,255,0.88)" : COLORS.cardBg,
+            cursor: "pointer",
+            background: hovered ? "rgba(255,255,255,0.92)" : COLORS.cardBg,
             backdropFilter: "blur(20px)",
             WebkitBackdropFilter: "blur(20px)",
             border: `1px solid ${hovered ? accent + "80" : COLORS.glassBorder}`,
             boxShadow: hovered
-              ? `0 8px 32px ${accent}33, 0 2px 8px rgba(0,0,0,0.06)`
-              : "0 2px 8px rgba(0,0,0,0.04)",
-            transition: "all 0.3s ease",
+              ? `0 12px 40px ${accent}25, 0 4px 12px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.5)`
+              : `0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02), inset 0 1px 0 rgba(255,255,255,0.4)`,
             overflow: "hidden",
             opacity: inView ? 1 : 0,
-            transform: inView ? "translateY(0)" : "translateY(30px)",
+            transform: inView ? (hovered ? "translateY(-2px)" : "translateY(0)") : "translateY(30px)",
             transitionProperty: "opacity, transform, background, border-color, box-shadow",
-            transitionDuration: "0.7s, 0.7s, 0.3s, 0.3s, 0.3s",
+            transitionDuration: inView ? "0.25s, 0.25s, 0.25s, 0.25s, 0.25s" : "0.7s, 0.7s, 0.3s, 0.3s, 0.3s",
             transitionTimingFunction: `${EASING}, ${EASING}, ease, ease, ease`,
-            transitionDelay: `${index * 0.12}s, ${index * 0.12}s, 0s, 0s, 0s`,
+            transitionDelay: inView ? "0s" : `${index * 0.12}s, ${index * 0.12}s, 0s, 0s, 0s`,
           }}
         >
           {/* Top accent bar */}
@@ -413,15 +475,20 @@
             padding: "18px 16px",
             display: "flex",
             flexDirection: "column",
+            cursor: "pointer",
             background: hovered ? (bgGradients[color] || "rgba(255,255,255,0.7)") : "rgba(255,255,255,0.5)",
+            backdropFilter: "blur(16px)",
+            WebkitBackdropFilter: "blur(16px)",
             border: `1px solid ${hovered ? color + "55" : "rgba(0,0,0,0.05)"}`,
-            transition: "all 0.3s ease",
+            boxShadow: hovered
+              ? `0 8px 28px ${color}18, 0 2px 8px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.35)`
+              : `0 1px 4px rgba(0,0,0,0.02), inset 0 1px 0 rgba(255,255,255,0.3)`,
             opacity: inView ? 1 : 0,
-            transform: inView ? "scale(1)" : "scale(0.94)",
-            transitionProperty: "opacity, transform, background, border-color",
-            transitionDuration: "0.5s, 0.5s, 0.3s, 0.3s",
-            transitionTimingFunction: `${EASING}, ${EASING}, ease, ease`,
-            transitionDelay: `${index * 0.08 + 0.15}s, ${index * 0.08 + 0.15}s, 0s, 0s`,
+            transform: inView ? (hovered ? "scale(1) translateY(-2px)" : "scale(1)") : "scale(0.94)",
+            transitionProperty: "opacity, transform, background, border-color, box-shadow",
+            transitionDuration: inView ? "0.2s, 0.2s, 0.2s, 0.2s, 0.2s" : "0.5s, 0.5s, 0.3s, 0.3s, 0.3s",
+            transitionTimingFunction: `${EASING}, ${EASING}, ease, ease, ease`,
+            transitionDelay: inView ? "0s" : `${index * 0.08 + 0.15}s, ${index * 0.08 + 0.15}s, 0s, 0s, 0s`,
           }}
         >
           {/* Title row with dot */}
@@ -593,6 +660,8 @@
             borderRadius: 10,
             padding: "12px 20px",
             textAlign: "center",
+            border: "1px solid rgba(255,255,255,0.06)",
+            boxShadow: "0 4px 20px rgba(10,22,40,0.15), inset 0 1px 0 rgba(255,255,255,0.06)",
             opacity: inView ? 1 : 0,
             transform: inView ? "translateY(0)" : "translateY(15px)",
             transition: `opacity 0.6s ease 0.5s, transform 0.6s ease 0.5s`,
@@ -774,6 +843,8 @@
             borderRadius: 10,
             padding: "12px 20px",
             textAlign: "center",
+            border: "1px solid rgba(255,255,255,0.06)",
+            boxShadow: "0 4px 20px rgba(107,21,32,0.2), inset 0 1px 0 rgba(255,255,255,0.06)",
             opacity: inView ? 1 : 0,
             transform: inView ? "translateY(0)" : "translateY(15px)",
             transition: `opacity 0.6s ease 0.5s, transform 0.6s ease 0.5s`,
@@ -840,6 +911,7 @@
           fontFamily: FONTS.sans,
         }}>
           <GridOverlay />
+          <GradientBlobs />
 
           <div style={{ position: "relative", zIndex: 1 }}>
             <HeroSection />
