@@ -11,7 +11,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
-      background: #0a0a0f;
+      background: transparent;
       color: #f1f1f4;
       font-family: 'IBM Plex Sans', sans-serif;
       font-size: 15px;
@@ -411,15 +411,150 @@
       .hub-spoke { align-items: stretch; }
       .layer-box { max-width: 100%; }
     }
+    /* Bar hover highlight */
+    .bar-row {
+      transition: transform 0.2s ease;
+    }
+    .bar-row:hover {
+      transform: scale(1.03);
+    }
+    .bar-row:hover .bar-animate {
+      box-shadow: 0 0 18px rgba(255,255,255,0.25), 0 0 40px rgba(99,102,241,0.3);
+      filter: brightness(1.25);
+    }
+    .bar-row .bar-animate {
+      transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.25s ease, filter 0.25s ease;
+    }
+
+    /* Custom pin cursor */
+    *, *::before, *::after { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='32' viewBox='0 0 24 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%236366f1'/%3E%3Cstop offset='100%25' stop-color='%23a855f7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M12 0C6.5 0 2 4.5 2 9.5C2 16.5 12 28 12 28S22 16.5 22 9.5C22 4.5 17.5 0 12 0Z' fill='url(%23g)' stroke='white' stroke-width='1.5'/%3E%3Ccircle cx='12' cy='9.5' r='3.5' fill='white'/%3E%3C/svg%3E") 12 28, auto; }
+    a, button, .pill-nav a { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='32' viewBox='0 0 24 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%23a855f7'/%3E%3Cstop offset='100%25' stop-color='%2322d3ee'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M12 0C6.5 0 2 4.5 2 9.5C2 16.5 12 28 12 28S22 16.5 22 9.5C22 4.5 17.5 0 12 0Z' fill='url(%23g)' stroke='white' stroke-width='1.5'/%3E%3Ccircle cx='12' cy='9.5' r='3.5' fill='white'/%3E%3C/svg%3E") 12 28, pointer; }
+
+    /* Dynamic background */
+    @keyframes bgOrb1 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(80px, -60px) scale(1.1); }
+      50% { transform: translate(-40px, 80px) scale(0.9); }
+      75% { transform: translate(60px, 40px) scale(1.05); }
+    }
+    @keyframes bgOrb2 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(-70px, 50px) scale(1.15); }
+      50% { transform: translate(60px, -70px) scale(0.85); }
+      75% { transform: translate(-50px, -30px) scale(1.1); }
+    }
+    @keyframes bgOrb3 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(50px, 70px) scale(1.2); }
+      66% { transform: translate(-80px, -40px) scale(0.9); }
+    }
+    @keyframes bgGrid {
+      0% { background-position: 0 0; }
+      100% { background-position: 24px 24px; }
+    }
+    .dynamic-bg {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: -1;
+      overflow: hidden;
+      background: #0a0a0f;
+    }
+    .dynamic-bg .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.12;
+      will-change: transform;
+    }
+    .dynamic-bg .orb-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, #6366f1, transparent 70%);
+      top: 10%; left: 15%;
+      animation: bgOrb1 18s ease-in-out infinite;
+    }
+    .dynamic-bg .orb-2 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, #a855f7, transparent 70%);
+      top: 50%; right: 10%;
+      animation: bgOrb2 22s ease-in-out infinite;
+    }
+    .dynamic-bg .orb-3 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, #22d3ee, transparent 70%);
+      bottom: 15%; left: 40%;
+      animation: bgOrb3 15s ease-in-out infinite;
+    }
+    .dynamic-bg .grid-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 24px 24px;
+      animation: bgGrid 20s linear infinite;
+    }
+    .dynamic-bg .noise {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      opacity: 0.015;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* Side-by-side chart layout */
+    .chart-themes-row {
+      display: flex;
+      gap: 32px;
+      align-items: flex-start;
+    }
+    .chart-col {
+      flex: 1;
+      min-width: 0;
+    }
+    .themes-col {
+      flex: 0 0 320px;
+      min-width: 0;
+    }
+    /* Compressed bar rows */
+    .bar-compact {
+      gap: 5px !important;
+    }
+    .bar-compact .bar-row {
+      gap: 8px;
+    }
+    .bar-compact .bar-animate {
+      height: 22px !important;
+    }
+    .bar-compact .bar-label {
+      width: 170px;
+      font-size: 12px;
+    }
+    .bar-compact .mono {
+      font-size: 11px !important;
+    }
+
+    @media (max-width: 768px) {
+      .chart-themes-row { flex-direction: column; }
+      .themes-col { flex: 1; }
+      .bar-compact .bar-label { width: 140px; font-size: 11px; }
+    }
+
     @media print {
       section { page-break-before: always; }
       section:first-of-type { page-break-before: avoid; }
       nav { display: none; }
       body { background: white; color: #1a1a1a; }
+      .dynamic-bg { display: none; }
     }
   </style>
 </head>
 <body>
+
+  <!-- Dynamic Background -->
+  <div class="dynamic-bg">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="grid-overlay"></div>
+    <div class="noise"></div>
+  </div>
 
   <!-- Pill Navigation -->
   <nav class="pill-nav">
@@ -450,123 +585,140 @@
       <h2 style="font-size:40px; font-weight:800; line-height:1.15; margin-bottom:12px; position:relative;">Organizations Have Begun Dramatically Scaling AI Budgets</h2>
       <p class="text-body" style="font-size:16px; max-width:720px; margin-bottom:40px; font-weight:300; position:relative;">Capital is flowing into AI-native application spend at unprecedented speed, but durable value will accrue where AI is embedded into governed, system-of-record workflows</p>
 
-      <!-- Bar Chart: Likely to Increase / Decrease Spend -->
-      <h3 style="font-size:20px; font-weight:700; margin-bottom:16px;">Likely to Increase / Decrease Spend</h3>
+      <!-- Bar Chart + Key Themes Side-by-Side -->
+      <div class="chart-themes-row">
+        <!-- LEFT: Compressed Bar Chart -->
+        <div class="chart-col">
+          <h3 style="font-size:18px; font-weight:700; margin-bottom:14px;">Likely to Increase / Decrease Spend</h3>
 
-      <!-- Group 1: AI and Related Enablers -->
-      <p class="label-caps" style="margin-bottom:10px;">AI and Related Enablers</p>
-      <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:24px;">
-        <div style="display:flex; align-items:center; gap:12px;">
-          <span style="width:200px; text-align:right; font-size:13px; color:rgba(255,255,255,0.7); flex-shrink:0;">AI/ML, Including GenAI</span>
-          <div class="bar-animate" style="background:linear-gradient(90deg, #10b981, #059669); height:28px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; width:45%;">
-            <span class="mono" style="font-size:12px; font-weight:700; color:white;">45%</span>
+          <!-- Group 1: AI and Related Enablers -->
+          <p class="label-caps" style="margin-bottom:6px;">AI and Related Enablers</p>
+          <div class="bar-compact" style="display:flex; flex-direction:column; gap:5px; margin-bottom:16px;">
+            <div class="bar-row" style="display:flex; align-items:center; gap:8px;">
+              <span class="bar-label" style="width:170px; text-align:right; font-size:12px; color:rgba(255,255,255,0.7); flex-shrink:0;">AI/ML, Including GenAI</span>
+              <div class="bar-animate" style="background:linear-gradient(90deg, #10b981, #059669); height:22px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:8px; width:45%;">
+                <span class="mono" style="font-size:11px; font-weight:700; color:white;">45%</span>
+              </div>
+            </div>
+            <div class="bar-row" style="display:flex; align-items:center; gap:8px;">
+              <span class="bar-label" style="width:170px; text-align:right; font-size:12px; color:rgba(255,255,255,0.7); flex-shrink:0;">Cloud Services</span>
+              <div class="bar-animate" style="background:linear-gradient(90deg, #10b981, #059669); height:22px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:8px; width:27%;">
+                <span class="mono" style="font-size:11px; font-weight:700; color:white;">27%</span>
+              </div>
+            </div>
+            <div class="bar-row" style="display:flex; align-items:center; gap:8px;">
+              <span class="bar-label" style="width:170px; text-align:right; font-size:12px; color:rgba(255,255,255,0.7); flex-shrink:0;">Security Infrastructure</span>
+              <div class="bar-animate" style="background:linear-gradient(90deg, #10b981, #059669); height:22px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:8px; width:23%;">
+                <span class="mono" style="font-size:11px; font-weight:700; color:white;">23%</span>
+              </div>
+            </div>
+            <div class="bar-row" style="display:flex; align-items:center; gap:8px;">
+              <span class="bar-label" style="width:170px; text-align:right; font-size:12px; color:rgba(255,255,255,0.7); flex-shrink:0;">IT Services</span>
+              <div class="bar-animate" style="background:linear-gradient(90deg, #10b981, #059669); height:22px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:8px; width:16%;">
+                <span class="mono" style="font-size:11px; font-weight:700; color:white;">16%</span>
+              </div>
+            </div>
+            <div class="bar-row" style="display:flex; align-items:center; gap:8px;">
+              <span class="bar-label" style="width:170px; text-align:right; font-size:12px; color:rgba(255,255,255,0.7); flex-shrink:0;">Analytics</span>
+              <div class="bar-animate" style="background:linear-gradient(90deg, #10b981, #059669); height:22px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:8px; width:16%;">
+                <span class="mono" style="font-size:11px; font-weight:700; color:white;">16%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Group 2: Traditional Drivers (Increase) -->
+          <p class="label-caps" style="margin-bottom:6px;">Traditional Drivers <span style="color:rgba(255,255,255,0.3); text-transform:none; letter-spacing:normal;">(Increase)</span></p>
+          <div class="bar-compact" style="display:flex; flex-direction:column; gap:5px; margin-bottom:16px;">
+            <div class="bar-row" style="display:flex; align-items:center; gap:8px;">
+              <span class="bar-label" style="width:170px; text-align:right; font-size:12px; color:rgba(255,255,255,0.7); flex-shrink:0;">ERP</span>
+              <div class="bar-animate" style="background:linear-gradient(90deg, #6366f1, #8b5cf6); height:22px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:8px; min-width:40px; width:5%;">
+                <span class="mono" style="font-size:11px; font-weight:700; color:white;">5%</span>
+              </div>
+            </div>
+            <div class="bar-row" style="display:flex; align-items:center; gap:8px;">
+              <span class="bar-label" style="width:170px; text-align:right; font-size:12px; color:rgba(255,255,255,0.7); flex-shrink:0;">CRM</span>
+              <div class="bar-animate" style="background:linear-gradient(90deg, #6366f1, #8b5cf6); height:22px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:8px; min-width:40px; width:4%;">
+                <span class="mono" style="font-size:11px; font-weight:700; color:white;">4%</span>
+              </div>
+            </div>
+            <div class="bar-row" style="display:flex; align-items:center; gap:8px;">
+              <span class="bar-label" style="width:170px; text-align:right; font-size:12px; color:rgba(255,255,255,0.7); flex-shrink:0;">App Dev / DevOps</span>
+              <div class="bar-animate" style="background:linear-gradient(90deg, #6366f1, #8b5cf6); height:22px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:8px; min-width:40px; width:2%;">
+                <span class="mono" style="font-size:11px; font-weight:700; color:white;">2%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Group 3: Traditional Drivers (Decrease) -->
+          <p class="label-caps" style="margin-bottom:6px;">Traditional Drivers <span style="color:rgba(255,255,255,0.3); text-transform:none; letter-spacing:normal;">(Decrease)</span></p>
+          <div class="bar-compact" style="display:flex; flex-direction:column; gap:5px; margin-bottom:16px;">
+            <div class="bar-row" style="display:flex; align-items:center; gap:8px;">
+              <span class="bar-label" style="width:170px; text-align:right; font-size:12px; color:rgba(255,255,255,0.7); flex-shrink:0;">Network Infrastructure</span>
+              <div class="bar-animate" style="background:linear-gradient(90deg, #f43f5e, #e11d48); height:22px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:8px; min-width:40px; width:5%;">
+                <span class="mono" style="font-size:11px; font-weight:700; color:white;">-5%</span>
+              </div>
+            </div>
+            <div class="bar-row" style="display:flex; align-items:center; gap:8px;">
+              <span class="bar-label" style="width:170px; text-align:right; font-size:12px; color:rgba(255,255,255,0.7); flex-shrink:0;">System &amp; Service Mgmt.</span>
+              <div class="bar-animate" style="background:linear-gradient(90deg, #f43f5e, #e11d48); height:22px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:8px; min-width:40px; width:7%;">
+                <span class="mono" style="font-size:11px; font-weight:700; color:white;">-7%</span>
+              </div>
+            </div>
+            <div class="bar-row" style="display:flex; align-items:center; gap:8px;">
+              <span class="bar-label" style="width:170px; text-align:right; font-size:12px; color:rgba(255,255,255,0.7); flex-shrink:0;">Storage Infrastructure</span>
+              <div class="bar-animate" style="background:linear-gradient(90deg, #f43f5e, #e11d48); height:22px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:8px; min-width:40px; width:8%;">
+                <span class="mono" style="font-size:11px; font-weight:700; color:white;">-8%</span>
+              </div>
+            </div>
+            <div class="bar-row" style="display:flex; align-items:center; gap:8px;">
+              <span class="bar-label" style="width:170px; text-align:right; font-size:12px; color:rgba(255,255,255,0.7); flex-shrink:0;">IT Operations Mgmt.</span>
+              <div class="bar-animate" style="background:linear-gradient(90deg, #f43f5e, #e11d48); height:22px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:8px; min-width:40px; width:9%;">
+                <span class="mono" style="font-size:11px; font-weight:700; color:white;">-9%</span>
+              </div>
+            </div>
+            <div class="bar-row" style="display:flex; align-items:center; gap:8px;">
+              <span class="bar-label" style="width:170px; text-align:right; font-size:12px; color:rgba(255,255,255,0.7); flex-shrink:0;">Comm. &amp; Collab.</span>
+              <div class="bar-animate" style="background:linear-gradient(90deg, #f43f5e, #e11d48); height:22px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:8px; min-width:48px; width:10%;">
+                <span class="mono" style="font-size:11px; font-weight:700; color:white;">-10%</span>
+              </div>
+            </div>
+            <div class="bar-row" style="display:flex; align-items:center; gap:8px;">
+              <span class="bar-label" style="width:170px; text-align:right; font-size:12px; color:rgba(255,255,255,0.7); flex-shrink:0;">Devices</span>
+              <div class="bar-animate" style="background:linear-gradient(90deg, #f43f5e, #e11d48); height:22px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:8px; min-width:48px; width:17%;">
+                <span class="mono" style="font-size:11px; font-weight:700; color:white;">-17%</span>
+              </div>
+            </div>
+            <div class="bar-row" style="display:flex; align-items:center; gap:8px;">
+              <span class="bar-label" style="width:170px; text-align:right; font-size:12px; color:rgba(255,255,255,0.7); flex-shrink:0;">Server Infrastructure</span>
+              <div class="bar-animate" style="background:linear-gradient(90deg, #f43f5e, #e11d48); height:22px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:8px; min-width:48px; width:24%;">
+                <span class="mono" style="font-size:11px; font-weight:700; color:white;">-24%</span>
+              </div>
+            </div>
           </div>
         </div>
-        <div style="display:flex; align-items:center; gap:12px;">
-          <span style="width:200px; text-align:right; font-size:13px; color:rgba(255,255,255,0.7); flex-shrink:0;">Cloud Services</span>
-          <div class="bar-animate" style="background:linear-gradient(90deg, #10b981, #059669); height:28px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; width:27%;">
-            <span class="mono" style="font-size:12px; font-weight:700; color:white;">27%</span>
-          </div>
-        </div>
-        <div style="display:flex; align-items:center; gap:12px;">
-          <span style="width:200px; text-align:right; font-size:13px; color:rgba(255,255,255,0.7); flex-shrink:0;">Security Infrastructure</span>
-          <div class="bar-animate" style="background:linear-gradient(90deg, #10b981, #059669); height:28px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; width:23%;">
-            <span class="mono" style="font-size:12px; font-weight:700; color:white;">23%</span>
-          </div>
-        </div>
-        <div style="display:flex; align-items:center; gap:12px;">
-          <span style="width:200px; text-align:right; font-size:13px; color:rgba(255,255,255,0.7); flex-shrink:0;">IT Services</span>
-          <div class="bar-animate" style="background:linear-gradient(90deg, #10b981, #059669); height:28px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; width:16%;">
-            <span class="mono" style="font-size:12px; font-weight:700; color:white;">16%</span>
-          </div>
-        </div>
-        <div style="display:flex; align-items:center; gap:12px;">
-          <span style="width:200px; text-align:right; font-size:13px; color:rgba(255,255,255,0.7); flex-shrink:0;">Analytics</span>
-          <div class="bar-animate" style="background:linear-gradient(90deg, #10b981, #059669); height:28px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; width:16%;">
-            <span class="mono" style="font-size:12px; font-weight:700; color:white;">16%</span>
+
+        <!-- RIGHT: Key Themes (spread vertically) -->
+        <div class="themes-col">
+          <h3 style="font-size:18px; font-weight:700; margin-bottom:20px;">Key Themes</h3>
+          <div style="display:flex; flex-direction:column; gap:20px;">
+            <div style="padding:16px; background:rgba(99,102,241,0.06); border-left:3px solid #6366f1; border-radius:0 8px 8px 0;">
+              <p style="color:rgba(255,255,255,0.85); font-size:14px; line-height:1.55; font-weight:500;">AI has moved from discretionary experiment to <strong style="color:#a855f7;">core line item</strong></p>
+            </div>
+            <div style="padding:16px; background:rgba(16,185,129,0.06); border-left:3px solid #10b981; border-radius:0 8px 8px 0;">
+              <p style="color:rgba(255,255,255,0.85); font-size:14px; line-height:1.55; font-weight:500;">IT spend is being both <strong style="color:#10b981;">expanded and reallocated</strong></p>
+            </div>
+            <div style="padding:16px; background:rgba(244,63,94,0.06); border-left:3px solid #f43f5e; border-radius:0 8px 8px 0;">
+              <p style="color:rgba(255,255,255,0.85); font-size:14px; line-height:1.55; font-weight:500;">Incumbents face near-term <strong style="color:#f43f5e;">budget pressure</strong> without AI-driven ROI</p>
+            </div>
+            <div style="padding:16px; background:rgba(34,211,238,0.06); border-left:3px solid #22d3ee; border-radius:0 8px 8px 0;">
+              <p style="color:rgba(255,255,255,0.85); font-size:14px; line-height:1.55; font-weight:500;">Infrastructure and security benefit as <strong style="color:#22d3ee;">enabling layers</strong></p>
+            </div>
+            <div style="padding:16px; background:rgba(245,158,11,0.06); border-left:3px solid #f59e0b; border-radius:0 8px 8px 0;">
+              <p style="color:rgba(255,255,255,0.85); font-size:14px; line-height:1.55; font-weight:500;">Vendors that cannot show <strong style="color:#f59e0b;">measurable AI-driven ROI</strong> will lose budget to those that can</p>
+            </div>
           </div>
         </div>
       </div>
-
-      <!-- Group 2: Traditional Drivers (Increase) -->
-      <p class="label-caps" style="margin-bottom:10px;">Traditional Drivers of Software Spend <span style="color:rgba(255,255,255,0.3); text-transform:none; letter-spacing:normal;">(Increase)</span></p>
-      <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:24px;">
-        <div style="display:flex; align-items:center; gap:12px;">
-          <span style="width:200px; text-align:right; font-size:13px; color:rgba(255,255,255,0.7); flex-shrink:0;">ERP</span>
-          <div class="bar-animate" style="background:linear-gradient(90deg, #6366f1, #8b5cf6); height:28px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; min-width:48px; width:5%;">
-            <span class="mono" style="font-size:12px; font-weight:700; color:white;">5%</span>
-          </div>
-        </div>
-        <div style="display:flex; align-items:center; gap:12px;">
-          <span style="width:200px; text-align:right; font-size:13px; color:rgba(255,255,255,0.7); flex-shrink:0;">CRM</span>
-          <div class="bar-animate" style="background:linear-gradient(90deg, #6366f1, #8b5cf6); height:28px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; min-width:48px; width:4%;">
-            <span class="mono" style="font-size:12px; font-weight:700; color:white;">4%</span>
-          </div>
-        </div>
-        <div style="display:flex; align-items:center; gap:12px;">
-          <span style="width:200px; text-align:right; font-size:13px; color:rgba(255,255,255,0.7); flex-shrink:0;">App Dev / DevOps</span>
-          <div class="bar-animate" style="background:linear-gradient(90deg, #6366f1, #8b5cf6); height:28px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; min-width:48px; width:2%;">
-            <span class="mono" style="font-size:12px; font-weight:700; color:white;">2%</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Group 3: Traditional Drivers (Decrease) -->
-      <p class="label-caps" style="margin-bottom:10px;">Traditional Drivers of Software Spend <span style="color:rgba(255,255,255,0.3); text-transform:none; letter-spacing:normal;">(Decrease)</span></p>
-      <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:32px;">
-        <div style="display:flex; align-items:center; gap:12px;">
-          <span style="width:200px; text-align:right; font-size:13px; color:rgba(255,255,255,0.7); flex-shrink:0;">Network Infrastructure</span>
-          <div class="bar-animate" style="background:linear-gradient(90deg, #f43f5e, #e11d48); height:28px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; min-width:48px; width:5%;">
-            <span class="mono" style="font-size:12px; font-weight:700; color:white;">-5%</span>
-          </div>
-        </div>
-        <div style="display:flex; align-items:center; gap:12px;">
-          <span style="width:200px; text-align:right; font-size:13px; color:rgba(255,255,255,0.7); flex-shrink:0;">System &amp; Service Mgmt.</span>
-          <div class="bar-animate" style="background:linear-gradient(90deg, #f43f5e, #e11d48); height:28px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; min-width:48px; width:7%;">
-            <span class="mono" style="font-size:12px; font-weight:700; color:white;">-7%</span>
-          </div>
-        </div>
-        <div style="display:flex; align-items:center; gap:12px;">
-          <span style="width:200px; text-align:right; font-size:13px; color:rgba(255,255,255,0.7); flex-shrink:0;">Storage Infrastructure</span>
-          <div class="bar-animate" style="background:linear-gradient(90deg, #f43f5e, #e11d48); height:28px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; min-width:48px; width:8%;">
-            <span class="mono" style="font-size:12px; font-weight:700; color:white;">-8%</span>
-          </div>
-        </div>
-        <div style="display:flex; align-items:center; gap:12px;">
-          <span style="width:200px; text-align:right; font-size:13px; color:rgba(255,255,255,0.7); flex-shrink:0;">IT Operations Mgmt.</span>
-          <div class="bar-animate" style="background:linear-gradient(90deg, #f43f5e, #e11d48); height:28px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; min-width:48px; width:9%;">
-            <span class="mono" style="font-size:12px; font-weight:700; color:white;">-9%</span>
-          </div>
-        </div>
-        <div style="display:flex; align-items:center; gap:12px;">
-          <span style="width:200px; text-align:right; font-size:13px; color:rgba(255,255,255,0.7); flex-shrink:0;">Comm., Collab., &amp; Content Mgmt.</span>
-          <div class="bar-animate" style="background:linear-gradient(90deg, #f43f5e, #e11d48); height:28px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; min-width:56px; width:10%;">
-            <span class="mono" style="font-size:12px; font-weight:700; color:white;">-10%</span>
-          </div>
-        </div>
-        <div style="display:flex; align-items:center; gap:12px;">
-          <span style="width:200px; text-align:right; font-size:13px; color:rgba(255,255,255,0.7); flex-shrink:0;">Devices</span>
-          <div class="bar-animate" style="background:linear-gradient(90deg, #f43f5e, #e11d48); height:28px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; min-width:56px; width:17%;">
-            <span class="mono" style="font-size:12px; font-weight:700; color:white;">-17%</span>
-          </div>
-        </div>
-        <div style="display:flex; align-items:center; gap:12px;">
-          <span style="width:200px; text-align:right; font-size:13px; color:rgba(255,255,255,0.7); flex-shrink:0;">Server Infrastructure</span>
-          <div class="bar-animate" style="background:linear-gradient(90deg, #f43f5e, #e11d48); height:28px; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; min-width:56px; width:24%;">
-            <span class="mono" style="font-size:12px; font-weight:700; color:white;">-24%</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Key Themes -->
-      <h3 style="font-size:20px; font-weight:700; margin-bottom:12px;">Key Themes</h3>
-      <ul style="list-style:disc; padding-left:20px; color:rgba(255,255,255,0.75); font-size:14px; margin-bottom:24px; display:flex; flex-direction:column; gap:6px;">
-        <li>AI has moved from discretionary experiment to core line item</li>
-        <li>IT spend is being both expanded and reallocated</li>
-        <li>Incumbents face near-term budget pressure without AI-driven ROI</li>
-        <li>Infrastructure and security benefit as enabling layers</li>
-        <li>Application vendors that cannot show measurable AI-driven ROI will lose budget to those that can</li>
-      </ul>
 
       <!-- Callout Box -->
       <div class="callout-box" style="margin-bottom:40px;">
