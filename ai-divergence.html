@@ -191,7 +191,608 @@
     }
 
     /* ───────────────────────────────────────────
-       Main App — Section 2 placeholder for future
+       Section Label (reusable)
+    ─────────────────────────────────────────── */
+    function SectionLabel({ text, inView, delay = 0 }) {
+      return (
+        <div style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+          marginBottom: 24,
+          opacity: inView ? 1 : 0,
+          transform: inView ? "translateY(0)" : "translateY(15px)",
+          transition: `opacity 0.5s ease ${delay}s, transform 0.5s ease ${delay}s`,
+        }}>
+          <div style={{
+            width: 28,
+            height: 2,
+            background: `linear-gradient(90deg, ${COLORS.teal}, transparent)`,
+          }} />
+          <span style={{
+            fontFamily: FONTS.mono,
+            fontSize: 11,
+            fontWeight: 700,
+            textTransform: "uppercase",
+            letterSpacing: "0.1em",
+            color: COLORS.teal,
+          }}>
+            {text}
+          </span>
+        </div>
+      );
+    }
+
+    /* ───────────────────────────────────────────
+       SVG Icons for Category Cards
+    ─────────────────────────────────────────── */
+    function ActionIcon() {
+      return (
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="7" cy="17" r="3" />
+          <line x1="10" y1="14" x2="18" y2="6" />
+          <polyline points="14 6 18 6 18 10" />
+        </svg>
+      );
+    }
+
+    function RecordIcon() {
+      return (
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="4" y="3" width="16" height="18" rx="2" />
+          <line x1="8" y1="8" x2="16" y2="8" />
+          <line x1="8" y1="12" x2="16" y2="12" />
+          <polyline points="10 16 12 18 16 14" />
+        </svg>
+      );
+    }
+
+    function EngagementIcon() {
+      return (
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="3 17 7 11 11 15 15 7 19 13 21 10" />
+          <circle cx="18" cy="6" r="3" strokeDasharray="4 2" />
+        </svg>
+      );
+    }
+
+    /* ───────────────────────────────────────────
+       Category Card
+    ─────────────────────────────────────────── */
+    function CategoryCard({ accent, accentBg, signal, icon, title, tagline, taglineColor, bullets, inView, index }) {
+      const [hovered, setHovered] = useState(false);
+
+      return (
+        <div
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+          style={{
+            position: "relative",
+            borderRadius: 16,
+            padding: "22px 20px",
+            background: hovered ? "rgba(255,255,255,0.88)" : COLORS.cardBg,
+            border: `1px solid ${hovered ? accent + "80" : COLORS.glassBorder}`,
+            boxShadow: hovered
+              ? `0 8px 32px ${accent}33, 0 2px 8px rgba(0,0,0,0.06)`
+              : "0 2px 8px rgba(0,0,0,0.04)",
+            transition: "all 0.3s ease",
+            overflow: "hidden",
+            opacity: inView ? 1 : 0,
+            transform: inView ? "translateY(0)" : "translateY(30px)",
+            transitionProperty: "opacity, transform, background, border-color, box-shadow",
+            transitionDuration: "0.7s, 0.7s, 0.3s, 0.3s, 0.3s",
+            transitionTimingFunction: `${EASING}, ${EASING}, ease, ease, ease`,
+            transitionDelay: `${index * 0.12}s, ${index * 0.12}s, 0s, 0s, 0s`,
+          }}
+        >
+          {/* Top accent bar */}
+          <div style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 2.5,
+            background: accentBg,
+            opacity: hovered ? 1 : 0.4,
+            transition: "opacity 0.3s ease",
+          }} />
+
+          {/* Signal badge */}
+          <div style={{
+            position: "absolute",
+            top: 12,
+            right: 12,
+            display: "inline-flex",
+            alignItems: "center",
+            padding: "3px 8px",
+            borderRadius: 100,
+            background: accent + "1f",
+            fontFamily: FONTS.mono,
+            fontSize: 8.5,
+            fontWeight: 700,
+            color: accent,
+            letterSpacing: "0.04em",
+          }}>
+            {signal}
+          </div>
+
+          {/* Icon + Content */}
+          <div style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
+            {/* Icon container */}
+            <div style={{
+              flexShrink: 0,
+              width: 48,
+              height: 48,
+              borderRadius: 12,
+              background: accentBg,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              boxShadow: `0 4px 12px ${accent}40`,
+            }}>
+              {icon}
+            </div>
+
+            {/* Text content */}
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{
+                fontFamily: FONTS.serif,
+                fontSize: 16,
+                fontWeight: 700,
+                color: COLORS.navy,
+                marginBottom: 3,
+              }}>
+                {title}
+              </div>
+              <div style={{
+                fontFamily: FONTS.sans,
+                fontSize: 12,
+                fontWeight: 500,
+                fontStyle: "italic",
+                color: taglineColor || COLORS.teal,
+                lineHeight: 1.45,
+                marginBottom: 10,
+              }}>
+                {tagline}
+              </div>
+
+              {/* Bullets */}
+              {bullets.map((bullet, i) => (
+                <div key={i} style={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                  gap: 8,
+                  marginBottom: i < bullets.length - 1 ? 6 : 0,
+                }}>
+                  <span style={{
+                    flexShrink: 0,
+                    width: 4,
+                    height: 4,
+                    borderRadius: "50%",
+                    background: accent + "99",
+                    marginTop: 5,
+                  }} />
+                  <span style={{
+                    fontFamily: FONTS.sans,
+                    fontSize: 11.5,
+                    color: COLORS.textSecondary,
+                    lineHeight: 1.45,
+                  }}>
+                    {bullet}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    /* ───────────────────────────────────────────
+       Quadrant Cell
+    ─────────────────────────────────────────── */
+    function QuadrantCell({ color, title, subtitle, verticals, useCases, inView, index }) {
+      const [hovered, setHovered] = useState(false);
+
+      const bgGradients = {
+        [COLORS.teal]: `linear-gradient(135deg, ${COLORS.teal}12, ${COLORS.teal}08)`,
+        [COLORS.red]: `linear-gradient(135deg, ${COLORS.red}12, ${COLORS.red}08)`,
+        [COLORS.tealGlow]: `linear-gradient(135deg, ${COLORS.tealGlow}12, ${COLORS.tealGlow}08)`,
+        [COLORS.tealLight]: `linear-gradient(135deg, ${COLORS.tealLight}12, ${COLORS.tealLight}08)`,
+      };
+
+      return (
+        <div
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+          style={{
+            borderRadius: 14,
+            padding: "18px 16px",
+            display: "flex",
+            flexDirection: "column",
+            background: hovered ? (bgGradients[color] || "rgba(255,255,255,0.7)") : "rgba(255,255,255,0.5)",
+            border: `1px solid ${hovered ? color + "55" : "rgba(0,0,0,0.05)"}`,
+            transition: "all 0.3s ease",
+            opacity: inView ? 1 : 0,
+            transform: inView ? "scale(1)" : "scale(0.94)",
+            transitionProperty: "opacity, transform, background, border-color",
+            transitionDuration: "0.5s, 0.5s, 0.3s, 0.3s",
+            transitionTimingFunction: `${EASING}, ${EASING}, ease, ease`,
+            transitionDelay: `${index * 0.08 + 0.15}s, ${index * 0.08 + 0.15}s, 0s, 0s`,
+          }}
+        >
+          {/* Title row with dot */}
+          <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 2 }}>
+            <span style={{
+              width: 7,
+              height: 7,
+              borderRadius: "50%",
+              background: color,
+              display: "inline-block",
+              boxShadow: hovered ? `0 0 10px ${color}66` : "none",
+              transition: "box-shadow 0.3s ease",
+            }} />
+            <span style={{
+              fontFamily: FONTS.serif,
+              fontSize: 13,
+              fontWeight: 700,
+              color: COLORS.navy,
+            }}>
+              {title}
+            </span>
+          </div>
+
+          {/* Subtitle */}
+          <div style={{
+            fontFamily: FONTS.mono,
+            fontSize: 9.5,
+            color: COLORS.textSecondary + "99",
+            marginBottom: 12,
+            paddingLeft: 14,
+          }}>
+            {subtitle}
+          </div>
+
+          {/* Verticals label */}
+          <div style={{
+            fontFamily: FONTS.mono,
+            fontSize: 8,
+            fontWeight: 700,
+            textTransform: "uppercase",
+            letterSpacing: "0.1em",
+            color: color,
+            marginBottom: 6,
+          }}>
+            VERTICALS
+          </div>
+
+          {/* Vertical pills */}
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginBottom: 12 }}>
+            {verticals.map((v, i) => (
+              <span key={i} style={{
+                fontFamily: FONTS.sans,
+                fontSize: 10,
+                fontWeight: 500,
+                color: COLORS.textPrimary,
+                background: color + "1a",
+                border: `1px solid ${color}2e`,
+                padding: "2px 7px",
+                borderRadius: 100,
+              }}>
+                {v}
+              </span>
+            ))}
+          </div>
+
+          {/* Use Cases label */}
+          <div style={{
+            fontFamily: FONTS.mono,
+            fontSize: 8,
+            fontWeight: 700,
+            textTransform: "uppercase",
+            letterSpacing: "0.1em",
+            color: color + "cc",
+            marginBottom: 6,
+          }}>
+            USE CASES
+          </div>
+
+          {/* Use case items */}
+          {useCases.map((uc, i) => (
+            <div key={i} style={{
+              display: "flex",
+              alignItems: "flex-start",
+              gap: 6,
+              marginBottom: i < useCases.length - 1 ? 4 : 0,
+            }}>
+              <span style={{
+                flexShrink: 0,
+                width: 3,
+                height: 3,
+                borderRadius: "50%",
+                background: color + "73",
+                marginTop: 5,
+              }} />
+              <span style={{
+                fontFamily: FONTS.sans,
+                fontSize: 10.5,
+                color: COLORS.textSecondary,
+                lineHeight: 1.4,
+              }}>
+                {uc}
+              </span>
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    /* ───────────────────────────────────────────
+       Left Column: Category Divergence
+    ─────────────────────────────────────────── */
+    function CategoryDivergenceColumn() {
+      const [ref, inView] = useInView({ threshold: 0.05 });
+
+      const cards = [
+        {
+          accent: COLORS.tealGlow,
+          accentBg: "linear-gradient(135deg, #0e7a71, #14d4c3)",
+          signal: "HIGHEST UPSIDE",
+          icon: <ActionIcon />,
+          title: "Systems of Action",
+          tagline: "Capture disproportionate levels of value as AI directly drives outcomes and decisions",
+          bullets: [
+            'Platforms closest to "doing the work" benefit the most from AI-driven efficiency',
+            "Value creation compounds as models learn from execution data and closed-loop feedback",
+          ],
+        },
+        {
+          accent: COLORS.warmGrey,
+          accentBg: "linear-gradient(135deg, #5a5650, #b8b2a8)",
+          signal: "STEADY STATE",
+          icon: <RecordIcon />,
+          title: "Systems of Record",
+          tagline: "Slower disruption — AI improves efficiency but limits incremental platform differentiation",
+          bullets: [
+            "Data integrity, compliance, and reliability requirements constrain AI-driven change",
+            "AI enhances workflows rather than instituting step-function product changes",
+          ],
+        },
+        {
+          accent: COLORS.red,
+          accentBg: "linear-gradient(135deg, #9b1d25, #e63946)",
+          signal: "\u26A0 HIGH RISK",
+          icon: <EngagementIcon />,
+          title: "Systems of Engagement",
+          tagline: "Most crowded and dangerous place to be in 2026 — AI commoditizes the surface layer quickly",
+          taglineColor: COLORS.red,
+          bullets: [
+            "Sustainable differentiation requires deep workflow integration and measurable ROI",
+            "GenAI rapidly commoditizes surface-level engagement features (e.g., content, UX)",
+          ],
+        },
+      ];
+
+      return (
+        <div ref={ref}>
+          <SectionLabel text="CATEGORY DIVERGENCE" inView={inView} />
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            {cards.map((card, i) => (
+              <CategoryCard key={i} {...card} inView={inView} index={i} />
+            ))}
+          </div>
+
+          {/* Left footer banner */}
+          <div style={{
+            marginTop: 16,
+            background: `linear-gradient(135deg, ${COLORS.deepTeal}, ${COLORS.navy})`,
+            borderRadius: 10,
+            padding: "12px 20px",
+            textAlign: "center",
+            opacity: inView ? 1 : 0,
+            transform: inView ? "translateY(0)" : "translateY(15px)",
+            transition: `opacity 0.6s ease 0.5s, transform 0.6s ease 0.5s`,
+          }}>
+            <span style={{
+              fontFamily: FONTS.sans,
+              fontSize: 11.5,
+              color: "rgba(255,255,255,0.8)",
+              fontStyle: "italic",
+            }}>
+              Vendors with{" "}
+              <span style={{ fontWeight: 700, color: COLORS.tealGlow }}>
+                hybrid exposure and opportunities
+              </span>{" "}
+              across categories will navigate the transition most effectively
+            </span>
+          </div>
+        </div>
+      );
+    }
+
+    /* ───────────────────────────────────────────
+       Right Column: Adoption Curves by Vertical
+    ─────────────────────────────────────────── */
+    function AdoptionCurvesColumn() {
+      const [ref, inView] = useInView({ threshold: 0.05 });
+
+      const quadrants = [
+        {
+          color: COLORS.teal,
+          title: "Governed Rollout",
+          subtitle: "High reg \u00B7 Low complexity",
+          verticals: ["Legal", "Compliance"],
+          useCases: ["Research & Contract Workflows", "Outage Support Chatbots", "Transaction Monitoring & Audit"],
+        },
+        {
+          color: COLORS.red,
+          title: "Slowest Adoption",
+          subtitle: "High reg \u00B7 High complexity",
+          verticals: ["Banking & Finance", "Construction & Industrial", "Medicine"],
+          useCases: ["Autonomous Underwriting", "Construction / Ops. Analyses", "Surgical Automation"],
+        },
+        {
+          color: COLORS.tealGlow,
+          title: "Fastest Adoption",
+          subtitle: "Low reg \u00B7 Low complexity",
+          verticals: ["Marketing & E-Commerce", "Customer Support", "Human Resources"],
+          useCases: ["Chatbots & FAQ Automation", "Contact Center Routing", "Marketing Content Generation"],
+        },
+        {
+          color: COLORS.tealLight,
+          title: "Co-Pilot, Assistive",
+          subtitle: "Low reg \u00B7 High complexity",
+          verticals: ["Enterprise ITSM", "Verticalized ERP & CRM"],
+          useCases: ["Incident Resolution Automation", "Lead Qualification Scoring"],
+        },
+      ];
+
+      return (
+        <div ref={ref}>
+          <SectionLabel text="ADOPTION CURVES BY VERTICAL" inView={inView} />
+
+          {/* Matrix container */}
+          <div style={{
+            position: "relative",
+            paddingLeft: 28,
+            paddingBottom: 28,
+          }}>
+            {/* Y-axis label (rotated) */}
+            <div style={{
+              position: "absolute",
+              left: -12,
+              top: "50%",
+              transform: "translateY(-50%) rotate(-90deg)",
+              fontFamily: FONTS.mono,
+              fontSize: 9,
+              fontWeight: 600,
+              textTransform: "uppercase",
+              color: COLORS.textSecondary + "80",
+              whiteSpace: "nowrap",
+            }}>
+              REGULATION / TECH MATURITY
+            </div>
+
+            {/* Y-axis markers */}
+            <div style={{
+              position: "absolute",
+              left: 8,
+              top: 4,
+              fontFamily: FONTS.mono,
+              fontSize: 8,
+              fontWeight: 700,
+              color: COLORS.textSecondary + "66",
+            }}>
+              HIGH
+            </div>
+            <div style={{
+              position: "absolute",
+              left: 8,
+              bottom: 34,
+              fontFamily: FONTS.mono,
+              fontSize: 8,
+              fontWeight: 700,
+              color: COLORS.textSecondary + "66",
+            }}>
+              LOW
+            </div>
+
+            {/* 2x2 Grid */}
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gridTemplateRows: "1fr 1fr",
+              gap: 10,
+              minHeight: 440,
+            }}>
+              {/* Row 1, Col 1: Governed Rollout */}
+              <QuadrantCell {...quadrants[0]} inView={inView} index={0} />
+              {/* Row 1, Col 2: Slowest Adoption */}
+              <QuadrantCell {...quadrants[1]} inView={inView} index={1} />
+              {/* Row 2, Col 1: Fastest Adoption */}
+              <QuadrantCell {...quadrants[2]} inView={inView} index={2} />
+              {/* Row 2, Col 2: Co-Pilot, Assistive */}
+              <QuadrantCell {...quadrants[3]} inView={inView} index={3} />
+            </div>
+
+            {/* X-axis */}
+            <div style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 10,
+              marginTop: 12,
+            }}>
+              <span style={{
+                fontFamily: FONTS.mono,
+                fontSize: 8,
+                fontWeight: 700,
+                color: COLORS.textSecondary + "66",
+              }}>
+                LOW
+              </span>
+              <div style={{
+                maxWidth: 100,
+                flex: 1,
+                height: 1,
+                background: `linear-gradient(90deg, transparent, ${COLORS.textSecondary}40, transparent)`,
+              }} />
+              <span style={{
+                fontFamily: FONTS.mono,
+                fontSize: 9,
+                fontWeight: 600,
+                textTransform: "uppercase",
+                color: COLORS.textSecondary + "80",
+              }}>
+                TASK COMPLEXITY
+              </span>
+              <div style={{
+                maxWidth: 100,
+                flex: 1,
+                height: 1,
+                background: `linear-gradient(90deg, transparent, ${COLORS.textSecondary}40, transparent)`,
+              }} />
+              <span style={{
+                fontFamily: FONTS.mono,
+                fontSize: 8,
+                fontWeight: 700,
+                color: COLORS.textSecondary + "66",
+              }}>
+                HIGH
+              </span>
+            </div>
+          </div>
+
+          {/* Right footer banner */}
+          <div style={{
+            marginTop: 16,
+            background: "linear-gradient(135deg, #9b1d25, #6b1520)",
+            borderRadius: 10,
+            padding: "12px 20px",
+            textAlign: "center",
+            opacity: inView ? 1 : 0,
+            transform: inView ? "translateY(0)" : "translateY(15px)",
+            transition: `opacity 0.6s ease 0.5s, transform 0.6s ease 0.5s`,
+          }}>
+            <span style={{
+              fontFamily: FONTS.sans,
+              fontSize: 11.5,
+              color: "rgba(255,255,255,0.8)",
+            }}>
+              Regulatory burden, task complexity, and data sensitivity{" "}
+              <span style={{ fontWeight: 700, color: "#ff8a94" }}>
+                impact adoption rates
+              </span>{" "}
+              across verticals
+            </span>
+          </div>
+        </div>
+      );
+    }
+
+    /* ───────────────────────────────────────────
+       Main App
     ─────────────────────────────────────────── */
     function AIDivergence() {
       return (
@@ -206,8 +807,19 @@
           <div style={{ position: "relative", zIndex: 1 }}>
             <HeroSection />
 
-            {/* Section 2: Two-column layout will go here */}
-
+            {/* Section 2: Two-Column Layout */}
+            <div style={{
+              maxWidth: 1280,
+              margin: "0 auto",
+              padding: "40px 48px 32px",
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: 40,
+              alignItems: "start",
+            }}>
+              <CategoryDivergenceColumn />
+              <AdoptionCurvesColumn />
+            </div>
           </div>
         </div>
       );
