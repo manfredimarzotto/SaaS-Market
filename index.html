@@ -11,7 +11,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { -webkit-font-smoothing: antialiased; }
     body {
-      background: #F8F9FA;
+      background: transparent;
       color: #333;
       font-family: 'Inter', sans-serif;
       font-size: 15px;
@@ -299,6 +299,94 @@
     @media print {
       body { padding: 0; background: #fff; }
       .chart-panel, .footer-banner { box-shadow: none; }
+      .dynamic-bg { display: none; }
+    }
+
+    /* ── Bar hover highlight ── */
+    .bar-row,
+    .bar-row-negative {
+      transition: transform 0.2s ease, background 0.2s ease;
+      border-radius: 6px;
+      padding: 0 4px;
+    }
+    .bar-row:hover,
+    .bar-row-negative:hover {
+      transform: scale(1.03);
+      background: rgba(10,61,98,0.04);
+    }
+    .bar-row:hover [class^="bar-fill"],
+    .bar-row-negative:hover [class^="bar-fill"] {
+      box-shadow: 0 2px 12px rgba(13,110,110,0.35), 0 0 20px rgba(13,110,110,0.15);
+      filter: brightness(1.15);
+    }
+    [class^="bar-fill"] {
+      transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease, filter 0.25s ease;
+    }
+
+    /* ── Custom pin cursor ── */
+    *, *::before, *::after { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='32' viewBox='0 0 24 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%230A3D62'/%3E%3Cstop offset='100%25' stop-color='%230D6E6E'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M12 0C6.5 0 2 4.5 2 9.5C2 16.5 12 28 12 28S22 16.5 22 9.5C22 4.5 17.5 0 12 0Z' fill='url(%23g)' stroke='%23fff' stroke-width='1.5'/%3E%3Ccircle cx='12' cy='9.5' r='3.5' fill='white'/%3E%3C/svg%3E") 12 28, auto; }
+    a, button { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='32' viewBox='0 0 24 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%230D6E6E'/%3E%3Cstop offset='100%25' stop-color='%234CAF50'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M12 0C6.5 0 2 4.5 2 9.5C2 16.5 12 28 12 28S22 16.5 22 9.5C22 4.5 17.5 0 12 0Z' fill='url(%23g)' stroke='%23fff' stroke-width='1.5'/%3E%3Ccircle cx='12' cy='9.5' r='3.5' fill='white'/%3E%3C/svg%3E") 12 28, pointer; }
+
+    /* ── Dynamic background ── */
+    @keyframes bgOrb1 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(80px, -60px) scale(1.1); }
+      50% { transform: translate(-40px, 80px) scale(0.9); }
+      75% { transform: translate(60px, 40px) scale(1.05); }
+    }
+    @keyframes bgOrb2 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(-70px, 50px) scale(1.15); }
+      50% { transform: translate(60px, -70px) scale(0.85); }
+      75% { transform: translate(-50px, -30px) scale(1.1); }
+    }
+    @keyframes bgOrb3 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(50px, 70px) scale(1.2); }
+      66% { transform: translate(-80px, -40px) scale(0.9); }
+    }
+    @keyframes bgGrid {
+      0% { background-position: 0 0; }
+      100% { background-position: 32px 32px; }
+    }
+    .dynamic-bg {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: -1;
+      overflow: hidden;
+      background: #F8F9FA;
+    }
+    .dynamic-bg .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.18;
+      will-change: transform;
+    }
+    .dynamic-bg .orb-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, #0A3D62, transparent 70%);
+      top: 5%; left: 10%;
+      animation: bgOrb1 18s ease-in-out infinite;
+    }
+    .dynamic-bg .orb-2 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, #0D6E6E, transparent 70%);
+      top: 45%; right: 5%;
+      animation: bgOrb2 22s ease-in-out infinite;
+    }
+    .dynamic-bg .orb-3 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, #4CAF50, transparent 70%);
+      bottom: 10%; left: 35%;
+      animation: bgOrb3 15s ease-in-out infinite;
+    }
+    .dynamic-bg .grid-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: radial-gradient(rgba(10,61,98,0.04) 1px, transparent 1px);
+      background-size: 32px 32px;
+      animation: bgGrid 25s linear infinite;
     }
 
     /* ── Scroll animation ── */
@@ -314,6 +402,14 @@
   </style>
 </head>
 <body>
+
+  <!-- Dynamic Background -->
+  <div class="dynamic-bg">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="grid-overlay"></div>
+  </div>
 
   <div class="page-wrapper">
     <!-- Decorative accent bar -->
