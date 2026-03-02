@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI SaaS Market Overview — Budget Scaling</title>
+  <title>AI SaaS Market Overview — Budget Scaling &amp; Divergence</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -450,6 +450,438 @@
       opacity: 1;
       transform: translateY(0);
     }
+
+    /* ══════════════════════════════════════════
+       Section 2: AI Divergence
+    ══════════════════════════════════════════ */
+
+    /* ── Page divider ── */
+    .page-divider {
+      margin: 64px 0;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .page-divider::before,
+    .page-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+    }
+    .page-divider .divider-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: rgba(91,141,239,0.4);
+    }
+
+    /* ── Divergence hero ── */
+    .divergence-hero {
+      margin-bottom: 40px;
+    }
+    .source-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 14px;
+      border-radius: 100px;
+      background: rgba(91,141,239,0.1);
+      border: 1px solid rgba(91,141,239,0.2);
+      margin-bottom: 20px;
+    }
+    .source-badge .badge-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #5B8DEF;
+    }
+    .source-badge span {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #5B8DEF;
+    }
+    .divergence-hero h2 {
+      font-size: clamp(28px, 3.5vw, 40px);
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+      color: #EDEDEF;
+      max-width: 720px;
+      margin-bottom: 16px;
+    }
+    .divergence-hero h2 .accent-blue { color: #5B8DEF; }
+    .divergence-hero h2 .accent-teal { color: #2DD4BF; }
+    .divergence-hero p {
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.55);
+      max-width: 600px;
+    }
+    .divergence-hero p strong {
+      font-weight: 600;
+      color: #EDEDEF;
+    }
+
+    /* ── Two-column divergence grid ── */
+    .divergence-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+      margin-bottom: 32px;
+    }
+
+    /* ── Section label ── */
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .section-label::before {
+      content: '';
+      width: 28px;
+      height: 2px;
+      background: linear-gradient(90deg, #5B8DEF, transparent);
+    }
+    .section-label span {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #5B8DEF;
+    }
+
+    /* ── Category card ── */
+    .category-card {
+      position: relative;
+      border-radius: 16px;
+      padding: 22px 20px;
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.06);
+      margin-bottom: 12px;
+      overflow: hidden;
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .category-card:last-child { margin-bottom: 0; }
+    .category-card:hover {
+      background: rgba(255,255,255,0.06);
+      transform: translateY(-2px);
+    }
+    .category-card .card-accent-bar {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      opacity: 0.4;
+      transition: opacity 0.3s ease;
+    }
+    .category-card:hover .card-accent-bar { opacity: 1; }
+    .category-card .signal-badge {
+      position: absolute;
+      top: 12px; right: 12px;
+      display: inline-flex;
+      padding: 3px 8px;
+      border-radius: 100px;
+      font-size: 8.5px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+    .category-card .card-body {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .card-icon {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+    }
+    .card-icon svg {
+      width: 24px;
+      height: 24px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .card-content { flex: 1; min-width: 0; }
+    .card-content .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #EDEDEF;
+      margin-bottom: 3px;
+    }
+    .card-content .card-tagline {
+      font-size: 12px;
+      font-weight: 500;
+      font-style: italic;
+      line-height: 1.45;
+      margin-bottom: 10px;
+    }
+    .card-bullet {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .card-bullet:last-child { margin-bottom: 0; }
+    .card-bullet .bullet-dot {
+      flex-shrink: 0;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      margin-top: 5px;
+    }
+    .card-bullet span {
+      font-size: 11.5px;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.45;
+    }
+
+    /* Card color variants */
+    .category-card.card-teal:hover { border-color: rgba(45,212,191,0.3); box-shadow: 0 12px 40px rgba(45,212,191,0.08); }
+    .category-card.card-teal .card-accent-bar { background: linear-gradient(90deg, #0D6E6E, #2DD4BF); }
+    .category-card.card-teal .signal-badge { background: rgba(45,212,191,0.15); color: #2DD4BF; }
+    .category-card.card-teal .card-icon { background: linear-gradient(135deg, #0D6E6E, #2DD4BF); box-shadow: 0 4px 12px rgba(45,212,191,0.3); }
+    .category-card.card-teal .card-tagline { color: #2DD4BF; }
+    .category-card.card-teal .bullet-dot { background: rgba(45,212,191,0.6); }
+
+    .category-card.card-muted:hover { border-color: rgba(255,255,255,0.12); box-shadow: 0 12px 40px rgba(255,255,255,0.04); }
+    .category-card.card-muted .card-accent-bar { background: linear-gradient(90deg, rgba(255,255,255,0.2), rgba(255,255,255,0.4)); }
+    .category-card.card-muted .signal-badge { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.5); }
+    .category-card.card-muted .card-icon { background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.2)); box-shadow: 0 4px 12px rgba(255,255,255,0.06); }
+    .category-card.card-muted .card-tagline { color: rgba(255,255,255,0.45); }
+    .category-card.card-muted .bullet-dot { background: rgba(255,255,255,0.25); }
+
+    .category-card.card-red:hover { border-color: rgba(239,68,68,0.3); box-shadow: 0 12px 40px rgba(239,68,68,0.08); }
+    .category-card.card-red .card-accent-bar { background: linear-gradient(90deg, #991B1B, #EF4444); }
+    .category-card.card-red .signal-badge { background: rgba(239,68,68,0.15); color: #F87171; }
+    .category-card.card-red .card-icon { background: linear-gradient(135deg, #991B1B, #EF4444); box-shadow: 0 4px 12px rgba(239,68,68,0.3); }
+    .category-card.card-red .card-tagline { color: #F87171; }
+    .category-card.card-red .bullet-dot { background: rgba(239,68,68,0.6); }
+
+    /* ── Column footer banner ── */
+    .col-footer {
+      margin-top: 16px;
+      border-radius: 10px;
+      padding: 12px 20px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.06);
+      font-size: 11.5px;
+      font-style: italic;
+      color: rgba(255,255,255,0.7);
+    }
+    .col-footer strong {
+      font-weight: 700;
+      font-style: normal;
+    }
+    .col-footer.footer-teal {
+      background: linear-gradient(135deg, rgba(13,59,71,0.6), rgba(10,22,40,0.6));
+    }
+    .col-footer.footer-teal strong { color: #2DD4BF; }
+    .col-footer.footer-red {
+      background: linear-gradient(135deg, rgba(155,29,37,0.4), rgba(107,21,32,0.4));
+    }
+    .col-footer.footer-red strong { color: #F87171; }
+
+    /* ── Quadrant matrix ── */
+    .quadrant-wrapper {
+      position: relative;
+      padding-left: 28px;
+      padding-bottom: 28px;
+    }
+    .quadrant-wrapper .axis-y-label {
+      position: absolute;
+      left: -12px;
+      top: 50%;
+      transform: translateY(-50%) rotate(-90deg);
+      font-size: 9px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+      white-space: nowrap;
+    }
+    .quadrant-wrapper .axis-y-marker {
+      position: absolute;
+      left: 8px;
+      font-size: 8px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.2);
+    }
+    .quadrant-wrapper .axis-y-marker.top { top: 4px; }
+    .quadrant-wrapper .axis-y-marker.bottom { bottom: 34px; }
+    .quadrant-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 10px;
+      min-height: 440px;
+    }
+    .quadrant-cell {
+      border-radius: 14px;
+      padding: 18px 16px;
+      display: flex;
+      flex-direction: column;
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.05);
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .quadrant-cell:hover {
+      transform: translateY(-2px);
+    }
+    .quadrant-cell .q-title-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 2px;
+    }
+    .quadrant-cell .q-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      transition: box-shadow 0.3s ease;
+    }
+    .quadrant-cell:hover .q-dot { box-shadow: 0 0 10px currentColor; }
+    .quadrant-cell .q-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #EDEDEF;
+    }
+    .quadrant-cell .q-subtitle {
+      font-size: 9.5px;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 12px;
+      padding-left: 14px;
+    }
+    .quadrant-cell .q-label {
+      font-size: 8px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 6px;
+    }
+    .vertical-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 12px;
+    }
+    .vertical-pill {
+      font-size: 10px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.75);
+      padding: 2px 7px;
+      border-radius: 100px;
+    }
+    .q-use-case {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+    .q-use-case:last-child { margin-bottom: 0; }
+    .q-use-case .uc-dot {
+      flex-shrink: 0;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      margin-top: 5px;
+    }
+    .q-use-case span {
+      font-size: 10.5px;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.4;
+    }
+
+    /* Quadrant color variants */
+    .quadrant-cell.q-teal:hover { background: rgba(13,110,110,0.08); border-color: rgba(13,110,110,0.2); }
+    .quadrant-cell.q-teal .q-dot { background: #0D6E6E; color: #0D6E6E; }
+    .quadrant-cell.q-teal .q-label { color: #0D6E6E; }
+    .quadrant-cell.q-teal .vertical-pill { background: rgba(13,110,110,0.15); border: 1px solid rgba(13,110,110,0.2); }
+    .quadrant-cell.q-teal .uc-dot { background: rgba(13,110,110,0.5); }
+
+    .quadrant-cell.q-red:hover { background: rgba(230,57,70,0.06); border-color: rgba(230,57,70,0.2); }
+    .quadrant-cell.q-red .q-dot { background: #EF4444; color: #EF4444; }
+    .quadrant-cell.q-red .q-label { color: #EF4444; }
+    .quadrant-cell.q-red .vertical-pill { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.18); }
+    .quadrant-cell.q-red .uc-dot { background: rgba(239,68,68,0.5); }
+
+    .quadrant-cell.q-green:hover { background: rgba(45,212,191,0.06); border-color: rgba(45,212,191,0.2); }
+    .quadrant-cell.q-green .q-dot { background: #2DD4BF; color: #2DD4BF; }
+    .quadrant-cell.q-green .q-label { color: #2DD4BF; }
+    .quadrant-cell.q-green .vertical-pill { background: rgba(45,212,191,0.12); border: 1px solid rgba(45,212,191,0.18); }
+    .quadrant-cell.q-green .uc-dot { background: rgba(45,212,191,0.5); }
+
+    .quadrant-cell.q-blue:hover { background: rgba(91,141,239,0.06); border-color: rgba(91,141,239,0.2); }
+    .quadrant-cell.q-blue .q-dot { background: #5B8DEF; color: #5B8DEF; }
+    .quadrant-cell.q-blue .q-label { color: #5B8DEF; }
+    .quadrant-cell.q-blue .vertical-pill { background: rgba(91,141,239,0.12); border: 1px solid rgba(91,141,239,0.18); }
+    .quadrant-cell.q-blue .uc-dot { background: rgba(91,141,239,0.5); }
+
+    /* ── X-axis ── */
+    .x-axis {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 12px;
+      font-size: 8px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.2);
+    }
+    .x-axis .axis-line {
+      max-width: 100px;
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+    }
+    .x-axis .axis-center {
+      font-size: 9px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+    }
+
+    /* ── Page footer ── */
+    .page-footer {
+      text-align: center;
+      padding: 32px 0 16px;
+    }
+    .page-footer .footer-line {
+      width: 36px;
+      height: 1px;
+      background: rgba(91,141,239,0.25);
+      margin: 0 auto 16px;
+    }
+    .page-footer span {
+      font-size: 10px;
+      color: rgba(255,255,255,0.2);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Responsive (Section 2) ── */
+    @media (max-width: 960px) {
+      .divergence-grid { grid-template-columns: 1fr; }
+      .quadrant-grid { min-height: auto; }
+    }
+    @media (max-width: 600px) {
+      .divergence-hero h2 { font-size: 24px; }
+      .quadrant-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+    }
   </style>
 </head>
 <body>
@@ -716,6 +1148,185 @@
     <!-- Footer Banner -->
     <div class="footer-banner fade-in">
       Net IT budgets will grow modestly, but we expect that growth to be <em>concentrated in applied AI and automation spending</em>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         Section 2: AI Divergence
+    ══════════════════════════════════════════ -->
+
+    <div class="page-divider">
+      <div class="divider-dot"></div>
+    </div>
+
+    <!-- Divergence Hero -->
+    <div class="divergence-hero fade-in">
+      <div class="source-badge">
+        <div class="badge-dot"></div>
+        <span>AI &amp; SaaS Considerations</span>
+      </div>
+      <h2>
+        AI Divergence <span class="accent-blue">By Category</span>
+        and <span class="accent-teal">By Segment</span>
+      </h2>
+      <p>AI adoption is reshaping SaaS category dynamics — vendors positioned as <strong>systems of action</strong> are pulling ahead in both enterprise adoption and budget allocation.</p>
+    </div>
+
+    <!-- Two-Column Layout -->
+    <div class="divergence-grid">
+
+      <!-- LEFT: Category Divergence -->
+      <div class="fade-in">
+        <div class="section-label"><span>Category Divergence</span></div>
+
+        <!-- Systems of Action -->
+        <div class="category-card card-teal">
+          <div class="card-accent-bar"></div>
+          <div class="signal-badge">HIGHEST UPSIDE</div>
+          <div class="card-body">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24"><circle cx="7" cy="17" r="3"/><line x1="10" y1="14" x2="18" y2="6"/><polyline points="14 6 18 6 18 10"/></svg>
+            </div>
+            <div class="card-content">
+              <div class="card-title">Systems of Action</div>
+              <div class="card-tagline">Capture disproportionate levels of value as AI directly drives outcomes and decisions</div>
+              <div class="card-bullet"><div class="bullet-dot"></div><span>Platforms closest to "doing the work" benefit the most from AI-driven efficiency</span></div>
+              <div class="card-bullet"><div class="bullet-dot"></div><span>Value creation compounds as models learn from execution data and closed-loop feedback</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Systems of Record -->
+        <div class="category-card card-muted">
+          <div class="card-accent-bar"></div>
+          <div class="signal-badge">STEADY STATE</div>
+          <div class="card-body">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><polyline points="10 16 12 18 16 14"/></svg>
+            </div>
+            <div class="card-content">
+              <div class="card-title">Systems of Record</div>
+              <div class="card-tagline">Slower disruption — AI improves efficiency but limits incremental platform differentiation</div>
+              <div class="card-bullet"><div class="bullet-dot"></div><span>Data integrity, compliance, and reliability requirements constrain AI-driven change</span></div>
+              <div class="card-bullet"><div class="bullet-dot"></div><span>AI enhances workflows rather than instituting step-function product changes</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Systems of Engagement -->
+        <div class="category-card card-red">
+          <div class="card-accent-bar"></div>
+          <div class="signal-badge">&#9888; HIGH RISK</div>
+          <div class="card-body">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24"><polyline points="3 17 7 11 11 15 15 7 19 13 21 10"/><circle cx="18" cy="6" r="3" stroke-dasharray="4 2"/></svg>
+            </div>
+            <div class="card-content">
+              <div class="card-title">Systems of Engagement</div>
+              <div class="card-tagline">Most crowded and dangerous place to be in 2026 — AI commoditizes the surface layer quickly</div>
+              <div class="card-bullet"><div class="bullet-dot"></div><span>Sustainable differentiation requires deep workflow integration and measurable ROI</span></div>
+              <div class="card-bullet"><div class="bullet-dot"></div><span>GenAI rapidly commoditizes surface-level engagement features (e.g., content, UX)</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-footer footer-teal fade-in">
+          Vendors with <strong>hybrid exposure and opportunities</strong> across categories will navigate the transition most effectively
+        </div>
+      </div>
+
+      <!-- RIGHT: Adoption Curves by Vertical -->
+      <div class="fade-in">
+        <div class="section-label"><span>Adoption Curves by Vertical</span></div>
+
+        <div class="quadrant-wrapper">
+          <div class="axis-y-label">Regulation / Tech Maturity</div>
+          <div class="axis-y-marker top">HIGH</div>
+          <div class="axis-y-marker bottom">LOW</div>
+
+          <div class="quadrant-grid">
+            <!-- Row 1, Col 1: Governed Rollout -->
+            <div class="quadrant-cell q-teal">
+              <div class="q-title-row"><div class="q-dot"></div><div class="q-title">Governed Rollout</div></div>
+              <div class="q-subtitle">High reg · Low complexity</div>
+              <div class="q-label">Verticals</div>
+              <div class="vertical-pills">
+                <span class="vertical-pill">Legal</span>
+                <span class="vertical-pill">Compliance</span>
+              </div>
+              <div class="q-label">Use Cases</div>
+              <div class="q-use-case"><div class="uc-dot"></div><span>Research &amp; Contract Workflows</span></div>
+              <div class="q-use-case"><div class="uc-dot"></div><span>Outage Support Chatbots</span></div>
+              <div class="q-use-case"><div class="uc-dot"></div><span>Transaction Monitoring &amp; Audit</span></div>
+            </div>
+
+            <!-- Row 1, Col 2: Slowest Adoption -->
+            <div class="quadrant-cell q-red">
+              <div class="q-title-row"><div class="q-dot"></div><div class="q-title">Slowest Adoption</div></div>
+              <div class="q-subtitle">High reg · High complexity</div>
+              <div class="q-label">Verticals</div>
+              <div class="vertical-pills">
+                <span class="vertical-pill">Banking &amp; Finance</span>
+                <span class="vertical-pill">Construction &amp; Industrial</span>
+                <span class="vertical-pill">Medicine</span>
+              </div>
+              <div class="q-label">Use Cases</div>
+              <div class="q-use-case"><div class="uc-dot"></div><span>Autonomous Underwriting</span></div>
+              <div class="q-use-case"><div class="uc-dot"></div><span>Construction / Ops. Analyses</span></div>
+              <div class="q-use-case"><div class="uc-dot"></div><span>Surgical Automation</span></div>
+            </div>
+
+            <!-- Row 2, Col 1: Fastest Adoption -->
+            <div class="quadrant-cell q-green">
+              <div class="q-title-row"><div class="q-dot"></div><div class="q-title">Fastest Adoption</div></div>
+              <div class="q-subtitle">Low reg · Low complexity</div>
+              <div class="q-label">Verticals</div>
+              <div class="vertical-pills">
+                <span class="vertical-pill">Marketing &amp; E-Commerce</span>
+                <span class="vertical-pill">Customer Support</span>
+                <span class="vertical-pill">Human Resources</span>
+              </div>
+              <div class="q-label">Use Cases</div>
+              <div class="q-use-case"><div class="uc-dot"></div><span>Chatbots &amp; FAQ Automation</span></div>
+              <div class="q-use-case"><div class="uc-dot"></div><span>Contact Center Routing</span></div>
+              <div class="q-use-case"><div class="uc-dot"></div><span>Marketing Content Generation</span></div>
+            </div>
+
+            <!-- Row 2, Col 2: Co-Pilot, Assistive -->
+            <div class="quadrant-cell q-blue">
+              <div class="q-title-row"><div class="q-dot"></div><div class="q-title">Co-Pilot, Assistive</div></div>
+              <div class="q-subtitle">Low reg · High complexity</div>
+              <div class="q-label">Verticals</div>
+              <div class="vertical-pills">
+                <span class="vertical-pill">Enterprise ITSM</span>
+                <span class="vertical-pill">Verticalized ERP &amp; CRM</span>
+              </div>
+              <div class="q-label">Use Cases</div>
+              <div class="q-use-case"><div class="uc-dot"></div><span>Incident Resolution Automation</span></div>
+              <div class="q-use-case"><div class="uc-dot"></div><span>Lead Qualification Scoring</span></div>
+            </div>
+          </div>
+
+          <!-- X-axis -->
+          <div class="x-axis">
+            <span>LOW</span>
+            <div class="axis-line"></div>
+            <span class="axis-center">Task Complexity</span>
+            <div class="axis-line"></div>
+            <span>HIGH</span>
+          </div>
+        </div>
+
+        <div class="col-footer footer-red fade-in">
+          Regulatory burden, task complexity, and data sensitivity <strong>impact adoption rates</strong> across verticals
+        </div>
+      </div>
+
+    </div><!-- /divergence-grid -->
+
+    <!-- Page Footer -->
+    <div class="page-footer fade-in">
+      <div class="footer-line"></div>
+      <span>AI &amp; SaaS Considerations — Category &amp; Segment Analysis</span>
     </div>
 
   </div><!-- /page-wrapper -->
