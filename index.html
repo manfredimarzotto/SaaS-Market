@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; scroll-behavior: smooth; }
     body {
       background: transparent;
       color: #3A3F4B;
@@ -808,10 +808,24 @@
       background: rgba(91,141,239,0.2);
       margin: 0 auto 16px;
     }
-    .page-footer span {
+    .footer-nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      white-space: nowrap;
+    }
+    .footer-nav a {
       font-size: 10px;
       color: #9CA3AF;
       letter-spacing: 0.04em;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-nav a:hover { color: #5B8DEF; }
+    .footer-sep {
+      font-size: 10px;
+      color: #D1D5DB;
     }
 
     @media (max-width: 960px) {
@@ -1049,7 +1063,7 @@
     <div class="accent-bar"></div>
 
     <!-- Title block -->
-    <div class="title-block">
+    <div id="market-overview" class="title-block">
       <div class="eyebrow">AI SaaS Market Overview</div>
       <h1>Organizations Have Begun Dramatically Scaling AI Budgets</h1>
       <p>Capital is flowing into AI native application spend at unprecedented speed, but durable value will accrue where AI is embedded into governed, system of record workflows</p>
@@ -1305,7 +1319,7 @@
       <div class="divider-dot"></div>
     </div>
 
-    <div class="divergence-hero fade-in">
+    <div id="ai-sas-considerations" class="divergence-hero fade-in">
       <div class="source-badge">
         <div class="badge-dot"></div>
         <span>AI &amp; SaaS Considerations</span>
@@ -1460,7 +1474,7 @@
     <!-- ═══════════════════════════════════════════════
          SECTION 3 — AI Diligence Framework
          ═══════════════════════════════════════════════ -->
-    <div class="diligence-section">
+    <div id="investor-lens" class="diligence-section">
 
       <div class="diligence-hero">
         <div class="diligence-badge fade-in">
@@ -1557,7 +1571,13 @@
 
     <div class="page-footer fade-in">
       <div class="footer-line"></div>
-      <span>AI &amp; SaaS Considerations, Category &amp; Segment Analysis, Diligence Framework</span>
+      <nav class="footer-nav">
+        <a href="#market-overview">AI SaaS Market Overview</a>
+        <span class="footer-sep">&middot;</span>
+        <a href="#ai-sas-considerations">AI &amp; SaaS Considerations</a>
+        <span class="footer-sep">&middot;</span>
+        <a href="#investor-lens">The Investor Lens</a>
+      </nav>
     </div>
 
   </div>
