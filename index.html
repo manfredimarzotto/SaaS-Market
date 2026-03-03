@@ -812,6 +812,187 @@
       .divergence-hero h2 { font-size: 24px; }
       .quadrant-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
     }
+
+    /* ═══════════════════════════════════════════════
+       SECTION 3 — AI Diligence Framework
+       ═══════════════════════════════════════════════ */
+
+    .diligence-section {
+      margin-top: 80px;
+    }
+
+    /* ── Hero block ── */
+    .diligence-hero {
+      padding: 0 0 0 24px;
+      margin-bottom: 64px;
+    }
+    .diligence-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+    .diligence-badge .badge-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #5B8DEF;
+    }
+    .diligence-badge span {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      color: #5B8DEF;
+      text-transform: uppercase;
+    }
+    .diligence-hero h2 {
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 800;
+      color: #0F1629;
+      letter-spacing: -0.03em;
+      line-height: 1.0;
+      max-width: 700px;
+      margin-bottom: 20px;
+    }
+    .diligence-hero p {
+      font-size: 16px;
+      font-weight: 300;
+      color: #6B7280;
+      line-height: 1.65;
+      max-width: 480px;
+    }
+
+    /* ── Column headers ── */
+    .dim-col-headers {
+      display: grid;
+      grid-template-columns: 80px 1fr 1fr;
+      padding-bottom: 10px;
+    }
+    .dim-col-headers span {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: #9CA3AF;
+      text-transform: uppercase;
+    }
+    .dim-col-header-criteria {
+      padding-left: 24px;
+    }
+
+    /* ── Dimension rows ── */
+    .dim-row {
+      display: grid;
+      grid-template-columns: 80px 1fr 1fr;
+      border-top: 1px solid rgba(0,0,0,0.08);
+      transition: background 0.2s ease;
+    }
+    .dim-row:hover {
+      background: rgba(91,141,239,0.03);
+    }
+    .dim-closing-rule {
+      border-top: 1px solid rgba(0,0,0,0.08);
+    }
+    .dim-number {
+      font-size: 48px;
+      font-weight: 800;
+      color: rgba(0,0,0,0.08);
+      letter-spacing: -0.04em;
+      line-height: 1;
+      padding: 28px 16px 24px 0;
+      text-align: right;
+      transition: color 0.35s ease;
+    }
+    .dim-row:hover .dim-number {
+      color: #5B8DEF;
+    }
+    .dim-topic {
+      padding: 24px;
+      border-right: 1px solid rgba(0,0,0,0.06);
+    }
+    .dim-topic h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0F1629;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      margin-bottom: 8px;
+    }
+    .dim-question {
+      font-size: 13.5px;
+      font-style: italic;
+      color: #6B7280;
+      line-height: 1.5;
+      transition: color 0.35s ease;
+    }
+    .dim-row:hover .dim-question {
+      color: #5B8DEF;
+    }
+    .dim-criteria {
+      padding: 24px 0 24px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .criterion {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .criterion .arrow {
+      font-size: 10px;
+      font-weight: 700;
+      color: #5B8DEF;
+      opacity: 0.6;
+      min-width: 8px;
+      line-height: 1.55;
+      margin-top: 1px;
+    }
+    .criterion span {
+      font-size: 13px;
+      line-height: 1.55;
+      color: #3A3F4B;
+    }
+
+    /* ── Diligence footer ── */
+    .diligence-footer {
+      margin-top: 56px;
+      background: rgba(255,255,255,0.6);
+      border: 1px solid rgba(0,0,0,0.06);
+      color: #6B7280;
+      padding: 24px 36px;
+      border-radius: 14px;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.6;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .diligence-footer::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(91,141,239,0.3), rgba(52,211,153,0.2), transparent);
+    }
+    .diligence-footer strong { color: #0F1629; font-weight: 600; }
+
+    @media (max-width: 768px) {
+      .dim-col-headers { grid-template-columns: 1fr; }
+      .dim-col-headers span { display: none; }
+      .dim-row { grid-template-columns: 1fr; }
+      .dim-number {
+        font-size: 36px;
+        text-align: left;
+        padding: 20px 0 4px 0;
+      }
+      .dim-topic {
+        border-right: none;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(0,0,0,0.04);
+      }
+      .dim-criteria { padding: 12px 0 20px; }
+    }
   </style>
 </head>
 <body>
@@ -1241,9 +1422,93 @@
 
     </div>
 
+    <!-- ═══════════════════════════════════════════════
+         SECTION 3 — AI Diligence Framework
+         ═══════════════════════════════════════════════ -->
+    <div class="diligence-section">
+
+      <div class="diligence-hero">
+        <div class="diligence-badge fade-in">
+          <div class="badge-dot"></div>
+          <span>The Investor Lens</span>
+        </div>
+        <h2 class="fade-in">AI Diligence<br>Framework</h2>
+        <p class="fade-in">Evaluating structural risk and upside in an AI driven market. Four dimensions that separate durable platforms from vulnerable ones.</p>
+      </div>
+
+      <div class="dim-col-headers fade-in">
+        <span></span>
+        <span>Dimension &amp; Focus</span>
+        <span class="dim-col-header-criteria">Evaluation Criteria</span>
+      </div>
+
+      <!-- Row 1: Strategic Positioning -->
+      <div class="dim-row fade-in">
+        <div class="dim-number">01</div>
+        <div class="dim-topic">
+          <h3>Strategic Positioning</h3>
+          <div class="dim-question">Is AI value creating or defensive for this business?</div>
+        </div>
+        <div class="dim-criteria">
+          <div class="criterion"><span class="arrow">&rarr;</span><span>Clear thesis for how AI drives revenue, margin, or retention</span></div>
+          <div class="criterion"><span class="arrow">&rarr;</span><span>Defined use cases tied to measurable outcomes</span></div>
+          <div class="criterion"><span class="arrow">&rarr;</span><span>Evidence of real economic impact from AI products</span></div>
+        </div>
+      </div>
+
+      <!-- Row 2: Operational Readiness -->
+      <div class="dim-row fade-in">
+        <div class="dim-number">02</div>
+        <div class="dim-topic">
+          <h3>Operational Readiness</h3>
+          <div class="dim-question">Can the company execute an AI strategy at scale?</div>
+        </div>
+        <div class="dim-criteria">
+          <div class="criterion"><span class="arrow">&rarr;</span><span>Clean, governed, workflow relevant data</span></div>
+          <div class="criterion"><span class="arrow">&rarr;</span><span>Evidence of efficiency gains or margin improvement</span></div>
+          <div class="criterion"><span class="arrow">&rarr;</span><span>Architecture capable of supporting agentic workflows</span></div>
+        </div>
+      </div>
+
+      <!-- Row 3: Product & Moat Durability -->
+      <div class="dim-row fade-in">
+        <div class="dim-number">03</div>
+        <div class="dim-topic">
+          <h3>Product &amp; Moat Durability</h3>
+          <div class="dim-question">Does AI strengthen or weaken defensibility?</div>
+        </div>
+        <div class="dim-criteria">
+          <div class="criterion"><span class="arrow">&rarr;</span><span>AI embedded into core workflows, not surface level features</span></div>
+          <div class="criterion"><span class="arrow">&rarr;</span><span>Proprietary, outcome linked data assets</span></div>
+          <div class="criterion"><span class="arrow">&rarr;</span><span>Data advantage that grows with usage, not static</span></div>
+        </div>
+      </div>
+
+      <!-- Row 4: Market Exposure & Competitive Dynamics -->
+      <div class="dim-row fade-in">
+        <div class="dim-number">04</div>
+        <div class="dim-topic">
+          <h3>Market Exposure &amp; Competitive Dynamics</h3>
+          <div class="dim-question">Is the business structurally exposed or advantaged?</div>
+        </div>
+        <div class="dim-criteria">
+          <div class="criterion"><span class="arrow">&rarr;</span><span>Replaceable labor vs mission critical workflow positioning</span></div>
+          <div class="criterion"><span class="arrow">&rarr;</span><span>Speed of AI native entrants in the category</span></div>
+          <div class="criterion"><span class="arrow">&rarr;</span><span>Ability to consolidate vs risk of being displaced</span></div>
+        </div>
+      </div>
+
+      <div class="dim-closing-rule"></div>
+
+      <div class="diligence-footer fade-in">
+        AI diligence should assess potential for both <strong>disruption risk and clear advantage</strong>
+      </div>
+
+    </div>
+
     <div class="page-footer fade-in">
       <div class="footer-line"></div>
-      <span>AI &amp; SaaS Considerations, Category &amp; Segment Analysis</span>
+      <span>AI &amp; SaaS Considerations, Category &amp; Segment Analysis, Diligence Framework</span>
     </div>
 
   </div>
