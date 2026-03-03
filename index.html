@@ -3,1033 +3,1542 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI SaaS Considerations Booklet</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            navy: { 900: '#0f2b46', 800: '#1e3a5f', 700: '#2a4a72', 600: '#3b5f8a' },
-            brand: { teal: '#0d9488', light: '#14b8a6', accent: '#2dd4bf' }
-          }
-        }
-      }
-    }
-  </script>
+  <title>AI SaaS Market Overview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    body {
+      background: transparent;
+      color: #3A3F4B;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 15px;
+      line-height: 1.55;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 48px 24px;
+    }
+
+    .page-wrapper {
+      max-width: 1280px;
+      width: 100%;
+      position: relative;
+    }
+
+    /* ── Decorative left accent ── */
+    .accent-bar {
+      position: absolute;
+      left: 0; top: 0;
+      width: 3px; height: 100px;
+      background: linear-gradient(180deg, #5B8DEF, #0D6E6E, transparent);
+      border-radius: 2px;
+    }
+
+    /* ── Title block ── */
+    .title-block {
+      padding-left: 24px;
+      margin-bottom: 48px;
+    }
+    .title-block .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: #5B8DEF;
+      margin-bottom: 12px;
+    }
+    .title-block h1 {
+      font-size: 32px;
+      font-weight: 800;
+      color: #0F1629;
+      line-height: 1.15;
+      margin-bottom: 14px;
+      letter-spacing: -0.03em;
+      white-space: nowrap;
+    }
+    .title-block p {
+      font-size: 14px;
+      font-weight: 300;
+      color: #6B7280;
+      max-width: none;
+      line-height: 1.6;
+      white-space: nowrap;
+    }
+
+    /* ── Main content grid ── */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 32px;
+      align-items: start;
+    }
+
+    /* ── Chart panel ── */
+    .chart-panel {
+      background: rgba(255,255,255,0.75);
+      border: 1px solid rgba(0,0,0,0.06);
+      border-radius: 16px;
+      padding: 36px 40px 32px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .chart-header {
+      font-size: 16px;
+      font-weight: 700;
+      color: #0F1629;
+      margin-bottom: 4px;
+      letter-spacing: -0.01em;
+    }
+    .chart-header-line {
+      height: 1px;
+      background: linear-gradient(90deg, rgba(91,141,239,0.4), rgba(0,0,0,0.04));
+      margin-bottom: 24px;
+    }
+
+    .chart-area { position: relative; }
+
+    .section-group { margin-bottom: 20px; }
+    .section-group:last-child { margin-bottom: 0; }
+    .section-annotation {
+      font-size: 11px;
+      font-weight: 600;
+      color: #9CA3AF;
+      letter-spacing: 0.06em;
+      margin-bottom: 12px;
+      padding-left: 4px;
+    }
+    .section-separator {
+      border: none;
+      border-top: 1px solid rgba(0,0,0,0.06);
+      margin: 18px 0 20px;
+    }
+
+    /* Bar rows — diverging chart */
+    .bar-row {
+      display: grid;
+      grid-template-columns: 160px 1fr 1fr;
+      align-items: center;
+      margin-bottom: 6px;
+      height: 34px;
+    }
+    .bar-label {
+      font-size: 14px;
+      font-weight: 400;
+      color: #6B7280;
+      text-align: right;
+      padding-right: 16px;
+      white-space: nowrap;
+    }
+    .bar-neg-half {
+      display: flex;
+      flex-direction: row-reverse;
+      align-items: center;
+      height: 28px;
+      gap: 8px;
+      border-right: 1px solid rgba(0,0,0,0.15);
+      padding-right: 3px;
+    }
+    .bar-pos-half {
+      display: flex;
+      align-items: center;
+      height: 28px;
+      gap: 8px;
+      padding-left: 3px;
+    }
+    .bar-fill-green {
+      height: 24px;
+      border-radius: 4px;
+      background: linear-gradient(90deg, #0D6E6E, #34D399);
+      flex-shrink: 0;
+    }
+    .bar-fill-teal {
+      height: 24px;
+      border-radius: 4px;
+      background: linear-gradient(90deg, #2563EB, #5B8DEF);
+      flex-shrink: 0;
+    }
+    .bar-fill-red {
+      height: 24px;
+      border-radius: 4px;
+      background: linear-gradient(270deg, #991B1B, #EF4444);
+      flex-shrink: 0;
+    }
+    .bar-value {
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+      flex-shrink: 0;
+    }
+    .bar-value.green { color: #0D6E6E; }
+    .bar-value.blue { color: #2563EB; }
+    .bar-value.red { color: #DC2626; }
+
+    .axis-labels {
+      display: grid;
+      grid-template-columns: 160px 1fr 1fr;
+      margin-bottom: 16px;
+    }
+    .axis-label-neg {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: #9CA3AF;
+      font-weight: 500;
+      padding: 0 4px;
+      letter-spacing: 0.02em;
+    }
+    .axis-label-pos {
+      display: flex;
+      justify-content: flex-end;
+      font-size: 10px;
+      color: #9CA3AF;
+      font-weight: 500;
+      padding: 0 4px;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── Key Themes panel ── */
+    .themes-panel { display: flex; flex-direction: column; padding-top: 37px; }
+    .themes-header {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: #9CA3AF;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      margin-bottom: 24px;
+    }
+    .theme-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 8px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+    .theme-item:hover {
+      background: rgba(0,0,0,0.02);
+      border-color: rgba(0,0,0,0.06);
+    }
+    .theme-item:last-child { margin-bottom: 0; }
+    .theme-icon {
+      flex-shrink: 0;
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1px;
+    }
+    .theme-icon svg {
+      width: 18px; height: 18px;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .theme-item:nth-child(2) .theme-icon { background: rgba(52,211,153,0.1); }
+    .theme-item:nth-child(2) .theme-icon svg { stroke: #0D6E6E; }
+    .theme-item:nth-child(3) .theme-icon { background: rgba(91,141,239,0.1); }
+    .theme-item:nth-child(3) .theme-icon svg { stroke: #5B8DEF; }
+    .theme-item:nth-child(4) .theme-icon { background: rgba(248,113,113,0.1); }
+    .theme-item:nth-child(4) .theme-icon svg { stroke: #F87171; }
+    .theme-item:nth-child(5) .theme-icon { background: rgba(13,110,110,0.12); }
+    .theme-item:nth-child(5) .theme-icon svg { stroke: #2DD4BF; }
+    .theme-item:nth-child(6) .theme-icon { background: rgba(251,191,36,0.1); }
+    .theme-item:nth-child(6) .theme-icon svg { stroke: #FBBF24; }
+    .theme-text {
+      font-size: 15px;
+      color: #6B7280;
+      line-height: 1.55;
+      font-weight: 400;
+    }
+    .theme-text strong { color: #0F1629; font-weight: 600; }
+
+    /* ── Footer banner ── */
+    .footer-banner {
+      margin-top: 40px;
+      background: rgba(255,255,255,0.6);
+      border: 1px solid rgba(0,0,0,0.06);
+      color: #6B7280;
+      padding: 24px 36px;
+      border-radius: 14px;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.6;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .footer-banner::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(91,141,239,0.3), rgba(52,211,153,0.2), transparent);
+    }
+    .footer-banner strong, .footer-banner em { color: #0F1629; font-style: normal; font-weight: 600; }
+
+    /* ── Responsive ── */
+    @media (max-width: 960px) {
+      .content-grid { grid-template-columns: 1fr; }
+      .bar-row { grid-template-columns: 140px 1fr 1fr; }
+      .axis-labels { grid-template-columns: 140px 1fr 1fr; }
+      .bar-label { font-size: 12px; padding-right: 12px; }
+      .title-block h1 { white-space: normal; font-size: 28px; }
+      .title-block p { white-space: normal; }
+    }
+    @media (max-width: 600px) {
+      body { padding: 24px 12px; }
+      .title-block h1 { font-size: 22px; }
+      .chart-panel { padding: 24px 20px; }
+      .bar-row { grid-template-columns: 110px 1fr 1fr; }
+      .axis-labels { grid-template-columns: 110px 1fr 1fr; }
+      .bar-label { font-size: 11px; padding-right: 8px; }
+    }
+
     @media print {
-      section { page-break-before: always; }
-      section:first-of-type { page-break-before: avoid; }
-      nav { display: none; }
+      body { padding: 0; background: #fff; color: #111; }
+      .chart-panel, .footer-banner { box-shadow: none; border: 1px solid #ddd; background: #fff; }
+      .dynamic-bg { display: none; }
     }
-    .chevron-shape {
-      clip-path: polygon(0 0, 90% 0, 100% 50%, 90% 100%, 0 100%, 10% 50%);
+
+    /* ── Bar hover ── */
+    .bar-row {
+      transition: background 0.15s ease;
+      border-radius: 6px;
+      padding: 0 4px;
     }
-    .chevron-shape:first-child {
-      clip-path: polygon(0 0, 90% 0, 100% 50%, 90% 100%, 0 100%);
+    .bar-row:hover {
+      background: rgba(0,0,0,0.02);
+    }
+    .bar-row:hover .bar-label { color: #0F1629; }
+    .bar-row:hover [class^="bar-fill"] {
+      box-shadow: 0 0 20px rgba(91,141,239,0.15), 0 0 40px rgba(52,211,153,0.08);
+      filter: brightness(1.1);
+    }
+    [class^="bar-fill"] {
+      transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s ease, filter 0.2s ease;
+    }
+
+    /* ── Dynamic background ── */
+    @keyframes bgOrb1 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(100px, -80px) scale(1.1); }
+      50% { transform: translate(-50px, 100px) scale(0.9); }
+      75% { transform: translate(70px, 50px) scale(1.05); }
+    }
+    @keyframes bgOrb2 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(-90px, 60px) scale(1.15); }
+      50% { transform: translate(70px, -80px) scale(0.85); }
+      75% { transform: translate(-60px, -40px) scale(1.1); }
+    }
+    @keyframes bgOrb3 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(60px, 80px) scale(1.2); }
+      66% { transform: translate(-90px, -50px) scale(0.9); }
+    }
+    @keyframes bgGrid {
+      0% { background-position: 0 0; }
+      100% { background-position: 48px 48px; }
+    }
+    .dynamic-bg {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: -1;
+      overflow: hidden;
+      background: #EFF3F8;
+    }
+    .dynamic-bg .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(140px);
+      will-change: transform;
+    }
+    .dynamic-bg .orb-1 {
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(91,141,239,0.12), transparent 70%);
+      top: -5%; left: 5%;
+      animation: bgOrb1 20s ease-in-out infinite;
+    }
+    .dynamic-bg .orb-2 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(13,110,110,0.08), transparent 70%);
+      top: 40%; right: -5%;
+      animation: bgOrb2 25s ease-in-out infinite;
+    }
+    .dynamic-bg .orb-3 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(139,92,246,0.06), transparent 70%);
+      bottom: 5%; left: 30%;
+      animation: bgOrb3 18s ease-in-out infinite;
+    }
+    .dynamic-bg .grid-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image:
+        linear-gradient(rgba(0,0,0,0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.015) 1px, transparent 1px);
+      background-size: 48px 48px;
+      animation: bgGrid 40s linear infinite;
+    }
+    .dynamic-bg .noise {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      opacity: 0.15;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    }
+
+    /* ── Scroll animation ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* ══════════════════════════════════════════
+       Section 2: AI Divergence
+    ══════════════════════════════════════════ */
+
+    .page-divider {
+      margin: 64px 0;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .page-divider::before, .page-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0,0,0,0.06), transparent);
+    }
+    .page-divider .divider-dot {
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: rgba(91,141,239,0.4);
+    }
+
+    .divergence-hero { margin-bottom: 40px; }
+    .source-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 14px;
+      border-radius: 100px;
+      background: rgba(91,141,239,0.08);
+      border: 1px solid rgba(91,141,239,0.15);
+      margin-bottom: 20px;
+    }
+    .source-badge .badge-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: #5B8DEF;
+    }
+    .source-badge span {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: #5B8DEF;
+    }
+    .divergence-hero h2 {
+      font-size: clamp(28px, 3.5vw, 40px);
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+      color: #0F1629;
+      max-width: 720px;
+      margin-bottom: 16px;
+    }
+    .divergence-hero h2 .accent-blue { color: #5B8DEF; }
+    .divergence-hero h2 .accent-teal { color: #0D6E6E; }
+    .divergence-hero p {
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 1.6;
+      color: #6B7280;
+      max-width: 600px;
+    }
+    .divergence-hero p strong { font-weight: 600; color: #0F1629; }
+
+    .divergence-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+      margin-bottom: 32px;
+    }
+
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .section-label::before {
+      content: '';
+      width: 28px; height: 2px;
+      background: linear-gradient(90deg, #5B8DEF, transparent);
+    }
+    .section-label span {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: #5B8DEF;
+    }
+
+    /* ── Category card ── */
+    .category-card {
+      position: relative;
+      border-radius: 16px;
+      padding: 22px 20px;
+      background: rgba(255,255,255,0.65);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(0,0,0,0.06);
+      margin-bottom: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .category-card:last-child { margin-bottom: 0; }
+    .category-card:hover {
+      background: rgba(255,255,255,0.85);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+    .category-card .card-accent-bar {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      opacity: 0.5;
+      transition: opacity 0.3s ease;
+    }
+    .category-card:hover .card-accent-bar { opacity: 1; }
+
+    /* Signal badge: angular tab */
+    .category-card .signal-badge {
+      position: absolute;
+      top: 0; right: 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 0 0 6px 6px;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+    .category-card .card-body {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      margin-top: 4px;
+    }
+    .card-icon {
+      flex-shrink: 0;
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+    }
+    .card-icon svg {
+      width: 22px; height: 22px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .card-content { flex: 1; min-width: 0; }
+    .card-content .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #0F1629;
+      margin-bottom: 3px;
+    }
+    .card-content .card-tagline {
+      font-size: 13px;
+      font-weight: 500;
+      font-style: italic;
+      line-height: 1.45;
+      margin-bottom: 10px;
+    }
+    .card-bullet {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .card-bullet:last-child { margin-bottom: 0; }
+    .card-bullet .bullet-dot {
+      flex-shrink: 0;
+      width: 4px; height: 4px;
+      border-radius: 2px;
+      margin-top: 6px;
+    }
+    .card-bullet span {
+      font-size: 13px;
+      color: #6B7280;
+      line-height: 1.45;
+    }
+
+    /* Card variants */
+    .category-card.card-teal:hover { border-color: rgba(13,110,110,0.2); }
+    .category-card.card-teal .card-accent-bar { background: linear-gradient(90deg, #0D6E6E, #2DD4BF); }
+    .category-card.card-teal .signal-badge { background: rgba(13,110,110,0.1); color: #0D6E6E; }
+    .category-card.card-teal .card-icon { background: linear-gradient(135deg, #0D6E6E, #2DD4BF); box-shadow: 0 4px 12px rgba(13,110,110,0.2); }
+    .category-card.card-teal .card-tagline { color: #0D6E6E; }
+    .category-card.card-teal .bullet-dot { background: #0D6E6E; }
+
+    .category-card.card-muted:hover { border-color: rgba(0,0,0,0.1); }
+    .category-card.card-muted .card-accent-bar { background: linear-gradient(90deg, #9CA3AF, #D1D5DB); }
+    .category-card.card-muted .signal-badge { background: rgba(0,0,0,0.04); color: #6B7280; }
+    .category-card.card-muted .card-icon { background: linear-gradient(135deg, #9CA3AF, #D1D5DB); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+    .category-card.card-muted .card-tagline { color: #6B7280; }
+    .category-card.card-muted .bullet-dot { background: #9CA3AF; }
+
+    .category-card.card-red:hover { border-color: rgba(220,38,38,0.2); }
+    .category-card.card-red .card-accent-bar { background: linear-gradient(90deg, #991B1B, #EF4444); }
+    .category-card.card-red .signal-badge { background: rgba(220,38,38,0.08); color: #DC2626; }
+    .category-card.card-red .card-icon { background: linear-gradient(135deg, #991B1B, #EF4444); box-shadow: 0 4px 12px rgba(220,38,38,0.2); }
+    .category-card.card-red .card-tagline { color: #DC2626; }
+    .category-card.card-red .bullet-dot { background: #DC2626; }
+
+    /* ── Column footer ── */
+    .col-footer {
+      margin-top: 16px;
+      border-radius: 10px;
+      padding: 14px 20px;
+      text-align: center;
+      border: 1px solid rgba(0,0,0,0.06);
+      font-size: 13px;
+      font-style: italic;
+      color: #6B7280;
+      background: rgba(255,255,255,0.65);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      overflow: visible;
+    }
+    .col-footer strong { font-weight: 700; font-style: normal; }
+    .col-footer.footer-teal { margin-top: 16px; }
+    .col-footer.footer-teal strong { color: #0D6E6E; }
+    .col-footer.footer-red { margin-top: 32px; }
+    .col-footer.footer-red strong { color: #DC2626; }
+
+    /* ── Quadrant matrix ── */
+    .quadrant-wrapper {
+      position: relative;
+      padding-left: 28px;
+      padding-bottom: 28px;
+    }
+    .quadrant-wrapper .axis-y-label {
+      position: absolute;
+      left: -12px; top: 50%;
+      transform: translateY(-50%) rotate(-90deg);
+      font-size: 10px;
+      font-weight: 600;
+      color: #9CA3AF;
+      white-space: nowrap;
+    }
+    .quadrant-wrapper .axis-y-marker {
+      position: absolute;
+      left: 8px;
+      font-size: 9px;
+      font-weight: 700;
+      color: #C4C9D4;
+    }
+    .quadrant-wrapper .axis-y-marker.top { top: 4px; }
+    .quadrant-wrapper .axis-y-marker.bottom { bottom: 34px; }
+    .quadrant-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 10px;
+    }
+    .quadrant-cell {
+      border-radius: 14px;
+      padding: 18px 16px;
+      display: flex;
+      flex-direction: column;
+      background: rgba(255,255,255,0.55);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(0,0,0,0.05);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+      overflow: visible;
+    }
+    .quadrant-cell:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+    .quadrant-cell .q-title-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 2px;
+    }
+    .quadrant-cell .q-dot {
+      width: 7px; height: 7px;
+      border-radius: 2px;
+      transition: box-shadow 0.3s ease;
+    }
+    .quadrant-cell:hover .q-dot { box-shadow: 0 0 8px currentColor; }
+    .quadrant-cell .q-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0F1629;
+    }
+    .quadrant-cell .q-subtitle {
+      font-size: 11px;
+      color: #9CA3AF;
+      margin-bottom: 12px;
+      padding-left: 14px;
+    }
+    .quadrant-cell .q-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+    .vertical-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 12px;
+    }
+    .vertical-pill {
+      font-size: 11px;
+      font-weight: 500;
+      color: #3A3F4B;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+    .q-use-case {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+    .q-use-case:last-child { margin-bottom: 0; }
+    .q-use-case .uc-dot {
+      flex-shrink: 0;
+      width: 3px; height: 3px;
+      border-radius: 1px;
+      margin-top: 5px;
+    }
+    .q-use-case span {
+      font-size: 12px;
+      color: #6B7280;
+      line-height: 1.4;
+    }
+
+    /* Quadrant variants */
+    .quadrant-cell.q-teal:hover { background: rgba(13,110,110,0.04); border-color: rgba(13,110,110,0.15); }
+    .quadrant-cell.q-teal .q-dot { background: #0D6E6E; color: #0D6E6E; }
+    .quadrant-cell.q-teal .q-label { color: #0D6E6E; }
+    .quadrant-cell.q-teal .vertical-pill { background: rgba(13,110,110,0.08); border: 1px solid rgba(13,110,110,0.12); }
+    .quadrant-cell.q-teal .uc-dot { background: #0D6E6E; }
+
+    .quadrant-cell.q-red:hover { background: rgba(220,38,38,0.03); border-color: rgba(220,38,38,0.15); }
+    .quadrant-cell.q-red .q-dot { background: #DC2626; color: #DC2626; }
+    .quadrant-cell.q-red .q-label { color: #DC2626; }
+    .quadrant-cell.q-red .vertical-pill { background: rgba(220,38,38,0.06); border: 1px solid rgba(220,38,38,0.1); }
+    .quadrant-cell.q-red .uc-dot { background: #DC2626; }
+
+    .quadrant-cell.q-green:hover { background: rgba(45,212,191,0.04); border-color: rgba(45,212,191,0.15); }
+    .quadrant-cell.q-green .q-dot { background: #0D9488; color: #0D9488; }
+    .quadrant-cell.q-green .q-label { color: #0D9488; }
+    .quadrant-cell.q-green .vertical-pill { background: rgba(13,148,136,0.08); border: 1px solid rgba(13,148,136,0.12); }
+    .quadrant-cell.q-green .uc-dot { background: #0D9488; }
+
+    .quadrant-cell.q-blue:hover { background: rgba(91,141,239,0.04); border-color: rgba(91,141,239,0.15); }
+    .quadrant-cell.q-blue .q-dot { background: #5B8DEF; color: #5B8DEF; }
+    .quadrant-cell.q-blue .q-label { color: #5B8DEF; }
+    .quadrant-cell.q-blue .vertical-pill { background: rgba(91,141,239,0.08); border: 1px solid rgba(91,141,239,0.12); }
+    .quadrant-cell.q-blue .uc-dot { background: #5B8DEF; }
+
+    .x-axis {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 12px;
+      font-size: 9px;
+      font-weight: 700;
+      color: #C4C9D4;
+    }
+    .x-axis .axis-line {
+      max-width: 100px; flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0,0,0,0.08), transparent);
+    }
+    .x-axis .axis-center {
+      font-size: 10px;
+      font-weight: 600;
+      color: #9CA3AF;
+    }
+
+    .page-footer {
+      text-align: center;
+      padding: 32px 0 16px;
+    }
+    .page-footer .footer-line {
+      width: 36px; height: 1px;
+      background: rgba(91,141,239,0.2);
+      margin: 0 auto 16px;
+    }
+    .page-footer span {
+      font-size: 10px;
+      color: #9CA3AF;
+      letter-spacing: 0.04em;
+    }
+
+    @media (max-width: 960px) {
+      .divergence-grid { grid-template-columns: 1fr; }
+      .quadrant-grid { min-height: auto; }
+    }
+    @media (max-width: 600px) {
+      .divergence-hero h2 { font-size: 24px; }
+      .quadrant-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+    }
+
+    /* ═══════════════════════════════════════════════
+       SECTION 3 — AI Diligence Framework
+       ═══════════════════════════════════════════════ */
+
+    .diligence-section {
+      margin-top: 80px;
+    }
+
+    /* ── Hero block ── */
+    .diligence-hero {
+      padding: 0 0 0 24px;
+      margin-bottom: 64px;
+    }
+    .diligence-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+    .diligence-badge .badge-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #5B8DEF;
+    }
+    .diligence-badge span {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      color: #5B8DEF;
+      text-transform: uppercase;
+    }
+    .diligence-hero h2 {
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 800;
+      color: #0F1629;
+      letter-spacing: -0.03em;
+      line-height: 1.0;
+      max-width: 700px;
+      margin-bottom: 20px;
+    }
+    .diligence-hero p {
+      font-size: 16px;
+      font-weight: 300;
+      color: #6B7280;
+      line-height: 1.65;
+      max-width: 480px;
+    }
+
+    /* ── Column headers ── */
+    .dim-col-headers {
+      display: grid;
+      grid-template-columns: 80px 1fr 1fr;
+      padding-bottom: 10px;
+    }
+    .dim-col-headers span {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: #9CA3AF;
+      text-transform: uppercase;
+    }
+    .dim-col-header-criteria {
+      padding-left: 24px;
+    }
+
+    /* ── Dimension rows ── */
+    .dim-row {
+      display: grid;
+      grid-template-columns: 80px 1fr 1fr;
+      border-top: 1px solid rgba(0,0,0,0.08);
+      transition: background 0.2s ease;
+    }
+    .dim-row:hover {
+      background: rgba(91,141,239,0.03);
+    }
+    .dim-closing-rule {
+      border-top: 1px solid rgba(0,0,0,0.08);
+    }
+    .dim-number {
+      font-size: 48px;
+      font-weight: 800;
+      color: rgba(0,0,0,0.08);
+      letter-spacing: -0.04em;
+      line-height: 1;
+      padding: 28px 16px 24px 0;
+      text-align: right;
+      transition: color 0.35s ease;
+    }
+    .dim-row:hover .dim-number {
+      color: #5B8DEF;
+    }
+    .dim-topic {
+      padding: 24px;
+      border-right: 1px solid rgba(0,0,0,0.06);
+    }
+    .dim-topic h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0F1629;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      margin-bottom: 8px;
+    }
+    .dim-question {
+      font-size: 13.5px;
+      font-style: italic;
+      color: #6B7280;
+      line-height: 1.5;
+      transition: color 0.35s ease;
+    }
+    .dim-row:hover .dim-question {
+      color: #5B8DEF;
+    }
+    .dim-criteria {
+      padding: 24px 0 24px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .criterion {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .criterion .arrow {
+      font-size: 10px;
+      font-weight: 700;
+      color: #5B8DEF;
+      opacity: 0.6;
+      min-width: 8px;
+      line-height: 1.55;
+      margin-top: 1px;
+    }
+    .criterion span {
+      font-size: 13px;
+      line-height: 1.55;
+      color: #3A3F4B;
+    }
+
+    /* ── Diligence footer ── */
+    .diligence-footer {
+      margin-top: 56px;
+      background: rgba(255,255,255,0.6);
+      border: 1px solid rgba(0,0,0,0.06);
+      color: #6B7280;
+      padding: 24px 36px;
+      border-radius: 14px;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.6;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .diligence-footer::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(91,141,239,0.3), rgba(52,211,153,0.2), transparent);
+    }
+    .diligence-footer strong { color: #0F1629; font-weight: 600; }
+
+    @media (max-width: 768px) {
+      .dim-col-headers { grid-template-columns: 1fr; }
+      .dim-col-headers span { display: none; }
+      .dim-row { grid-template-columns: 1fr; }
+      .dim-number {
+        font-size: 36px;
+        text-align: left;
+        padding: 20px 0 4px 0;
+      }
+      .dim-topic {
+        border-right: none;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(0,0,0,0.04);
+      }
+      .dim-criteria { padding: 12px 0 20px; }
     }
   </style>
 </head>
-<body class="bg-gray-100 text-gray-800 font-sans">
+<body>
 
-  <!-- Persistent Top Navigation -->
-  <nav class="sticky top-0 z-50 bg-navy-900 text-white shadow-lg">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-      <span class="text-lg font-bold tracking-wide">Booklet</span>
-      <div class="flex gap-3 text-sm flex-wrap">
-        <a href="#page-1" class="hover:text-brand-accent transition">Page 1</a>
-        <a href="#page-2" class="hover:text-brand-accent transition">Page 2</a>
-        <a href="#page-3" class="hover:text-brand-accent transition">Page 3</a>
-        <a href="#page-4" class="hover:text-brand-accent transition">Page 4</a>
-        <a href="#page-5" class="hover:text-brand-accent transition">Page 5</a>
-        <a href="#page-6" class="hover:text-brand-accent transition">Page 6</a>
-        <a href="#page-7" class="hover:text-brand-accent transition">Page 7</a>
-      </div>
+  <!-- Dynamic Background -->
+  <div class="dynamic-bg">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="grid-overlay"></div>
+    <div class="noise"></div>
+  </div>
+
+  <div class="page-wrapper">
+    <div class="accent-bar"></div>
+
+    <!-- Title block -->
+    <div class="title-block">
+      <div class="eyebrow">AI SaaS Market Overview</div>
+      <h1>Organizations Have Begun Dramatically Scaling AI Budgets</h1>
+      <p>Capital is flowing into AI native application spend at unprecedented speed, but durable value will accrue where AI is embedded into governed, system of record workflows</p>
     </div>
-  </nav>
 
-  <main class="max-w-6xl mx-auto px-4 py-8 space-y-10">
+    <!-- Main content -->
+    <div class="content-grid">
 
-    <!-- ============================================================ -->
-    <!-- PAGE 1 — AI Budgets and Architectural Paradigms               -->
-    <!-- ============================================================ -->
-    <section id="page-1" class="bg-white border border-gray-200 rounded-xl shadow-md p-8">
-      <span class="inline-block text-xs font-semibold text-gray-400 uppercase tracking-widest mb-6">Page 1</span>
+      <!-- LEFT: Chart -->
+      <div class="chart-panel fade-in">
+        <div class="chart-header">Likely to Increase / Decrease Spend</div>
+        <div class="chart-header-line"></div>
 
-      <!-- Header Block -->
-      <h2 class="text-2xl md:text-3xl font-bold text-navy-900 mb-2">Organizations Have Begun Dramatically Scaling AI Budgets</h2>
-      <p class="text-gray-600 mb-8 max-w-4xl">Capital is flowing into AI-native application spend at unprecedented speed, but durable value will accrue where AI is embedded into governed, system-of-record workflows</p>
-
-      <!-- Bar Chart: Likely to Increase / Decrease Spend -->
-      <h3 class="text-lg font-semibold text-navy-800 mb-4">Likely to Increase / Decrease Spend</h3>
-
-      <!-- Group 1: AI and Related Enablers -->
-      <p class="text-sm font-semibold text-navy-700 mb-2">AI and Related Enablers</p>
-      <div class="space-y-2 mb-6">
-        <div class="flex items-center gap-3">
-          <span class="w-64 text-sm text-right shrink-0">AI/ML, Including GenAI</span>
-          <div class="bg-brand-teal h-7 rounded-r flex items-center justify-end pr-2 text-white text-xs font-bold" style="width:45%">45%</div>
-        </div>
-        <div class="flex items-center gap-3">
-          <span class="w-64 text-sm text-right shrink-0">Cloud Services</span>
-          <div class="bg-brand-teal h-7 rounded-r flex items-center justify-end pr-2 text-white text-xs font-bold" style="width:27%">27%</div>
-        </div>
-        <div class="flex items-center gap-3">
-          <span class="w-64 text-sm text-right shrink-0">Security Infrastructure</span>
-          <div class="bg-brand-teal h-7 rounded-r flex items-center justify-end pr-2 text-white text-xs font-bold" style="width:23%">23%</div>
-        </div>
-        <div class="flex items-center gap-3">
-          <span class="w-64 text-sm text-right shrink-0">IT Services</span>
-          <div class="bg-brand-teal h-7 rounded-r flex items-center justify-end pr-2 text-white text-xs font-bold" style="width:16%">16%</div>
-        </div>
-        <div class="flex items-center gap-3">
-          <span class="w-64 text-sm text-right shrink-0">Analytics</span>
-          <div class="bg-brand-teal h-7 rounded-r flex items-center justify-end pr-2 text-white text-xs font-bold" style="width:16%">16%</div>
-        </div>
-      </div>
-
-      <!-- Group 2: Traditional Drivers (Increase) -->
-      <p class="text-sm font-semibold text-navy-700 mb-2">Traditional Drivers of Software Spend <span class="text-gray-400 font-normal">(Increase)</span></p>
-      <div class="space-y-2 mb-6">
-        <div class="flex items-center gap-3">
-          <span class="w-64 text-sm text-right shrink-0">ERP</span>
-          <div class="bg-navy-700 h-7 rounded-r flex items-center justify-end pr-2 text-white text-xs font-bold" style="width:5%"><span class="ml-2">5%</span></div>
-        </div>
-        <div class="flex items-center gap-3">
-          <span class="w-64 text-sm text-right shrink-0">CRM</span>
-          <div class="bg-navy-700 h-7 rounded-r flex items-center justify-end pr-2 text-white text-xs font-bold" style="width:5%"><span class="ml-2">4%</span></div>
-        </div>
-        <div class="flex items-center gap-3">
-          <span class="w-64 text-sm text-right shrink-0">App Dev / DevOps</span>
-          <div class="bg-navy-700 h-7 rounded-r flex items-center justify-end pr-2 text-white text-xs font-bold" style="width:4%"><span class="ml-2">2%</span></div>
-        </div>
-      </div>
-
-      <!-- Group 3: Traditional Drivers (Decrease) -->
-      <p class="text-sm font-semibold text-navy-700 mb-2">Traditional Drivers of Software Spend <span class="text-gray-400 font-normal">(Decrease)</span></p>
-      <div class="space-y-2 mb-8">
-        <div class="flex items-center gap-3">
-          <span class="w-64 text-sm text-right shrink-0">Network Infrastructure</span>
-          <div class="bg-red-500 h-7 rounded-r flex items-center justify-end pr-2 text-white text-xs font-bold" style="width:5%"><span class="ml-2">-5%</span></div>
-        </div>
-        <div class="flex items-center gap-3">
-          <span class="w-64 text-sm text-right shrink-0">System &amp; Service Mgmt.</span>
-          <div class="bg-red-500 h-7 rounded-r flex items-center justify-end pr-2 text-white text-xs font-bold" style="width:7%"><span class="ml-2">-7%</span></div>
-        </div>
-        <div class="flex items-center gap-3">
-          <span class="w-64 text-sm text-right shrink-0">Storage Infrastructure</span>
-          <div class="bg-red-500 h-7 rounded-r flex items-center justify-end pr-2 text-white text-xs font-bold" style="width:8%"><span class="ml-2">-8%</span></div>
-        </div>
-        <div class="flex items-center gap-3">
-          <span class="w-64 text-sm text-right shrink-0">IT Operations Mgmt.</span>
-          <div class="bg-red-500 h-7 rounded-r flex items-center justify-end pr-2 text-white text-xs font-bold" style="width:9%"><span class="ml-2">-9%</span></div>
-        </div>
-        <div class="flex items-center gap-3">
-          <span class="w-64 text-sm text-right shrink-0">Comm., Collab., &amp; Content Mgmt.</span>
-          <div class="bg-red-500 h-7 rounded-r flex items-center justify-end pr-2 text-white text-xs font-bold" style="width:10%"><span class="ml-2">-10%</span></div>
-        </div>
-        <div class="flex items-center gap-3">
-          <span class="w-64 text-sm text-right shrink-0">Devices</span>
-          <div class="bg-red-500 h-7 rounded-r flex items-center justify-end pr-2 text-white text-xs font-bold" style="width:17%"><span class="ml-2">-17%</span></div>
-        </div>
-        <div class="flex items-center gap-3">
-          <span class="w-64 text-sm text-right shrink-0">Server Infrastructure</span>
-          <div class="bg-red-500 h-7 rounded-r flex items-center justify-end pr-2 text-white text-xs font-bold" style="width:24%"><span class="ml-2">-24%</span></div>
-        </div>
-      </div>
-
-      <!-- Key Themes -->
-      <h3 class="text-lg font-semibold text-navy-800 mb-3">Key Themes</h3>
-      <ul class="list-disc list-inside space-y-1 text-sm text-gray-700 mb-6">
-        <li>AI has moved from discretionary experiment to core line item</li>
-        <li>IT spend is being both expanded and reallocated</li>
-        <li>Incumbents face near-term budget pressure without AI-driven ROI</li>
-        <li>Infrastructure and security benefit as enabling layers</li>
-        <li>Application vendors that cannot show measurable AI-driven ROI will lose budget to those that can</li>
-      </ul>
-
-      <!-- Callout Box -->
-      <div class="bg-blue-50 border-l-4 border-brand-teal rounded-r-lg p-5 mb-8">
-        <p class="text-sm text-navy-800 font-medium">Net IT budgets will grow modestly, but we expect that growth to be concentrated in applied AI and automation spending</p>
-      </div>
-
-      <!-- Flow Diagrams -->
-      <h3 class="text-xl font-bold text-navy-900 mb-2">Two Architectural Paradigms are Emerging in the Agentic Landscape</h3>
-      <p class="text-sm text-gray-500 mb-6">Engineering teams are shifting from feature factories to AI integration and data pipeline specialists</p>
-
-      <!-- AI-Native Architecture -->
-      <div class="mb-8 bg-gray-50 rounded-lg p-6 border border-gray-200">
-        <h4 class="text-md font-bold text-navy-800 mb-4">AI-Native Architecture</h4>
-        <!-- Flow nodes -->
-        <div class="flex flex-wrap items-center gap-3 mb-4 overflow-x-auto">
-          <div class="bg-navy-800 text-white px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap">AI Agents</div>
-          <span class="text-navy-700 text-xl font-bold">&rarr;</span>
-          <div class="bg-navy-800 text-white px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap">Execution Engine</div>
-          <span class="text-navy-700 text-xl font-bold">&rarr;</span>
-          <div class="bg-navy-800 text-white px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap">Operational State</div>
-          <span class="text-navy-700 text-xl font-bold">&rarr;</span>
-          <div class="bg-navy-800 text-white px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap">Outcome Feedback</div>
-        </div>
-        <!-- Bullets -->
-        <ul class="list-disc list-inside text-sm text-gray-700 space-y-1 mb-4">
-          <li>Natural language is becoming a primary interface for initiating/supervising workflow</li>
-          <li>AI-native architectures are designed from the ground up for tasks to be agent-first from start to finish rather than human-first</li>
-        </ul>
-        <!-- Chip labels -->
-        <div class="flex flex-wrap gap-2">
-          <span class="inline-block bg-teal-100 text-teal-800 text-xs px-3 py-1 rounded-full">AI as the Execution Layer</span>
-          <span class="inline-block bg-teal-100 text-teal-800 text-xs px-3 py-1 rounded-full">Operational Data</span>
-          <span class="inline-block bg-teal-100 text-teal-800 text-xs px-3 py-1 rounded-full">Semantic Memory</span>
-          <span class="inline-block bg-teal-100 text-teal-800 text-xs px-3 py-1 rounded-full">Model Orchestration</span>
-          <span class="inline-block bg-teal-100 text-teal-800 text-xs px-3 py-1 rounded-full">Inference</span>
-          <span class="inline-block bg-teal-100 text-teal-800 text-xs px-3 py-1 rounded-full">Workflow Orchestration</span>
-          <span class="inline-block bg-teal-100 text-teal-800 text-xs px-3 py-1 rounded-full">Decision Logic</span>
-          <span class="inline-block bg-teal-100 text-teal-800 text-xs px-3 py-1 rounded-full">Execution Engine</span>
-          <span class="inline-block bg-teal-100 text-teal-800 text-xs px-3 py-1 rounded-full">Live Operational State</span>
-          <span class="inline-block bg-teal-100 text-teal-800 text-xs px-3 py-1 rounded-full">Outcome Feedback</span>
-          <span class="inline-block bg-teal-100 text-teal-800 text-xs px-3 py-1 rounded-full">Third-Party Systems</span>
-        </div>
-      </div>
-
-      <!-- Cloud-Native + AI -->
-      <div class="bg-gray-50 rounded-lg p-6 border border-gray-200">
-        <h4 class="text-md font-bold text-navy-800 mb-4">Cloud-Native + AI</h4>
-        <!-- Flow nodes -->
-        <div class="flex flex-wrap items-center gap-3 mb-4 overflow-x-auto">
-          <div class="bg-navy-700 text-white px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap">User &amp; System Actions</div>
-          <span class="text-navy-700 text-xl font-bold">&rarr;</span>
-          <div class="bg-navy-700 text-white px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap">Core Application (AI Co-Pilot &amp; Traditional Business Logic)</div>
-          <span class="text-navy-700 text-xl font-bold">&rarr;</span>
-          <div class="bg-navy-700 text-white px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap">Data Layer (System of Record)</div>
-        </div>
-        <!-- Bullets -->
-        <ul class="list-disc list-inside text-sm text-gray-700 space-y-1 mb-4">
-          <li>Predictions are commoditizing, advantage shifts to execution, feedback loops</li>
-          <li>AI informs actions, but does not execute them.</li>
-          <li>Limited learning from execution</li>
-          <li>Cloud-native systems are increasingly being refactored to optimize user experience and workflow steps for agents</li>
-          <li>Cloud-native incumbents have a head start, with clean, modern tech stacks an advantage if they move fast enough to capitalize on it</li>
-        </ul>
-        <!-- Chip labels -->
-        <div class="flex flex-wrap gap-2">
-          <span class="inline-block bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full">User System Actions</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================================ -->
-    <!-- PAGE 2 — Model Choice and Data Moats                         -->
-    <!-- ============================================================ -->
-    <section id="page-2" class="bg-white border border-gray-200 rounded-xl shadow-md p-8">
-      <span class="inline-block text-xs font-semibold text-gray-400 uppercase tracking-widest mb-6">Page 2</span>
-
-      <!-- Header Block 1 -->
-      <h2 class="text-2xl md:text-3xl font-bold text-navy-900 mb-2">Model Choice is an Architectural Decision, Not a Capability Race</h2>
-      <p class="text-gray-600 mb-8 max-w-4xl">LLMs, MLMs, and SLMs reflect different tradeoffs across cost, control, and scalability</p>
-
-      <!-- Comparison Table -->
-      <div class="overflow-x-auto mb-8">
-        <table class="min-w-full text-sm border border-gray-200">
-          <thead class="bg-navy-900 text-white">
-            <tr>
-              <th class="px-4 py-3 text-left font-semibold">Dimension</th>
-              <th class="px-4 py-3 text-left font-semibold">General-Purpose LLMs (RAG-Based)</th>
-              <th class="px-4 py-3 text-left font-semibold">Task-Specific MLMs (Decision-Focused)</th>
-              <th class="px-4 py-3 text-left font-semibold">Embedded SLMs (Deterministic Execution)</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-200">
-            <tr class="bg-white">
-              <td class="px-4 py-3 font-medium text-navy-800">Primary Role</td>
-              <td class="px-4 py-3">Broad reasoning, language understanding, and flexibility</td>
-              <td class="px-4 py-3">Narrow decision-making within defined workflows</td>
-              <td class="px-4 py-3">Real-time execution and embedded decisions</td>
-            </tr>
-            <tr class="bg-gray-50">
-              <td class="px-4 py-3 font-medium text-navy-800">Typical Use Case</td>
-              <td class="px-4 py-3">Search, copilots, explanations, synthesis</td>
-              <td class="px-4 py-3">Classification, scoring, routing, validation</td>
-              <td class="px-4 py-3">Control loops, edge inference, deterministic actions</td>
-            </tr>
-            <tr class="bg-white">
-              <td class="px-4 py-3 font-medium text-navy-800">Reliability Profile</td>
-              <td class="px-4 py-3">Probabilistic, requires guardrails</td>
-              <td class="px-4 py-3">High within constrained domains</td>
-              <td class="px-4 py-3">Very high for fixed tasks</td>
-            </tr>
-            <tr class="bg-gray-50">
-              <td class="px-4 py-3 font-medium text-navy-800">Cost</td>
-              <td class="px-4 py-3">Lowest fixed costs / Highest variable token costs</td>
-              <td class="px-4 py-3">Moderate fixed costs / Moderate variable costs</td>
-              <td class="px-4 py-3">Highest fixed costs / Lowest variable costs</td>
-            </tr>
-            <tr class="bg-white">
-              <td class="px-4 py-3 font-medium text-navy-800">Latency</td>
-              <td class="px-4 py-3">Greatest inference and network latency / GPU/TPU-heavy workflows</td>
-              <td class="px-4 py-3">Moderate inference and network latency / GPU or CPU-capable workflows</td>
-              <td class="px-4 py-3">Minimal inference latency / CPU or edge-computing workflows</td>
-            </tr>
-            <tr class="bg-gray-50">
-              <td class="px-4 py-3 font-medium text-navy-800">Explainability &amp; Auditability</td>
-              <td class="px-4 py-3">Limited without heavy scaffolding</td>
-              <td class="px-4 py-3">Strong within task boundaries</td>
-              <td class="px-4 py-3">Strong and deterministic</td>
-            </tr>
-            <tr class="bg-white">
-              <td class="px-4 py-3 font-medium text-navy-800">Control &amp; Customization</td>
-              <td class="px-4 py-3">Low-moderate vendor-dependent</td>
-              <td class="px-4 py-3">High</td>
-              <td class="px-4 py-3">Very high</td>
-            </tr>
-            <tr class="bg-gray-50">
-              <td class="px-4 py-3 font-medium text-navy-800">Learning from Execution</td>
-              <td class="px-4 py-3">Weak unless deeply instrumented</td>
-              <td class="px-4 py-3">Strong via outcome feedback</td>
-              <td class="px-4 py-3">Strong via closed-loop control</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Quote Callout -->
-      <blockquote class="border-l-4 border-brand-teal bg-teal-50 px-6 py-4 mb-10 rounded-r-lg">
-        <p class="text-sm italic text-navy-800">We believe the winners will treat LLMs as interface, MLMs as decision-making engines, and SLMs as control systems</p>
-      </blockquote>
-
-      <!-- Header Block 2 -->
-      <h2 class="text-2xl md:text-3xl font-bold text-navy-900 mb-2">Data Matters, But Not All Data is Created Equal</h2>
-      <p class="text-gray-600 mb-8 max-w-4xl">Data only becomes a moat when it is proprietary, contextual, and directly tied to execution outcomes over time</p>
-
-      <!-- Data Funnel -->
-      <div class="flex flex-col items-center mb-8 space-y-2">
-        <div class="bg-navy-900 text-white text-center text-xs font-semibold py-3 px-4 rounded w-48">
-          Cumulative Impact<br><span class="font-normal text-gray-300">(Decision Linked, Outcome-Labeled, Reinforced Over Time)</span>
-        </div>
-        <div class="bg-navy-800 text-white text-center text-xs font-semibold py-3 px-4 rounded w-56">
-          Level 5: Context<br><span class="font-normal text-gray-300">(Workflow relevance and codification is required)</span>
-        </div>
-        <div class="bg-navy-700 text-white text-center text-xs font-semibold py-3 px-4 rounded w-72">
-          Level 4: Unification<br><span class="font-normal text-gray-300">(Unified data across workflows and application)</span>
-        </div>
-        <div class="bg-navy-600 text-white text-center text-xs font-semibold py-3 px-4 rounded w-80">
-          Level 3: Freshness<br><span class="font-normal text-gray-300">(High-frequency, low-latency data sustains value)</span>
-        </div>
-        <div class="bg-brand-teal text-white text-center text-xs font-semibold py-3 px-4 rounded w-96">
-          Level 2: Ownership &amp; Rights<br><span class="font-normal text-teal-100">(Shared, scraped, or non-exclusive less interesting alone)</span>
-        </div>
-        <div class="bg-brand-light text-white text-center text-xs font-semibold py-3 px-4 rounded w-full max-w-lg">
-          Level 1: Raw Data<br><span class="font-normal text-teal-100">(Logs, clicks, assets, and transactions)</span>
-        </div>
-      </div>
-
-      <!-- Durable Data Advantages -->
-      <h3 class="text-lg font-semibold text-navy-800 mb-4">&hellip;When Durable Data Advantages Are Present</h3>
-      <ol class="space-y-4 text-sm text-gray-700">
-        <li>
-          <p class="font-semibold text-navy-800">1. Proprietary Data Generated Through Daily Workflows</p>
-          <p class="ml-4">Data as a byproduct of customers doing the work, not passively logging</p>
-          <p class="ml-6 text-gray-500">Switching costs increase as execution history accumulates</p>
-        </li>
-        <li>
-          <p class="font-semibold text-navy-800">2. Outcome-Labeled Feedback Embedded in the Product</p>
-          <p class="ml-4">Decisions tied to measurable results success, failure, override, delay</p>
-          <p class="ml-6 text-gray-500">Models learn from what actually happened, not just predictions</p>
-        </li>
-        <li>
-          <p class="font-semibold text-navy-800">3. High-Frequency, Low-Latency Data Refresh Cycles</p>
-          <p class="ml-4">Data freshness measured in minutes or hours, not weeks</p>
-          <p class="ml-6 text-gray-500">Value decays quickly if learning loops are slow</p>
-        </li>
-        <li>
-          <p class="font-semibold text-navy-800">4. Deep Context Encoded at the Point of Execution</p>
-          <p class="ml-4">Includes workflow state, timing, user intent, and constraints</p>
-          <p class="ml-6 text-gray-500">Context is difficult for third parties to replicate or scrape</p>
-        </li>
-        <li>
-          <p class="font-semibold text-navy-800">5. Evidence of Learning Reinforcing Over Time</p>
-          <p class="ml-4">Accuracy, automation rates, or decision quality improve with tenure</p>
-          <p class="ml-6 text-gray-500">Older customers are meaningfully better than new ones</p>
-        </li>
-      </ol>
-    </section>
-
-    <!-- ============================================================ -->
-    <!-- PAGE 3 — Category Divergence and Software Unit Economics      -->
-    <!-- ============================================================ -->
-    <section id="page-3" class="bg-white border border-gray-200 rounded-xl shadow-md p-8">
-      <span class="inline-block text-xs font-semibold text-gray-400 uppercase tracking-widest mb-6">Page 3</span>
-
-      <!-- Header Block -->
-      <h2 class="text-2xl md:text-3xl font-bold text-navy-900 mb-2">We Believe Outcomes Will Diverge By Category and By Segment</h2>
-      <p class="text-gray-600 mb-8 max-w-4xl">Value accrues unevenly across multiple dimensions including category, segment, and scale, with systems of action positioned to capture outsized value</p>
-
-      <!-- Category Divergence Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-        <!-- Systems of Action -->
-        <div class="border border-gray-200 rounded-lg p-5 border-t-4 border-t-brand-teal">
-          <h4 class="font-bold text-navy-900 mb-3">Systems of Action</h4>
-          <ul class="list-disc list-inside text-sm text-gray-700 space-y-2">
-            <li>Capture disproportionate levels of value as AI directly drives outcomes and decisions</li>
-            <li>Platforms that sit close to doing the work benefit the most from AI-driven efficiency</li>
-            <li>Value creation compounds as models learn from execution data and closed-loop feedback</li>
-          </ul>
-        </div>
-        <!-- Systems of Record -->
-        <div class="border border-gray-200 rounded-lg p-5 border-t-4 border-t-navy-700">
-          <h4 class="font-bold text-navy-900 mb-3">Systems of Record</h4>
-          <ul class="list-disc list-inside text-sm text-gray-700 space-y-2">
-            <li>Face slower disruption, with AI improving efficiency, but also limiting incremental platform differentiation</li>
-            <li>Core data integrity, compliance, and reliability requirements constrain the pace of AI-driven change</li>
-            <li>AI enhances workflows, rather than instituting step-function changes in product functionality</li>
-          </ul>
-        </div>
-        <!-- Systems of Engagement -->
-        <div class="border border-gray-200 rounded-lg p-5 border-t-4 border-t-red-400">
-          <h4 class="font-bold text-navy-900 mb-3">Systems of Engagement</h4>
-          <ul class="list-disc list-inside text-sm text-gray-700 space-y-2">
-            <li>Most crowded and dangerous place to be in 2026</li>
-            <li>AI commoditizes the surface layer quickly</li>
-            <li>Sustainable differentiation requires deep workflow integration and measurable ROI</li>
-            <li>GenAI rapidly commoditizes surface-level engagement features e.g., content, UX</li>
-            <li>Many platforms span multiple layers, creating hybrid exposure and opportunities</li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Adoption Matrix -->
-      <p class="text-sm text-gray-500 mb-3">Organization and task complexity impact adoption rates</p>
-      <div class="relative mb-10">
-        <!-- Axis labels -->
-        <div class="flex justify-between text-xs text-gray-500 mb-1 ml-40">
-          <span>Low</span>
-          <span class="font-semibold text-navy-800">Task Complexity</span>
-          <span>High</span>
-        </div>
-        <div class="flex">
-          <!-- Vertical axis -->
-          <div class="flex flex-col justify-between items-center w-36 pr-3 shrink-0">
-            <span class="text-xs text-gray-500">High</span>
-            <span class="text-xs text-navy-800 font-semibold [writing-mode:vertical-lr] rotate-180">Regulation Technology Maturity</span>
-            <span class="text-xs text-gray-500">Low</span>
-          </div>
-          <!-- 2x2 Grid -->
-          <div class="grid grid-cols-2 gap-3 flex-1">
-            <!-- Top-left: Governed Rollout Zone -->
-            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <h5 class="font-bold text-navy-800 text-sm mb-2">Governed Rollout Zone</h5>
-              <p class="text-xs text-gray-600"><span class="font-semibold">Illustrative Verticals</span> Legal, Compliance</p>
-              <p class="text-xs text-gray-600 mt-1"><span class="font-semibold">Use Cases</span> Research Contract Workflows, Outage Support Chatbots, Transaction Monitoring Audit</p>
+        <div class="chart-area">
+          <div class="axis-labels">
+            <div></div>
+            <div class="axis-label-neg">
+              <span>Decrease</span>
+              <span>0%</span>
             </div>
-            <!-- Top-right: Slowest Adoption Zone -->
-            <div class="bg-red-50 border border-red-200 rounded-lg p-4">
-              <h5 class="font-bold text-navy-800 text-sm mb-2">Slowest Adoption Zone</h5>
-              <p class="text-xs text-gray-600"><span class="font-semibold">Illustrative Verticals</span> Banking Finance, Construction Industrial, Medicine</p>
-              <p class="text-xs text-gray-600 mt-1"><span class="font-semibold">Use Cases</span> Autonomous Underwriting, Construction Ops. Analysis, Surgical Automation</p>
-            </div>
-            <!-- Bottom-left: Fastest Adoption Zone -->
-            <div class="bg-green-50 border border-green-200 rounded-lg p-4">
-              <h5 class="font-bold text-navy-800 text-sm mb-2">Fastest Adoption Zone</h5>
-              <p class="text-xs text-gray-600"><span class="font-semibold">Illustrative Verticals</span> Marketing E-Commerce, Customer Support, Human Resources</p>
-              <p class="text-xs text-gray-600 mt-1"><span class="font-semibold">Use Cases</span> Chatbots FAQ Automation, Content Center Routing, Marketing Content Generation</p>
-            </div>
-            <!-- Bottom-right: Co-Pilot, Assistive Zone -->
-            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-              <h5 class="font-bold text-navy-800 text-sm mb-2">Co-Pilot, Assistive Zone</h5>
-              <p class="text-xs text-gray-600"><span class="font-semibold">Illustrative Verticals</span> Enterprise ITSM, Verticalized ERP CRM</p>
-              <p class="text-xs text-gray-600 mt-1"><span class="font-semibold">Use Cases</span> Incident Resolution Automation, Lead Qualification Scoring</p>
+            <div class="axis-label-pos">
+              <span>Increase</span>
             </div>
           </div>
-        </div>
-      </div>
 
-      <!-- Unit Economics -->
-      <h3 class="text-xl font-bold text-navy-900 mb-2">Examining AI's Impact on Software Unit Economics</h3>
-      <p class="text-sm text-gray-600 mb-6">Tokenization costs may lead to pressure on gross margins, but winners will likely see revenue acceleration and expanded operating margins</p>
+          <!-- AI and Related Enablers -->
+          <div class="section-group">
+            <div class="section-annotation">AI and Related Enablers</div>
 
-      <div class="overflow-x-auto mb-8">
-        <table class="min-w-full text-sm border border-gray-200">
-          <thead class="bg-navy-900 text-white">
-            <tr>
-              <th class="px-4 py-3 text-left font-semibold"></th>
-              <th class="px-4 py-3 text-left font-semibold">Pre-AI Adoption</th>
-              <th class="px-4 py-3 text-left font-semibold">Post-AI Adoption</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-200">
-            <tr class="bg-blue-50">
-              <td class="px-4 py-2 font-medium text-navy-800">A Revenue</td>
-              <td class="px-4 py-2">100</td>
-              <td class="px-4 py-2">115</td>
-            </tr>
-            <tr class="bg-white">
-              <td class="px-4 py-2 font-medium text-navy-800">Revenue Growth</td>
-              <td class="px-4 py-2">10</td>
-              <td class="px-4 py-2">25</td>
-            </tr>
-            <tr class="bg-blue-50">
-              <td class="px-4 py-2 font-medium text-navy-800">B Hosting &amp; Infrastructure Costs</td>
-              <td class="px-4 py-2">10</td>
-              <td class="px-4 py-2">18</td>
-            </tr>
-            <tr class="bg-blue-50">
-              <td class="px-4 py-2 font-medium text-navy-800">C Customer Support &amp; Professional Services Headcount</td>
-              <td class="px-4 py-2">10</td>
-              <td class="px-4 py-2">6</td>
-            </tr>
-            <tr class="bg-white">
-              <td class="px-4 py-2 font-medium text-navy-800">Total COGS</td>
-              <td class="px-4 py-2">20</td>
-              <td class="px-4 py-2">24</td>
-            </tr>
-            <tr class="bg-white">
-              <td class="px-4 py-2 font-medium text-navy-800">Gross Profit</td>
-              <td class="px-4 py-2">80</td>
-              <td class="px-4 py-2">92</td>
-            </tr>
-            <tr class="bg-white">
-              <td class="px-4 py-2 font-medium text-navy-800">Gross Margin</td>
-              <td class="px-4 py-2">80</td>
-              <td class="px-4 py-2">80</td>
-            </tr>
-            <tr class="bg-white">
-              <td class="px-4 py-2 font-medium text-navy-800">Sales &amp; Marketing Headcount</td>
-              <td class="px-4 py-2">15</td>
-              <td class="px-4 py-2">14</td>
-            </tr>
-            <tr class="bg-white">
-              <td class="px-4 py-2 font-medium text-navy-800">Research &amp; Development Headcount</td>
-              <td class="px-4 py-2">15</td>
-              <td class="px-4 py-2">11</td>
-            </tr>
-            <tr class="bg-white">
-              <td class="px-4 py-2 font-medium text-navy-800">General &amp; Administrative Headcount</td>
-              <td class="px-4 py-2">10</td>
-              <td class="px-4 py-2">8</td>
-            </tr>
-            <tr class="bg-white">
-              <td class="px-4 py-2 font-medium text-navy-800">Non-Headcount OpEx</td>
-              <td class="px-4 py-2">10</td>
-              <td class="px-4 py-2">12</td>
-            </tr>
-            <tr class="bg-blue-50">
-              <td class="px-4 py-2 font-medium text-navy-800">C Total Operating Expenses</td>
-              <td class="px-4 py-2">50</td>
-              <td class="px-4 py-2">45</td>
-            </tr>
-            <tr class="bg-white">
-              <td class="px-4 py-2 font-medium text-navy-800">EBITDA</td>
-              <td class="px-4 py-2">30</td>
-              <td class="px-4 py-2">47</td>
-            </tr>
-            <tr class="bg-blue-50">
-              <td class="px-4 py-2 font-medium text-navy-800">D EBITDA Margin</td>
-              <td class="px-4 py-2">30</td>
-              <td class="px-4 py-2">41</td>
-            </tr>
-          </tbody>
-        </table>
-        <p class="text-xs text-gray-400 mt-1">USD in millions</p>
-      </div>
-
-      <!-- Key Financial Metrics -->
-      <h3 class="text-lg font-semibold text-navy-800 mb-4">Key Financial Metrics Impacted by AI</h3>
-      <div class="space-y-4 text-sm text-gray-700">
-        <div class="border-l-4 border-brand-teal pl-4">
-          <p><span class="font-semibold text-navy-800">A. Revenue Growth: Addressable Market</span> Complementary AI products will be sold alongside existing SaaS solutions particularly those with system of record status, leading to product-led TAM expansion and an acceleration to topline growth</p>
-        </div>
-        <div class="border-l-4 border-brand-teal pl-4">
-          <p><span class="font-semibold text-navy-800">B. Hosting &amp; Infrastructure Costs: Gross Margin</span> While dependent on the model choice, AI products typically have lower unit economics compared to SaaS offerings given tokenization costs 50 vs. 85 today however, optimization of model use will likely lead to expanding margins over time</p>
-        </div>
-        <div class="border-l-4 border-brand-teal pl-4">
-          <p><span class="font-semibold text-navy-800">C. Customer Support: Operating Expenses</span> Automation of human-centric roles tasks, particularly within customer support and software development will lead to sizeable cost savings at forwarding-thinking companies</p>
-        </div>
-        <div class="border-l-4 border-brand-teal pl-4">
-          <p><span class="font-semibold text-navy-800">D. EBITDA Margin: Investor KPIs</span> Operating margins will likely expand significantly, leading to a re-calibration of target KPIs such as the Rule of 40</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================================ -->
-    <!-- PAGE 4 — Pricing Models                                       -->
-    <!-- ============================================================ -->
-    <section id="page-4" class="bg-white border border-gray-200 rounded-xl shadow-md p-8">
-      <span class="inline-block text-xs font-semibold text-gray-400 uppercase tracking-widest mb-6">Page 4</span>
-
-      <!-- Header Block -->
-      <h2 class="text-2xl md:text-3xl font-bold text-navy-900 mb-2">Consumption and Outcome-Based Pricing Models Are Worthy of Consideration...</h2>
-      <p class="text-gray-600 mb-8 max-w-4xl">While subscription and platform pricing models remain common, alternative pricing models will make sense for most</p>
-
-      <!-- Vertical Bar Chart -->
-      <div class="flex items-end justify-center gap-6 md:gap-10 mb-4" style="height: 280px;">
-        <!-- Subscription / Platform -->
-        <div class="flex flex-col items-center justify-end h-full">
-          <span class="text-sm font-bold text-navy-900 mb-1">58%</span>
-          <div class="bg-navy-900 w-16 md:w-20 rounded-t" style="height:58%"></div>
-          <span class="text-xs text-center mt-2 w-20 md:w-24">Subscription / Platform</span>
-        </div>
-        <!-- Consumption-Based -->
-        <div class="flex flex-col items-center justify-end h-full">
-          <span class="text-sm font-bold text-navy-800 mb-1">35%</span>
-          <div class="bg-navy-800 w-16 md:w-20 rounded-t" style="height:35%"></div>
-          <span class="text-xs text-center mt-2 w-20 md:w-24">Consumption-Based</span>
-        </div>
-        <!-- Seat-Based -->
-        <div class="flex flex-col items-center justify-end h-full">
-          <span class="text-sm font-bold text-navy-700 mb-1">23%</span>
-          <div class="bg-navy-700 w-16 md:w-20 rounded-t" style="height:23%"></div>
-          <span class="text-xs text-center mt-2 w-20 md:w-24">Seat-Based</span>
-        </div>
-        <!-- Outcome-Based -->
-        <div class="flex flex-col items-center justify-end h-full">
-          <span class="text-sm font-bold text-brand-teal mb-1">18%</span>
-          <div class="bg-brand-teal w-16 md:w-20 rounded-t" style="height:18%"></div>
-          <span class="text-xs text-center mt-2 w-20 md:w-24">Outcome-Based</span>
-        </div>
-        <!-- AI Offered at No Extra Cost -->
-        <div class="flex flex-col items-center justify-end h-full">
-          <span class="text-sm font-bold text-gray-500 mb-1">17%</span>
-          <div class="bg-gray-400 w-16 md:w-20 rounded-t" style="height:17%"></div>
-          <span class="text-xs text-center mt-2 w-20 md:w-24">AI Offered at No Extra Cost</span>
-        </div>
-      </div>
-
-      <!-- Outcome-Based Sub-breakdown -->
-      <div class="bg-teal-50 border border-teal-200 rounded-lg p-4 mb-8 max-w-sm mx-auto">
-        <p class="text-xs font-semibold text-teal-800 mb-2">Outcome-Based Breakdown</p>
-        <ul class="text-xs text-teal-700 space-y-1">
-          <li>Cost Savings 36</li>
-          <li>Revenue Generated 18</li>
-          <li>Rev. Gen. &amp; Cost Savings 18</li>
-          <li>Other 11</li>
-          <li>Buyer CSAT 9</li>
-        </ul>
-      </div>
-
-      <!-- What Comes Next -->
-      <h3 class="text-lg font-semibold text-navy-800 mb-3">&hellip;and What Comes Next</h3>
-      <ol class="list-decimal list-inside text-sm text-gray-700 space-y-2 mb-8">
-        <li>Consensus is still forming, but token-driven margin compression may structurally challenge the license model long term</li>
-        <li>Vendor pivots to outcome-based pricing will be difficult to substantiate for some given use-case specificity</li>
-        <li>Revenue growth is decoupling from seat count the metric that defined SaaS valuation for a decade is losing its predictive power</li>
-      </ol>
-
-      <!-- Quotes -->
-      <div class="space-y-4 mb-10">
-        <blockquote class="border-l-4 border-navy-700 bg-gray-50 px-6 py-4 rounded-r-lg">
-          <p class="text-sm italic text-gray-700">My take in most cases, it outcome-based pricing is just usage pricing with a marketing degree...</p>
-          <p class="text-xs text-gray-500 mt-2">Joey Quirk, Head of Monetization, Chargebee</p>
-        </blockquote>
-        <blockquote class="border-l-4 border-navy-700 bg-gray-50 px-6 py-4 rounded-r-lg">
-          <p class="text-sm italic text-gray-700">Our customers still want seat-based predictability, and we think its hybrid usage-based pricing the perfect goldilocks model</p>
-          <p class="text-xs text-gray-500 mt-2">Bill McDermott, CEO, ServiceNow</p>
-        </blockquote>
-      </div>
-
-      <!-- Vendor Pricing Spectrum -->
-      <h3 class="text-xl font-bold text-navy-900 mb-6">&hellip;With Vendors Across the Ecosystem Taking Disparate Approaches...</h3>
-
-      <div class="overflow-x-auto mb-4">
-        <table class="min-w-full text-sm border border-gray-200">
-          <thead class="bg-navy-900 text-white">
-            <tr>
-              <th class="px-4 py-3 text-left font-semibold">ServiceNow</th>
-              <th class="px-4 py-3 text-left font-semibold">Zendesk</th>
-              <th class="px-4 py-3 text-left font-semibold">Salesforce</th>
-              <th class="px-4 py-3 text-left font-semibold">Snowflake</th>
-              <th class="px-4 py-3 text-left font-semibold">UiPath</th>
-              <th class="px-4 py-3 text-left font-semibold">Intercom</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="bg-gray-50 border-b border-gray-200">
-              <td class="px-4 py-2 font-semibold text-navy-800">Per-User Module Pricing</td>
-              <td class="px-4 py-2 font-semibold text-navy-800">Per-Agent User</td>
-              <td class="px-4 py-2 font-semibold text-navy-800">User-Based AI Add-Ons</td>
-              <td class="px-4 py-2 font-semibold text-navy-800">Usage-Based Consumption</td>
-              <td class="px-4 py-2 font-semibold text-navy-800">Bot Automation-Based</td>
-              <td class="px-4 py-2 font-semibold text-navy-800">Outcome Resolution-Based</td>
-            </tr>
-            <tr class="bg-white border-b border-gray-200">
-              <td class="px-4 py-2 text-gray-600">Historically priced per named user workflow module</td>
-              <td class="px-4 py-2 text-gray-600">Core model priced per support agent</td>
-              <td class="px-4 py-2 text-gray-600">Traditional user pricing for CRM users</td>
-              <td class="px-4 py-2 text-gray-600">Priced per compute storage usage</td>
-              <td class="px-4 py-2 text-gray-600">Priced per automation bot</td>
-              <td class="px-4 py-2 text-gray-600">Priced per AI-resolved conversation</td>
-            </tr>
-            <tr class="bg-gray-50 border-b border-gray-200">
-              <td class="px-4 py-2 text-gray-600">AI co-pilots reduce manual interaction time</td>
-              <td class="px-4 py-2 text-gray-600">AI agents resolve tickets autonomously</td>
-              <td class="px-4 py-2 text-gray-600">Co-pilot agent force layers priced separately</td>
-              <td class="px-4 py-2 text-gray-600">AI workloads increase query intensity</td>
-              <td class="px-4 py-2 text-gray-600">AI agents extend RPA into decision workflows</td>
-              <td class="px-4 py-2 text-gray-600">Aligns monetization with customer outcomes, not usage volume</td>
-            </tr>
-            <tr class="bg-white">
-              <td class="px-4 py-2 text-gray-600">AI efficiency may reduce users required per unit of output</td>
-              <td class="px-4 py-2 text-gray-600">Automation may compress agent user growth over time</td>
-              <td class="px-4 py-2 text-gray-600">Gradual experiments with action- and outcome-based monetization</td>
-              <td class="px-4 py-2 text-gray-600">Model already aligned with inference economics</td>
-              <td class="px-4 py-2 text-gray-600">Revenue scales with automations executed</td>
-              <td class="px-4 py-2 text-gray-600">Revenue scales with value delivered</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Spectrum Ruler -->
-      <div class="relative bg-gradient-to-r from-navy-900 via-navy-700 via-brand-teal to-brand-accent h-10 rounded-full mb-2 flex items-center justify-between px-6">
-        <span class="text-xs text-white font-semibold">Per Seat</span>
-        <span class="text-xs text-white font-semibold">Hybrid</span>
-        <span class="text-xs text-white font-semibold">Usage</span>
-        <span class="text-xs text-white font-semibold">Outcome</span>
-      </div>
-      <p class="text-sm text-gray-600 text-center mb-4">AI shifts value creation from access to output, pushing pricing toward usage and outcomes</p>
-    </section>
-
-    <!-- ============================================================ -->
-    <!-- PAGE 5 — Winning Vertical Software Platforms                  -->
-    <!-- ============================================================ -->
-    <section id="page-5" class="bg-white border border-gray-200 rounded-xl shadow-md p-8">
-      <span class="inline-block text-xs font-semibold text-gray-400 uppercase tracking-widest mb-6">Page 5</span>
-
-      <!-- Headline -->
-      <h2 class="text-2xl md:text-3xl font-bold text-navy-900 mb-8">Key Attributes of Winning Vertical Software Platforms in an AI-Driven World</h2>
-
-      <!-- Three Pillars -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-        <!-- Pillar 1 -->
-        <div class="border border-gray-200 rounded-lg p-5 border-t-4 border-t-navy-900">
-          <h4 class="font-bold text-navy-900 mb-4">Robust Technical Foundation</h4>
-          <div class="space-y-4 text-sm text-gray-700">
-            <div>
-              <p class="font-semibold text-navy-800">Proprietary, Unified Structured Data Assets</p>
-              <p>Domain-specific datasets accumulated over years of usage, supporting differentiated AI deployment purpose-built for vertical-specific workflows</p>
-            </div>
-            <div>
-              <p class="font-semibold text-navy-800">AI-Native, AI-Forward Architecture</p>
-              <p>Platform architected to integrate AI directly into core workflows, enabling true automation rather than surface-level copilots</p>
-            </div>
-            <div>
-              <p class="font-semibold text-navy-800">System-of-Record &amp; Action Control</p>
-              <p>Deeply embedded, workflow-critical systems with operational dependency where switching costs are high and deployments are complex</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Pillar 2 -->
-        <div class="border border-gray-200 rounded-lg p-5 border-t-4 border-t-brand-teal">
-          <h4 class="font-bold text-navy-900 mb-4">Structural Platform Moats</h4>
-          <div class="space-y-4 text-sm text-gray-700">
-            <div>
-              <p class="font-semibold text-navy-800">Hardware Embed</p>
-              <p>Real-world workflows and proprietary data capture collide, creating switching friction and unique first-party signal that general-purpose AI cannot replicate</p>
-            </div>
-            <div>
-              <p class="font-semibold text-navy-800">Network Effects</p>
-              <p>Multi-sided networks customers, partners, developers, data contributors that reinforce value and increase defensibility over time</p>
-            </div>
-            <div>
-              <p class="font-semibold text-navy-800">Embedded Fintech Capabilities</p>
-              <p>Integrated payments, lending, or financial workflows increase platform stickiness, monetization potential, and control over transaction data</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Pillar 3 -->
-        <div class="border border-gray-200 rounded-lg p-5 border-t-4 border-t-brand-accent">
-          <h4 class="font-bold text-navy-900 mb-4">Distribution &amp; Organizational Positioning</h4>
-          <div class="space-y-4 text-sm text-gray-700">
-            <div>
-              <p class="font-semibold text-navy-800">Technical Leadership Team</p>
-              <p>High-agency leaders with proven ability to launch agentic features and execute on rapidly compressing platform roadmaps</p>
-            </div>
-            <div>
-              <p class="font-semibold text-navy-800">Robust Usage &amp; Engagement</p>
-              <p>Strong distribution rigor and platform extensibility across multiple user personas and constituents within an organization</p>
-            </div>
-            <div>
-              <p class="font-semibold text-navy-800">Trusted Brand</p>
-              <p>In regulated industries, trust is a prerequisite incumbents with established relationships have a real head start that new entrants cannot shortcut</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Fundamentals Section -->
-      <h3 class="text-lg font-semibold text-navy-800 mb-3">Fundamentals will Continue to Matter in Vertical SaaS &amp; AI</h3>
-      <p class="text-sm text-gray-600 mb-8">Truly integrated platforms with embedded fintech capabilities and sticky customer bases are well equipped to defend against AI-native newcomers, while simultaneously offering a superior platform to drive further innovation</p>
-
-      <!-- EV/LTM Revenue Multiples -->
-      <div class="space-y-4 mb-8">
-        <div class="bg-gray-50 rounded-lg p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3 border border-gray-200">
-          <div>
-            <p class="text-sm font-semibold text-navy-800">VSaaS with Embedded FinTech Premium</p>
-            <div class="flex gap-6 mt-1">
-              <span class="text-xs text-gray-500">No Embedded FinTech <span class="font-bold text-navy-800">9.3x</span></span>
-              <span class="text-xs text-gray-500">Embedded FinTech <span class="font-bold text-navy-800">11.1x</span></span>
-            </div>
-          </div>
-          <span class="inline-block bg-brand-teal text-white text-xs font-bold px-3 py-1 rounded-full">19 Premium</span>
-        </div>
-
-        <div class="bg-gray-50 rounded-lg p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3 border border-gray-200">
-          <div>
-            <p class="text-sm font-semibold text-navy-800">Gross Retention Premium</p>
-            <div class="flex gap-6 mt-1">
-              <span class="text-xs text-gray-500">&lt;90 Gross Retention <span class="font-bold text-navy-800">8.0x</span></span>
-              <span class="text-xs text-gray-500">&gt;90 Gross Retention <span class="font-bold text-navy-800">9.0x</span></span>
-            </div>
-          </div>
-          <span class="inline-block bg-brand-teal text-white text-xs font-bold px-3 py-1 rounded-full">12 Premium</span>
-        </div>
-
-        <div class="bg-gray-50 rounded-lg p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3 border border-gray-200">
-          <div>
-            <p class="text-sm font-semibold text-navy-800">Premium for Organic Platform Roll-up</p>
-            <div class="flex gap-6 mt-1">
-              <span class="text-xs text-gray-500">Roll-up <span class="font-bold text-navy-800">8.5x</span></span>
-              <span class="text-xs text-gray-500">Fully Integrated Organic Platform <span class="font-bold text-navy-800">9.8x</span></span>
-            </div>
-          </div>
-          <span class="inline-block bg-brand-teal text-white text-xs font-bold px-3 py-1 rounded-full">15 Premium</span>
-        </div>
-      </div>
-
-      <!-- Financial Profile Checklist -->
-      <h4 class="text-md font-semibold text-navy-800 mb-3">Financial Profile Attributes</h4>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-        <div class="flex items-center gap-2 text-sm text-gray-700">
-          <svg class="w-5 h-5 text-brand-teal shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-          High LTV CAC
-        </div>
-        <div class="flex items-center gap-2 text-sm text-gray-700">
-          <svg class="w-5 h-5 text-brand-teal shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-          Expanding EBITDA Margins
-        </div>
-        <div class="flex items-center gap-2 text-sm text-gray-700">
-          <svg class="w-5 h-5 text-brand-teal shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-          Gross Margins Above 80
-        </div>
-        <div class="flex items-center gap-2 text-sm text-gray-700">
-          <svg class="w-5 h-5 text-brand-teal shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-          Predictable ARR Growth Trends
-        </div>
-        <div class="flex items-center gap-2 text-sm text-gray-700">
-          <svg class="w-5 h-5 text-brand-teal shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-          Consistently Expanding NRR
-        </div>
-        <div class="flex items-center gap-2 text-sm text-gray-700">
-          <svg class="w-5 h-5 text-brand-teal shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-          Operating Expense Discipline
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================================ -->
-    <!-- PAGE 6 — Diligence Framework and Roadmap                      -->
-    <!-- ============================================================ -->
-    <section id="page-6" class="bg-white border border-gray-200 rounded-xl shadow-md p-8">
-      <span class="inline-block text-xs font-semibold text-gray-400 uppercase tracking-widest mb-6">Page 6</span>
-
-      <!-- Headline 1 -->
-      <h2 class="text-2xl md:text-3xl font-bold text-navy-900 mb-6">AI Diligence Framework for Software Investors</h2>
-
-      <!-- Diligence Table -->
-      <div class="overflow-x-auto mb-4">
-        <table class="min-w-full text-sm border border-gray-200">
-          <thead class="bg-navy-900 text-white">
-            <tr>
-              <th class="px-4 py-3 text-left font-semibold">Topic</th>
-              <th class="px-4 py-3 text-left font-semibold">Area of Focus</th>
-              <th class="px-4 py-3 text-left font-semibold">Evaluation Criteria</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-200">
-            <tr class="bg-white">
-              <td class="px-4 py-3 font-medium text-navy-800 align-top">Strategic Positioning</td>
-              <td class="px-4 py-3 align-top">Is AI value-creating or defensive for this business?</td>
-              <td class="px-4 py-3">
-                <ul class="list-disc list-inside space-y-1">
-                  <li>Clear thesis for how AI drives revenue, margin, or retention</li>
-                  <li>Defined use cases tied to measurable outcomes</li>
-                  <li>Ideally real economic impact from AI products</li>
-                </ul>
-              </td>
-            </tr>
-            <tr class="bg-gray-50">
-              <td class="px-4 py-3 font-medium text-navy-800 align-top">Operational Readiness</td>
-              <td class="px-4 py-3 align-top">Can the company execute an AI strategy at scale?</td>
-              <td class="px-4 py-3">
-                <ul class="list-disc list-inside space-y-1">
-                  <li>Clean, governed, workflow-relevant data</li>
-                  <li>Evidence of efficiency gains or margin improvement</li>
-                  <li>Architecture capable of supporting agentic workflows</li>
-                </ul>
-              </td>
-            </tr>
-            <tr class="bg-white">
-              <td class="px-4 py-3 font-medium text-navy-800 align-top">Product &amp; Moat Durability</td>
-              <td class="px-4 py-3 align-top">Does AI strengthen or weaken defensibility?</td>
-              <td class="px-4 py-3">
-                <ul class="list-disc list-inside space-y-1">
-                  <li>AI embedded into core workflows not surface-level</li>
-                  <li>Proprietary, outcome-linked data</li>
-                  <li>Data advantage that grows with usage, not static</li>
-                </ul>
-              </td>
-            </tr>
-            <tr class="bg-gray-50">
-              <td class="px-4 py-3 font-medium text-navy-800 align-top">Market Exposure &amp; Competitive Dynamics</td>
-              <td class="px-4 py-3 align-top">Is the business structurally exposed or advantaged?</td>
-              <td class="px-4 py-3">
-                <ul class="list-disc list-inside space-y-1">
-                  <li>Replaceable labor vs mission-critical workflow</li>
-                  <li>Speed of AI-native entrants in the category</li>
-                  <li>Ability to consolidate vs. risk of being displaced</li>
-                </ul>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="text-sm text-gray-600 mb-1">AI diligence should assess potential for both disruption risk and clear advantage</p>
-      <p class="text-xs text-gray-400 mb-10">Evaluating structural risk and upside in an AI-driven market</p>
-
-      <!-- Headline 2 -->
-      <h2 class="text-2xl md:text-3xl font-bold text-navy-900 mb-2">For Operators, a Practical AI Roadmap</h2>
-      <p class="text-sm text-gray-500 mb-6">Disciplined, thoughtful execution beats feature velocity</p>
-
-      <!-- Two-Column: Steps + Errors -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <!-- Key Action Items -->
-        <div>
-          <h3 class="text-lg font-semibold text-navy-800 mb-4">Key Action Items</h3>
-
-          <div class="space-y-5">
-            <!-- Step 1 -->
-            <div>
-              <div class="flex items-center gap-2 mb-2">
-                <span class="bg-navy-900 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold shrink-0">1</span>
-                <span class="font-semibold text-navy-800">The Foundation</span>
+            <div class="bar-row">
+              <div class="bar-label">AI / ML, Including GenAI</div>
+              <div class="bar-neg-half"></div>
+              <div class="bar-pos-half">
+                <div class="bar-fill-green" data-width="90%" style="width:0%"></div>
+                <span class="bar-value green">45%</span>
               </div>
-              <ul class="list-disc list-inside text-sm text-gray-700 ml-9 space-y-1">
-                <li>Audit proprietary data and workflow ownership</li>
-                <li>Establish governance and data hygiene</li>
-                <li>Ensure operational integration across the technology stack</li>
-              </ul>
             </div>
-
-            <!-- Step 2 -->
-            <div>
-              <div class="flex items-center gap-2 mb-2">
-                <span class="bg-navy-900 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold shrink-0">2</span>
-                <span class="font-semibold text-navy-800">Focused Deployment</span>
+            <div class="bar-row">
+              <div class="bar-label">Cloud Services</div>
+              <div class="bar-neg-half"></div>
+              <div class="bar-pos-half">
+                <div class="bar-fill-green" data-width="54%" style="width:0%"></div>
+                <span class="bar-value green">27%</span>
               </div>
-              <ul class="list-disc list-inside text-sm text-gray-700 ml-9 space-y-1">
-                <li>Launch narrowly scoped use cases with measurable ROI</li>
-                <li>Align pricing and packaging with value delivered</li>
-                <li>Build internal AI fluency within product and ops teams</li>
-              </ul>
             </div>
-
-            <!-- Step 3 -->
-            <div>
-              <div class="flex items-center gap-2 mb-2">
-                <span class="bg-navy-900 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold shrink-0">3</span>
-                <span class="font-semibold text-navy-800">Proof Points Scale</span>
+            <div class="bar-row">
+              <div class="bar-label">Security Infrastructure</div>
+              <div class="bar-neg-half"></div>
+              <div class="bar-pos-half">
+                <div class="bar-fill-green" data-width="46%" style="width:0%"></div>
+                <span class="bar-value green">23%</span>
               </div>
-              <ul class="list-disc list-inside text-sm text-gray-700 ml-9 space-y-1">
-                <li>Reinforce switching costs through system-of-record integration</li>
-                <li>Demonstrate measurable margin or revenue impact</li>
-                <li>Secure customer buy-in and reference wins</li>
-              </ul>
             </div>
-
-            <!-- Step 4 -->
-            <div>
-              <div class="flex items-center gap-2 mb-2">
-                <span class="bg-navy-900 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold shrink-0">4</span>
-                <span class="font-semibold text-navy-800">Acceleration Pricing Assessment</span>
+            <div class="bar-row">
+              <div class="bar-label">IT Services</div>
+              <div class="bar-neg-half"></div>
+              <div class="bar-pos-half">
+                <div class="bar-fill-green" data-width="32%" style="width:0%"></div>
+                <span class="bar-value green">16%</span>
               </div>
-              <ul class="list-disc list-inside text-sm text-gray-700 ml-9 space-y-1">
-                <li>Design workflows optimized for AI agents, not just humans</li>
-                <li>Reinvest AI gains to widen moat before optimizing margin</li>
-                <li>Shift monetization toward usage outcome where practical</li>
-              </ul>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">Analytics</div>
+              <div class="bar-neg-half"></div>
+              <div class="bar-pos-half">
+                <div class="bar-fill-green" data-width="32%" style="width:0%"></div>
+                <span class="bar-value green">16%</span>
+              </div>
+            </div>
+          </div>
+
+          <hr class="section-separator">
+
+          <!-- Traditional Drivers (positive) -->
+          <div class="section-group">
+            <div class="section-annotation">Traditional Drivers of Software Spend</div>
+
+            <div class="bar-row">
+              <div class="bar-label">ERP</div>
+              <div class="bar-neg-half"></div>
+              <div class="bar-pos-half">
+                <div class="bar-fill-teal" data-width="10%" style="width:0%"></div>
+                <span class="bar-value blue">5%</span>
+              </div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">CRM</div>
+              <div class="bar-neg-half"></div>
+              <div class="bar-pos-half">
+                <div class="bar-fill-teal" data-width="8%" style="width:0%"></div>
+                <span class="bar-value blue">4%</span>
+              </div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">App Dev / DevOps</div>
+              <div class="bar-neg-half"></div>
+              <div class="bar-pos-half">
+                <div class="bar-fill-teal" data-width="6%" style="width:0%"></div>
+                <span class="bar-value blue">3%</span>
+              </div>
+            </div>
+          </div>
+
+          <hr class="section-separator">
+
+          <!-- Traditional Drivers (negative) -->
+          <div class="section-group">
+            <div class="section-annotation">Traditional Drivers of Software Spend</div>
+
+            <div class="bar-row">
+              <div class="bar-label">Network Infrastructure</div>
+              <div class="bar-neg-half">
+                <div class="bar-fill-red" data-width="10%" style="width:0%"></div>
+                <span class="bar-value red">(5%)</span>
+              </div>
+              <div class="bar-pos-half"></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">System &amp; Service Mgmt.</div>
+              <div class="bar-neg-half">
+                <div class="bar-fill-red" data-width="14%" style="width:0%"></div>
+                <span class="bar-value red">(7%)</span>
+              </div>
+              <div class="bar-pos-half"></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">Storage Infrastructure</div>
+              <div class="bar-neg-half">
+                <div class="bar-fill-red" data-width="16%" style="width:0%"></div>
+                <span class="bar-value red">(8%)</span>
+              </div>
+              <div class="bar-pos-half"></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">IT Operations Mgmt.</div>
+              <div class="bar-neg-half">
+                <div class="bar-fill-red" data-width="18%" style="width:0%"></div>
+                <span class="bar-value red">(9%)</span>
+              </div>
+              <div class="bar-pos-half"></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">Comm., Collab., &amp; Content Mgmt.</div>
+              <div class="bar-neg-half">
+                <div class="bar-fill-red" data-width="20%" style="width:0%"></div>
+                <span class="bar-value red">(10%)</span>
+              </div>
+              <div class="bar-pos-half"></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">Devices</div>
+              <div class="bar-neg-half">
+                <div class="bar-fill-red" data-width="34%" style="width:0%"></div>
+                <span class="bar-value red">(17%)</span>
+              </div>
+              <div class="bar-pos-half"></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">Server Infrastructure</div>
+              <div class="bar-neg-half">
+                <div class="bar-fill-red" data-width="48%" style="width:0%"></div>
+                <span class="bar-value red">(24%)</span>
+              </div>
+              <div class="bar-pos-half"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- RIGHT: Key Themes -->
+      <div class="themes-panel fade-in">
+        <div class="themes-header">Key Themes</div>
+
+        <div class="theme-item">
+          <div class="theme-icon">
+            <svg viewBox="0 0 24 24">
+              <line x1="12" y1="1" x2="12" y2="23"></line>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+          </div>
+          <div class="theme-text">
+            <strong>AI has moved from discretionary experiment to core line item</strong>
+          </div>
+        </div>
+
+        <div class="theme-item">
+          <div class="theme-icon">
+            <svg viewBox="0 0 24 24">
+              <polyline points="7 2 2 7 7 12"></polyline>
+              <polyline points="17 2 22 7 17 12"></polyline>
+              <line x1="2" y1="7" x2="22" y2="7"></line>
+            </svg>
+          </div>
+          <div class="theme-text">
+            <strong>IT spend is being both expanded and reallocated</strong>
+          </div>
+        </div>
+
+        <div class="theme-item">
+          <div class="theme-icon">
+            <svg viewBox="0 0 24 24">
+              <rect x="3" y="3" width="7" height="18" rx="1"></rect>
+              <rect x="14" y="9" width="7" height="12" rx="1"></rect>
+              <line x1="6.5" y1="7" x2="6.5" y2="17"></line>
+              <line x1="17.5" y1="13" x2="17.5" y2="17"></line>
+            </svg>
+          </div>
+          <div class="theme-text">
+            <strong>Incumbents face near term budget pressure</strong>
+          </div>
+        </div>
+
+        <div class="theme-item">
+          <div class="theme-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+          </div>
+          <div class="theme-text">
+            <strong>Infrastructure and security benefit as enabling layers</strong>
+          </div>
+        </div>
+
+        <div class="theme-item">
+          <div class="theme-icon">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10"></circle>
+              <circle cx="12" cy="12" r="3"></circle>
+              <line x1="12" y1="2" x2="12" y2="5"></line>
+              <line x1="12" y1="19" x2="12" y2="22"></line>
+              <line x1="2" y1="12" x2="5" y2="12"></line>
+              <line x1="19" y1="12" x2="22" y2="12"></line>
+            </svg>
+          </div>
+          <div class="theme-text">
+            <strong>Vendors that cannot show measurable AI driven ROI</strong>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer Banner -->
+    <div class="footer-banner fade-in">
+      Net IT budgets will grow modestly, but we expect that growth to be <em>concentrated in applied AI and automation spending</em>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         Section 2: AI Divergence
+    ══════════════════════════════════════════ -->
+
+    <div class="page-divider">
+      <div class="divider-dot"></div>
+    </div>
+
+    <div class="divergence-hero fade-in">
+      <div class="source-badge">
+        <div class="badge-dot"></div>
+        <span>AI &amp; SaaS Considerations</span>
+      </div>
+      <h2>
+        AI Divergence <span class="accent-blue">By Category</span>
+        and <span class="accent-teal">By Segment</span>
+      </h2>
+      <p>AI adoption is reshaping SaaS category dynamics, vendors positioned as <strong>systems of action</strong> are pulling ahead in both enterprise adoption and budget allocation.</p>
+    </div>
+
+    <div class="divergence-grid">
+
+      <!-- LEFT: Category Divergence -->
+      <div class="fade-in">
+        <div class="section-label"><span>Category Divergence</span></div>
+
+        <div class="category-card card-teal">
+          <div class="card-accent-bar"></div>
+          <div class="signal-badge">Highest Upside</div>
+          <div class="card-body">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24"><circle cx="7" cy="17" r="3"/><line x1="10" y1="14" x2="18" y2="6"/><polyline points="14 6 18 6 18 10"/></svg>
+            </div>
+            <div class="card-content">
+              <div class="card-title">Systems of Action</div>
+              <div class="card-tagline">Capture disproportionate levels of value as AI directly drives outcomes and decisions</div>
+              <div class="card-bullet"><div class="bullet-dot"></div><span>Platforms closest to "doing the work" benefit the most from AI driven efficiency</span></div>
+              <div class="card-bullet"><div class="bullet-dot"></div><span>Value creation compounds as models learn from execution data and closed loop feedback</span></div>
             </div>
           </div>
         </div>
 
-        <!-- Avoidable Errors -->
-        <div>
-          <h3 class="text-lg font-semibold text-red-600 mb-4">Avoidable Errors</h3>
-          <ul class="space-y-3">
-            <li class="flex items-start gap-2 text-sm text-gray-700">
-              <svg class="w-5 h-5 text-red-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-              Shipping features without workflow integration
-            </li>
-            <li class="flex items-start gap-2 text-sm text-gray-700">
-              <svg class="w-5 h-5 text-red-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-              Selling autonomy before proving reliability
-            </li>
-            <li class="flex items-start gap-2 text-sm text-gray-700">
-              <svg class="w-5 h-5 text-red-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-              Neglecting governance, explainability, and auditability
-            </li>
-            <li class="flex items-start gap-2 text-sm text-gray-700">
-              <svg class="w-5 h-5 text-red-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-              Using AI as narrative rather than a business case
-            </li>
-            <li class="flex items-start gap-2 text-sm text-gray-700">
-              <svg class="w-5 h-5 text-red-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-              Treating AI as a one-time initiative rather than an ongoing operational capability
-            </li>
-            <li class="flex items-start gap-2 text-sm text-gray-700">
-              <svg class="w-5 h-5 text-red-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-              Scaling before measurable customer validation
-            </li>
-          </ul>
+        <div class="category-card card-muted">
+          <div class="card-accent-bar"></div>
+          <div class="signal-badge">Steady State</div>
+          <div class="card-body">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><polyline points="10 16 12 18 16 14"/></svg>
+            </div>
+            <div class="card-content">
+              <div class="card-title">Systems of Record</div>
+              <div class="card-tagline">Slower disruption, AI improves efficiency but limits incremental platform differentiation</div>
+              <div class="card-bullet"><div class="bullet-dot"></div><span>Data integrity, compliance, and reliability requirements constrain AI driven change</span></div>
+              <div class="card-bullet"><div class="bullet-dot"></div><span>AI enhances workflows rather than instituting step function product changes</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="category-card card-red">
+          <div class="card-accent-bar"></div>
+          <div class="signal-badge">&#9888; High Risk</div>
+          <div class="card-body">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24"><polyline points="3 17 7 11 11 15 15 7 19 13 21 10"/><circle cx="18" cy="6" r="3" stroke-dasharray="4 2"/></svg>
+            </div>
+            <div class="card-content">
+              <div class="card-title">Systems of Engagement</div>
+              <div class="card-tagline">Most crowded and dangerous place to be in 2026, AI commoditizes the surface layer quickly</div>
+              <div class="card-bullet"><div class="bullet-dot"></div><span>Sustainable differentiation requires deep workflow integration and measurable ROI</span></div>
+              <div class="card-bullet"><div class="bullet-dot"></div><span>GenAI rapidly commoditizes surface level engagement features (e.g., content, UX)</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-footer footer-teal fade-in">
+          Vendors with <strong>hybrid exposure and opportunities</strong> across categories will navigate the transition most effectively
         </div>
       </div>
-    </section>
 
-    <!-- ============================================================ -->
-    <!-- PAGE 7 — Conclusion                                           -->
-    <!-- ============================================================ -->
-    <section id="page-7" class="bg-white border border-gray-200 rounded-xl shadow-md p-8">
-      <span class="inline-block text-xs font-semibold text-gray-400 uppercase tracking-widest mb-6">Page 7</span>
+      <!-- RIGHT: Adoption Curves -->
+      <div class="fade-in">
+        <div class="section-label"><span>Adoption Curves by Vertical</span></div>
 
-      <!-- Headline -->
-      <h2 class="text-2xl md:text-3xl font-bold text-navy-900 mb-8">The AI Era Will Create Durable Winners, Not Universal Disruption</h2>
+        <div class="quadrant-wrapper">
+          <div class="axis-y-label">Regulation / Tech Maturity</div>
+          <div class="axis-y-marker top">High</div>
+          <div class="axis-y-marker bottom">Low</div>
 
-      <!-- Chevron Component -->
-      <div class="flex flex-col lg:flex-row gap-0 lg:gap-0">
-        <!-- Chevron 1 -->
-        <div class="bg-navy-900 text-white p-5 lg:p-4 rounded-lg lg:rounded-none lg:chevron-shape flex items-center text-sm lg:w-1/5 min-h-[100px]">
-          <p>Software remains foundational, AI will amplify the strongest platforms and expose the weakest</p>
+          <div class="quadrant-grid">
+            <div class="quadrant-cell q-teal">
+              <div class="q-title-row"><div class="q-dot"></div><div class="q-title">Governed Rollout</div></div>
+              <div class="q-subtitle">High reg · Low complexity</div>
+              <div class="q-label">Verticals</div>
+              <div class="vertical-pills">
+                <span class="vertical-pill">Legal</span>
+                <span class="vertical-pill">Compliance</span>
+              </div>
+              <div class="q-label">Use Cases</div>
+              <div class="q-use-case"><div class="uc-dot"></div><span>Research &amp; Contract Workflows</span></div>
+              <div class="q-use-case"><div class="uc-dot"></div><span>Outage Support Chatbots</span></div>
+              <div class="q-use-case"><div class="uc-dot"></div><span>Transaction Monitoring &amp; Audit</span></div>
+            </div>
+
+            <div class="quadrant-cell q-red">
+              <div class="q-title-row"><div class="q-dot"></div><div class="q-title">Slowest Adoption</div></div>
+              <div class="q-subtitle">High reg · High complexity</div>
+              <div class="q-label">Verticals</div>
+              <div class="vertical-pills">
+                <span class="vertical-pill">Banking &amp; Finance</span>
+                <span class="vertical-pill">Construction &amp; Industrial</span>
+                <span class="vertical-pill">Medicine</span>
+              </div>
+              <div class="q-label">Use Cases</div>
+              <div class="q-use-case"><div class="uc-dot"></div><span>Autonomous Underwriting</span></div>
+              <div class="q-use-case"><div class="uc-dot"></div><span>Construction / Ops. Analyses</span></div>
+              <div class="q-use-case"><div class="uc-dot"></div><span>Surgical Automation</span></div>
+            </div>
+
+            <div class="quadrant-cell q-green">
+              <div class="q-title-row"><div class="q-dot"></div><div class="q-title">Fastest Adoption</div></div>
+              <div class="q-subtitle">Low reg · Low complexity</div>
+              <div class="q-label">Verticals</div>
+              <div class="vertical-pills">
+                <span class="vertical-pill">Marketing &amp; Ecommerce</span>
+                <span class="vertical-pill">Customer Support</span>
+                <span class="vertical-pill">Human Resources</span>
+              </div>
+              <div class="q-label">Use Cases</div>
+              <div class="q-use-case"><div class="uc-dot"></div><span>Chatbots &amp; FAQ Automation</span></div>
+              <div class="q-use-case"><div class="uc-dot"></div><span>Contact Center Routing</span></div>
+              <div class="q-use-case"><div class="uc-dot"></div><span>Marketing Content Generation</span></div>
+            </div>
+
+            <div class="quadrant-cell q-blue">
+              <div class="q-title-row"><div class="q-dot"></div><div class="q-title">Co Pilot, Assistive</div></div>
+              <div class="q-subtitle">Low reg · High complexity</div>
+              <div class="q-label">Verticals</div>
+              <div class="vertical-pills">
+                <span class="vertical-pill">Enterprise ITSM</span>
+                <span class="vertical-pill">Verticalized ERP &amp; CRM</span>
+              </div>
+              <div class="q-label">Use Cases</div>
+              <div class="q-use-case"><div class="uc-dot"></div><span>Incident Resolution Automation</span></div>
+              <div class="q-use-case"><div class="uc-dot"></div><span>Lead Qualification Scoring</span></div>
+            </div>
+          </div>
+
+          <div class="x-axis">
+            <span>Low</span>
+            <div class="axis-line"></div>
+            <span class="axis-center">Task Complexity</span>
+            <div class="axis-line"></div>
+            <span>High</span>
+          </div>
         </div>
-        <!-- Chevron 2 -->
-        <div class="bg-navy-800 text-white p-5 lg:p-4 lg:pl-8 rounded-lg lg:rounded-none lg:chevron-shape flex items-center text-sm lg:w-1/5 min-h-[100px]">
-          <p>Vertical platforms with proprietary, execution-linked data are the most durable AI-era investments, particularly those serving highly regulated industries use cases</p>
-        </div>
-        <!-- Chevron 3 -->
-        <div class="bg-navy-700 text-white p-5 lg:p-4 lg:pl-8 rounded-lg lg:rounded-none lg:chevron-shape flex items-center text-sm lg:w-1/5 min-h-[100px]">
-          <p>Growth-stage and middle-market companies are positioned to move fastest, large enough to matter but agile enough to adapt</p>
-        </div>
-        <!-- Chevron 4 -->
-        <div class="bg-brand-teal text-white p-5 lg:p-4 lg:pl-8 rounded-lg lg:rounded-none lg:chevron-shape flex items-center text-sm lg:w-1/5 min-h-[100px]">
-          <p>M&amp;A will accelerate as platforms and strategics acquire AI capabilities in addition to building them internally</p>
-        </div>
-        <!-- Chevron 5 -->
-        <div class="bg-brand-light text-white p-5 lg:p-4 lg:pl-8 rounded-lg lg:rounded-none lg:chevron-shape flex items-center text-sm lg:w-1/5 min-h-[100px]">
-          <p>The winners will not be those with the best models, but those closest to customer workflows and outcomes</p>
+
+        <div class="col-footer footer-red fade-in">
+          Regulatory burden, task complexity, and data sensitivity <strong>impact adoption rates</strong> across verticals
         </div>
       </div>
-    </section>
 
-  </main>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════
+         SECTION 3 — AI Diligence Framework
+         ═══════════════════════════════════════════════ -->
+    <div class="diligence-section">
+
+      <div class="diligence-hero">
+        <div class="diligence-badge fade-in">
+          <div class="badge-dot"></div>
+          <span>The Investor Lens</span>
+        </div>
+        <h2 class="fade-in">AI Diligence<br>Framework</h2>
+        <p class="fade-in">Evaluating structural risk and upside in an AI driven market. Four dimensions that separate durable platforms from vulnerable ones.</p>
+      </div>
+
+      <div class="dim-col-headers fade-in">
+        <span></span>
+        <span>Dimension &amp; Focus</span>
+        <span class="dim-col-header-criteria">Evaluation Criteria</span>
+      </div>
+
+      <!-- Row 1: Strategic Positioning -->
+      <div class="dim-row fade-in">
+        <div class="dim-number">01</div>
+        <div class="dim-topic">
+          <h3>Strategic Positioning</h3>
+          <div class="dim-question">Is AI value creating or defensive for this business?</div>
+        </div>
+        <div class="dim-criteria">
+          <div class="criterion"><span class="arrow">&rarr;</span><span>Clear thesis for how AI drives revenue, margin, or retention</span></div>
+          <div class="criterion"><span class="arrow">&rarr;</span><span>Defined use cases tied to measurable outcomes</span></div>
+          <div class="criterion"><span class="arrow">&rarr;</span><span>Evidence of real economic impact from AI products</span></div>
+        </div>
+      </div>
+
+      <!-- Row 2: Operational Readiness -->
+      <div class="dim-row fade-in">
+        <div class="dim-number">02</div>
+        <div class="dim-topic">
+          <h3>Operational Readiness</h3>
+          <div class="dim-question">Can the company execute an AI strategy at scale?</div>
+        </div>
+        <div class="dim-criteria">
+          <div class="criterion"><span class="arrow">&rarr;</span><span>Clean, governed, workflow relevant data</span></div>
+          <div class="criterion"><span class="arrow">&rarr;</span><span>Evidence of efficiency gains or margin improvement</span></div>
+          <div class="criterion"><span class="arrow">&rarr;</span><span>Architecture capable of supporting agentic workflows</span></div>
+        </div>
+      </div>
+
+      <!-- Row 3: Product & Moat Durability -->
+      <div class="dim-row fade-in">
+        <div class="dim-number">03</div>
+        <div class="dim-topic">
+          <h3>Product &amp; Moat Durability</h3>
+          <div class="dim-question">Does AI strengthen or weaken defensibility?</div>
+        </div>
+        <div class="dim-criteria">
+          <div class="criterion"><span class="arrow">&rarr;</span><span>AI embedded into core workflows, not surface level features</span></div>
+          <div class="criterion"><span class="arrow">&rarr;</span><span>Proprietary, outcome linked data assets</span></div>
+          <div class="criterion"><span class="arrow">&rarr;</span><span>Data advantage that grows with usage, not static</span></div>
+        </div>
+      </div>
+
+      <!-- Row 4: Market Exposure & Competitive Dynamics -->
+      <div class="dim-row fade-in">
+        <div class="dim-number">04</div>
+        <div class="dim-topic">
+          <h3>Market Exposure &amp; Competitive Dynamics</h3>
+          <div class="dim-question">Is the business structurally exposed or advantaged?</div>
+        </div>
+        <div class="dim-criteria">
+          <div class="criterion"><span class="arrow">&rarr;</span><span>Replaceable labor vs mission critical workflow positioning</span></div>
+          <div class="criterion"><span class="arrow">&rarr;</span><span>Speed of AI native entrants in the category</span></div>
+          <div class="criterion"><span class="arrow">&rarr;</span><span>Ability to consolidate vs risk of being displaced</span></div>
+        </div>
+      </div>
+
+      <div class="dim-closing-rule"></div>
+
+      <div class="diligence-footer fade-in">
+        AI diligence should assess potential for both <strong>disruption risk and clear advantage</strong>
+      </div>
+
+    </div>
+
+    <div class="page-footer fade-in">
+      <div class="footer-line"></div>
+      <span>AI &amp; SaaS Considerations, Category &amp; Segment Analysis, Diligence Framework</span>
+    </div>
+
+  </div>
+
+  <script>
+    const fadeObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          fadeObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.fade-in').forEach(el => fadeObserver.observe(el));
+
+    const barObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const bars = entry.target.querySelectorAll('[data-width]');
+          bars.forEach((bar, i) => {
+            setTimeout(() => {
+              bar.style.width = bar.getAttribute('data-width');
+            }, 60 * i);
+          });
+          barObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.chart-panel').forEach(el => barObserver.observe(el));
+  </script>
 
 </body>
 </html>
