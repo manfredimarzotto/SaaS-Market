@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI SaaS Market Overview — Budget Scaling &amp; Divergence</title>
+  <title>AI SaaS Market Overview</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
     html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
     body {
       background: transparent;
-      color: rgba(255,255,255,0.85);
+      color: #3A3F4B;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       font-size: 15px;
       line-height: 1.55;
@@ -31,10 +31,8 @@
     /* ── Decorative left accent ── */
     .accent-bar {
       position: absolute;
-      left: 0;
-      top: 0;
-      width: 3px;
-      height: 100px;
+      left: 0; top: 0;
+      width: 3px; height: 100px;
       background: linear-gradient(180deg, #5B8DEF, #0D6E6E, transparent);
       border-radius: 2px;
     }
@@ -47,23 +45,23 @@
     .title-block .eyebrow {
       font-size: 11px;
       font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.06em;
       color: #5B8DEF;
       margin-bottom: 12px;
     }
     .title-block h1 {
-      font-size: 36px;
+      font-size: 32px;
       font-weight: 800;
-      color: #EDEDEF;
+      color: #0F1629;
       line-height: 1.15;
       margin-bottom: 14px;
       letter-spacing: -0.03em;
+      white-space: nowrap;
     }
     .title-block p {
       font-size: 16px;
       font-weight: 300;
-      color: rgba(255,255,255,0.5);
+      color: #6B7280;
       max-width: 720px;
       line-height: 1.6;
     }
@@ -76,52 +74,44 @@
       align-items: start;
     }
 
-    /* ── Chart panel (glassmorphism) ── */
+    /* ── Chart panel ── */
     .chart-panel {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.75);
+      border: 1px solid rgba(0,0,0,0.06);
       border-radius: 16px;
       padding: 36px 40px 32px;
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
     }
     .chart-header {
       font-size: 16px;
       font-weight: 700;
-      color: #EDEDEF;
+      color: #0F1629;
       margin-bottom: 4px;
       letter-spacing: -0.01em;
     }
     .chart-header-line {
       height: 1px;
-      background: linear-gradient(90deg, rgba(91,141,239,0.4), rgba(255,255,255,0.06));
+      background: linear-gradient(90deg, rgba(91,141,239,0.4), rgba(0,0,0,0.04));
       margin-bottom: 24px;
     }
 
-    /* ── Chart layout ── */
-    .chart-area {
-      position: relative;
-    }
+    .chart-area { position: relative; }
 
-    /* Section annotation */
-    .section-group {
-      margin-bottom: 20px;
-    }
-    .section-group:last-child {
-      margin-bottom: 0;
-    }
+    .section-group { margin-bottom: 20px; }
+    .section-group:last-child { margin-bottom: 0; }
     .section-annotation {
       font-size: 10px;
       font-weight: 600;
-      color: rgba(255,255,255,0.35);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+      color: #9CA3AF;
+      letter-spacing: 0.06em;
       margin-bottom: 12px;
       padding-left: 4px;
     }
     .section-separator {
       border: none;
-      border-top: 1px solid rgba(255,255,255,0.06);
+      border-top: 1px solid rgba(0,0,0,0.06);
       margin: 18px 0 20px;
     }
 
@@ -136,13 +126,11 @@
     .bar-label {
       font-size: 13px;
       font-weight: 400;
-      color: rgba(255,255,255,0.6);
+      color: #6B7280;
       text-align: right;
       padding-right: 16px;
       white-space: nowrap;
     }
-
-    /* Positive bar container */
     .bar-track-positive {
       position: relative;
       height: 28px;
@@ -168,10 +156,10 @@
       white-space: nowrap;
       font-variant-numeric: tabular-nums;
     }
-    .bar-value.positive { color: #34D399; }
-    .bar-value.negative { color: #F87171; }
+    .bar-value.green { color: #0D6E6E; }
+    .bar-value.blue { color: #2563EB; }
+    .bar-value.red { color: #DC2626; }
 
-    /* Negative bar container */
     .bar-row-negative {
       display: grid;
       grid-template-columns: 200px 1fr;
@@ -193,11 +181,8 @@
       background: linear-gradient(270deg, #991B1B, #EF4444);
       position: relative;
     }
-    .bar-fill-red .bar-value {
-      direction: ltr;
-    }
+    .bar-fill-red .bar-value { direction: ltr; }
 
-    /* Zero axis */
     .axis-labels {
       display: grid;
       grid-template-columns: 200px 1fr;
@@ -207,25 +192,21 @@
       display: flex;
       justify-content: space-between;
       font-size: 10px;
-      color: rgba(255,255,255,0.25);
+      color: #9CA3AF;
       font-weight: 500;
       padding: 0 4px;
       letter-spacing: 0.02em;
     }
 
     /* ── Key Themes panel ── */
-    .themes-panel {
-      display: flex;
-      flex-direction: column;
-    }
+    .themes-panel { display: flex; flex-direction: column; }
     .themes-header {
       font-size: 11px;
       font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.06em;
+      color: #9CA3AF;
       padding-bottom: 16px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
       margin-bottom: 24px;
     }
     .theme-item {
@@ -239,16 +220,13 @@
       transition: background 0.2s ease, border-color 0.2s ease;
     }
     .theme-item:hover {
-      background: rgba(255,255,255,0.03);
-      border-color: rgba(255,255,255,0.06);
+      background: rgba(0,0,0,0.02);
+      border-color: rgba(0,0,0,0.06);
     }
-    .theme-item:last-child {
-      margin-bottom: 0;
-    }
+    .theme-item:last-child { margin-bottom: 0; }
     .theme-icon {
       flex-shrink: 0;
-      width: 36px;
-      height: 36px;
+      width: 36px; height: 36px;
       border-radius: 10px;
       display: flex;
       align-items: center;
@@ -256,42 +234,36 @@
       margin-top: 1px;
     }
     .theme-icon svg {
-      width: 18px;
-      height: 18px;
+      width: 18px; height: 18px;
       fill: none;
       stroke-width: 2;
       stroke-linecap: round;
       stroke-linejoin: round;
     }
-    /* Per-theme icon colors */
     .theme-item:nth-child(2) .theme-icon { background: rgba(52,211,153,0.1); }
-    .theme-item:nth-child(2) .theme-icon svg { stroke: #34D399; }
+    .theme-item:nth-child(2) .theme-icon svg { stroke: #0D6E6E; }
     .theme-item:nth-child(3) .theme-icon { background: rgba(91,141,239,0.1); }
     .theme-item:nth-child(3) .theme-icon svg { stroke: #5B8DEF; }
     .theme-item:nth-child(4) .theme-icon { background: rgba(248,113,113,0.1); }
     .theme-item:nth-child(4) .theme-icon svg { stroke: #F87171; }
-    .theme-item:nth-child(5) .theme-icon { background: rgba(13,110,110,0.15); }
+    .theme-item:nth-child(5) .theme-icon { background: rgba(13,110,110,0.12); }
     .theme-item:nth-child(5) .theme-icon svg { stroke: #2DD4BF; }
     .theme-item:nth-child(6) .theme-icon { background: rgba(251,191,36,0.1); }
     .theme-item:nth-child(6) .theme-icon svg { stroke: #FBBF24; }
-
     .theme-text {
       font-size: 13.5px;
-      color: rgba(255,255,255,0.55);
+      color: #6B7280;
       line-height: 1.55;
       font-weight: 400;
     }
-    .theme-text strong {
-      color: #EDEDEF;
-      font-weight: 600;
-    }
+    .theme-text strong { color: #0F1629; font-weight: 600; }
 
     /* ── Footer banner ── */
     .footer-banner {
       margin-top: 40px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.06);
-      color: rgba(255,255,255,0.55);
+      background: rgba(255,255,255,0.6);
+      border: 1px solid rgba(0,0,0,0.06);
+      color: #6B7280;
       padding: 24px 36px;
       border-radius: 14px;
       text-align: center;
@@ -300,72 +272,53 @@
       line-height: 1.6;
       position: relative;
       overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
     }
     .footer-banner::before {
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0;
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(91,141,239,0.4), rgba(52,211,153,0.3), transparent);
+      background: linear-gradient(90deg, transparent, rgba(91,141,239,0.3), rgba(52,211,153,0.2), transparent);
     }
-    .footer-banner em {
-      color: #EDEDEF;
-      font-style: normal;
-      font-weight: 600;
-    }
+    .footer-banner em { color: #0F1629; font-style: normal; font-weight: 600; }
 
     /* ── Responsive ── */
     @media (max-width: 960px) {
-      .content-grid {
-        grid-template-columns: 1fr;
-      }
-      .bar-row, .bar-row-negative {
-        grid-template-columns: 170px 1fr;
-      }
-      .bar-label {
-        font-size: 12px;
-        padding-right: 12px;
-      }
+      .content-grid { grid-template-columns: 1fr; }
+      .bar-row, .bar-row-negative { grid-template-columns: 170px 1fr; }
+      .bar-label { font-size: 12px; padding-right: 12px; }
+      .title-block h1 { white-space: normal; font-size: 28px; }
     }
     @media (max-width: 600px) {
       body { padding: 24px 12px; }
-      .title-block h1 { font-size: 24px; }
+      .title-block h1 { font-size: 22px; }
       .chart-panel { padding: 24px 20px; }
-      .bar-row, .bar-row-negative {
-        grid-template-columns: 130px 1fr;
-      }
+      .bar-row, .bar-row-negative { grid-template-columns: 130px 1fr; }
       .bar-label { font-size: 11px; padding-right: 8px; }
     }
 
-    /* ── Print ── */
     @media print {
       body { padding: 0; background: #fff; color: #111; }
       .chart-panel, .footer-banner { box-shadow: none; border: 1px solid #ddd; background: #fff; }
       .dynamic-bg { display: none; }
-      .bar-label, .theme-text, .title-block p { color: #333; }
-      .title-block h1, .chart-header, .theme-text strong { color: #111; }
     }
 
-    /* ── Bar hover highlight ── */
-    .bar-row,
-    .bar-row-negative {
+    /* ── Bar hover ── */
+    .bar-row, .bar-row-negative {
       transition: transform 0.15s ease, background 0.15s ease;
       border-radius: 6px;
       padding: 0 4px;
     }
-    .bar-row:hover,
-    .bar-row-negative:hover {
+    .bar-row:hover, .bar-row-negative:hover {
       transform: translateX(4px);
-      background: rgba(255,255,255,0.03);
+      background: rgba(0,0,0,0.02);
     }
-    .bar-row:hover .bar-label,
-    .bar-row-negative:hover .bar-label {
-      color: rgba(255,255,255,0.9);
-    }
+    .bar-row:hover .bar-label, .bar-row-negative:hover .bar-label { color: #0F1629; }
     .bar-row:hover [class^="bar-fill"],
     .bar-row-negative:hover [class^="bar-fill"] {
-      box-shadow: 0 0 20px rgba(91,141,239,0.2), 0 0 40px rgba(52,211,153,0.1);
-      filter: brightness(1.2);
+      box-shadow: 0 0 20px rgba(91,141,239,0.15), 0 0 40px rgba(52,211,153,0.08);
+      filter: brightness(1.1);
     }
     [class^="bar-fill"] {
       transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s ease, filter 0.2s ease;
@@ -398,7 +351,7 @@
       top: 0; left: 0; right: 0; bottom: 0;
       z-index: -1;
       overflow: hidden;
-      background: #0C0C0E;
+      background: #EFF3F8;
     }
     .dynamic-bg .orb {
       position: absolute;
@@ -408,19 +361,19 @@
     }
     .dynamic-bg .orb-1 {
       width: 700px; height: 700px;
-      background: radial-gradient(circle, rgba(91,141,239,0.15), transparent 70%);
+      background: radial-gradient(circle, rgba(91,141,239,0.12), transparent 70%);
       top: -5%; left: 5%;
       animation: bgOrb1 20s ease-in-out infinite;
     }
     .dynamic-bg .orb-2 {
       width: 600px; height: 600px;
-      background: radial-gradient(circle, rgba(13,110,110,0.12), transparent 70%);
+      background: radial-gradient(circle, rgba(13,110,110,0.08), transparent 70%);
       top: 40%; right: -5%;
       animation: bgOrb2 25s ease-in-out infinite;
     }
     .dynamic-bg .orb-3 {
       width: 500px; height: 500px;
-      background: radial-gradient(circle, rgba(139,92,246,0.08), transparent 70%);
+      background: radial-gradient(circle, rgba(139,92,246,0.06), transparent 70%);
       bottom: 5%; left: 30%;
       animation: bgOrb3 18s ease-in-out infinite;
     }
@@ -428,15 +381,15 @@
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
       background-image:
-        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+        linear-gradient(rgba(0,0,0,0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.015) 1px, transparent 1px);
       background-size: 48px 48px;
       animation: bgGrid 40s linear infinite;
     }
     .dynamic-bg .noise {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      opacity: 0.3;
+      opacity: 0.15;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
     }
 
@@ -446,61 +399,50 @@
       transform: translateY(20px);
       transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
     }
-    .fade-in.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
 
     /* ══════════════════════════════════════════
        Section 2: AI Divergence
     ══════════════════════════════════════════ */
 
-    /* ── Page divider ── */
     .page-divider {
       margin: 64px 0;
       display: flex;
       align-items: center;
       gap: 16px;
     }
-    .page-divider::before,
-    .page-divider::after {
+    .page-divider::before, .page-divider::after {
       content: '';
       flex: 1;
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+      background: linear-gradient(90deg, transparent, rgba(0,0,0,0.06), transparent);
     }
     .page-divider .divider-dot {
-      width: 4px;
-      height: 4px;
+      width: 4px; height: 4px;
       border-radius: 50%;
       background: rgba(91,141,239,0.4);
     }
 
-    /* ── Divergence hero ── */
-    .divergence-hero {
-      margin-bottom: 40px;
-    }
+    .divergence-hero { margin-bottom: 40px; }
     .source-badge {
       display: inline-flex;
       align-items: center;
       gap: 7px;
       padding: 5px 14px;
       border-radius: 100px;
-      background: rgba(91,141,239,0.1);
-      border: 1px solid rgba(91,141,239,0.2);
+      background: rgba(91,141,239,0.08);
+      border: 1px solid rgba(91,141,239,0.15);
       margin-bottom: 20px;
     }
     .source-badge .badge-dot {
-      width: 5px;
-      height: 5px;
+      width: 5px; height: 5px;
       border-radius: 50%;
       background: #5B8DEF;
     }
     .source-badge span {
       font-size: 10px;
       font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.06em;
       color: #5B8DEF;
     }
     .divergence-hero h2 {
@@ -508,25 +450,21 @@
       font-weight: 800;
       line-height: 1.12;
       letter-spacing: -0.03em;
-      color: #EDEDEF;
+      color: #0F1629;
       max-width: 720px;
       margin-bottom: 16px;
     }
     .divergence-hero h2 .accent-blue { color: #5B8DEF; }
-    .divergence-hero h2 .accent-teal { color: #2DD4BF; }
+    .divergence-hero h2 .accent-teal { color: #0D6E6E; }
     .divergence-hero p {
       font-size: 16px;
       font-weight: 300;
       line-height: 1.6;
-      color: rgba(255,255,255,0.55);
+      color: #6B7280;
       max-width: 600px;
     }
-    .divergence-hero p strong {
-      font-weight: 600;
-      color: #EDEDEF;
-    }
+    .divergence-hero p strong { font-weight: 600; color: #0F1629; }
 
-    /* ── Two-column divergence grid ── */
     .divergence-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -535,7 +473,6 @@
       margin-bottom: 32px;
     }
 
-    /* ── Section label ── */
     .section-label {
       display: flex;
       align-items: center;
@@ -544,15 +481,13 @@
     }
     .section-label::before {
       content: '';
-      width: 28px;
-      height: 2px;
+      width: 28px; height: 2px;
       background: linear-gradient(90deg, #5B8DEF, transparent);
     }
     .section-label span {
       font-size: 10px;
       font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.06em;
       color: #5B8DEF;
     }
 
@@ -561,55 +496,60 @@
       position: relative;
       border-radius: 16px;
       padding: 22px 20px;
-      background: rgba(255,255,255,0.04);
+      background: rgba(255,255,255,0.65);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.06);
+      border: 1px solid rgba(0,0,0,0.06);
       margin-bottom: 12px;
       overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
       transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     }
     .category-card:last-child { margin-bottom: 0; }
     .category-card:hover {
-      background: rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.85);
       transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
     }
     .category-card .card-accent-bar {
       position: absolute;
       top: 0; left: 0; right: 0;
       height: 2px;
-      opacity: 0.4;
+      opacity: 0.5;
       transition: opacity 0.3s ease;
     }
     .category-card:hover .card-accent-bar { opacity: 1; }
+
+    /* Signal badge: angular tab */
     .category-card .signal-badge {
       position: absolute;
-      top: 12px; right: 12px;
+      top: 0; right: 16px;
       display: inline-flex;
-      padding: 3px 8px;
-      border-radius: 100px;
-      font-size: 8.5px;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 0 0 6px 6px;
+      font-size: 9px;
       font-weight: 700;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.03em;
     }
     .category-card .card-body {
       display: flex;
       gap: 14px;
       align-items: flex-start;
+      margin-top: 4px;
     }
     .card-icon {
       flex-shrink: 0;
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
+      width: 44px; height: 44px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: #fff;
     }
     .card-icon svg {
-      width: 24px;
-      height: 24px;
+      width: 22px; height: 22px;
       fill: none;
       stroke: currentColor;
       stroke-width: 2;
@@ -620,7 +560,7 @@
     .card-content .card-title {
       font-size: 16px;
       font-weight: 700;
-      color: #EDEDEF;
+      color: #0F1629;
       margin-bottom: 3px;
     }
     .card-content .card-tagline {
@@ -639,62 +579,54 @@
     .card-bullet:last-child { margin-bottom: 0; }
     .card-bullet .bullet-dot {
       flex-shrink: 0;
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      margin-top: 5px;
+      width: 4px; height: 4px;
+      border-radius: 2px;
+      margin-top: 6px;
     }
     .card-bullet span {
       font-size: 11.5px;
-      color: rgba(255,255,255,0.55);
+      color: #6B7280;
       line-height: 1.45;
     }
 
-    /* Card color variants */
-    .category-card.card-teal:hover { border-color: rgba(45,212,191,0.3); box-shadow: 0 12px 40px rgba(45,212,191,0.08); }
+    /* Card variants */
+    .category-card.card-teal:hover { border-color: rgba(13,110,110,0.2); }
     .category-card.card-teal .card-accent-bar { background: linear-gradient(90deg, #0D6E6E, #2DD4BF); }
-    .category-card.card-teal .signal-badge { background: rgba(45,212,191,0.15); color: #2DD4BF; }
-    .category-card.card-teal .card-icon { background: linear-gradient(135deg, #0D6E6E, #2DD4BF); box-shadow: 0 4px 12px rgba(45,212,191,0.3); }
-    .category-card.card-teal .card-tagline { color: #2DD4BF; }
-    .category-card.card-teal .bullet-dot { background: rgba(45,212,191,0.6); }
+    .category-card.card-teal .signal-badge { background: rgba(13,110,110,0.1); color: #0D6E6E; }
+    .category-card.card-teal .card-icon { background: linear-gradient(135deg, #0D6E6E, #2DD4BF); box-shadow: 0 4px 12px rgba(13,110,110,0.2); }
+    .category-card.card-teal .card-tagline { color: #0D6E6E; }
+    .category-card.card-teal .bullet-dot { background: #0D6E6E; }
 
-    .category-card.card-muted:hover { border-color: rgba(255,255,255,0.12); box-shadow: 0 12px 40px rgba(255,255,255,0.04); }
-    .category-card.card-muted .card-accent-bar { background: linear-gradient(90deg, rgba(255,255,255,0.2), rgba(255,255,255,0.4)); }
-    .category-card.card-muted .signal-badge { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.5); }
-    .category-card.card-muted .card-icon { background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.2)); box-shadow: 0 4px 12px rgba(255,255,255,0.06); }
-    .category-card.card-muted .card-tagline { color: rgba(255,255,255,0.45); }
-    .category-card.card-muted .bullet-dot { background: rgba(255,255,255,0.25); }
+    .category-card.card-muted:hover { border-color: rgba(0,0,0,0.1); }
+    .category-card.card-muted .card-accent-bar { background: linear-gradient(90deg, #9CA3AF, #D1D5DB); }
+    .category-card.card-muted .signal-badge { background: rgba(0,0,0,0.04); color: #6B7280; }
+    .category-card.card-muted .card-icon { background: linear-gradient(135deg, #9CA3AF, #D1D5DB); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+    .category-card.card-muted .card-tagline { color: #6B7280; }
+    .category-card.card-muted .bullet-dot { background: #9CA3AF; }
 
-    .category-card.card-red:hover { border-color: rgba(239,68,68,0.3); box-shadow: 0 12px 40px rgba(239,68,68,0.08); }
+    .category-card.card-red:hover { border-color: rgba(220,38,38,0.2); }
     .category-card.card-red .card-accent-bar { background: linear-gradient(90deg, #991B1B, #EF4444); }
-    .category-card.card-red .signal-badge { background: rgba(239,68,68,0.15); color: #F87171; }
-    .category-card.card-red .card-icon { background: linear-gradient(135deg, #991B1B, #EF4444); box-shadow: 0 4px 12px rgba(239,68,68,0.3); }
-    .category-card.card-red .card-tagline { color: #F87171; }
-    .category-card.card-red .bullet-dot { background: rgba(239,68,68,0.6); }
+    .category-card.card-red .signal-badge { background: rgba(220,38,38,0.08); color: #DC2626; }
+    .category-card.card-red .card-icon { background: linear-gradient(135deg, #991B1B, #EF4444); box-shadow: 0 4px 12px rgba(220,38,38,0.2); }
+    .category-card.card-red .card-tagline { color: #DC2626; }
+    .category-card.card-red .bullet-dot { background: #DC2626; }
 
-    /* ── Column footer banner ── */
+    /* ── Column footer ── */
     .col-footer {
       margin-top: 16px;
       border-radius: 10px;
       padding: 12px 20px;
       text-align: center;
-      border: 1px solid rgba(255,255,255,0.06);
+      border: 1px solid rgba(0,0,0,0.06);
       font-size: 11.5px;
       font-style: italic;
-      color: rgba(255,255,255,0.7);
+      color: #6B7280;
+      background: rgba(255,255,255,0.65);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
     }
-    .col-footer strong {
-      font-weight: 700;
-      font-style: normal;
-    }
-    .col-footer.footer-teal {
-      background: linear-gradient(135deg, rgba(13,59,71,0.6), rgba(10,22,40,0.6));
-    }
-    .col-footer.footer-teal strong { color: #2DD4BF; }
-    .col-footer.footer-red {
-      background: linear-gradient(135deg, rgba(155,29,37,0.4), rgba(107,21,32,0.4));
-    }
-    .col-footer.footer-red strong { color: #F87171; }
+    .col-footer strong { font-weight: 700; font-style: normal; }
+    .col-footer.footer-teal strong { color: #0D6E6E; }
+    .col-footer.footer-red strong { color: #DC2626; }
 
     /* ── Quadrant matrix ── */
     .quadrant-wrapper {
@@ -704,13 +636,11 @@
     }
     .quadrant-wrapper .axis-y-label {
       position: absolute;
-      left: -12px;
-      top: 50%;
+      left: -12px; top: 50%;
       transform: translateY(-50%) rotate(-90deg);
       font-size: 9px;
       font-weight: 600;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.25);
+      color: #9CA3AF;
       white-space: nowrap;
     }
     .quadrant-wrapper .axis-y-marker {
@@ -718,7 +648,7 @@
       left: 8px;
       font-size: 8px;
       font-weight: 700;
-      color: rgba(255,255,255,0.2);
+      color: #C4C9D4;
     }
     .quadrant-wrapper .axis-y-marker.top { top: 4px; }
     .quadrant-wrapper .axis-y-marker.bottom { bottom: 34px; }
@@ -734,14 +664,16 @@
       padding: 18px 16px;
       display: flex;
       flex-direction: column;
-      background: rgba(255,255,255,0.03);
+      background: rgba(255,255,255,0.55);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255,255,255,0.05);
+      border: 1px solid rgba(0,0,0,0.05);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
       transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     }
     .quadrant-cell:hover {
       transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
     }
     .quadrant-cell .q-title-row {
       display: flex;
@@ -750,28 +682,26 @@
       margin-bottom: 2px;
     }
     .quadrant-cell .q-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
+      width: 7px; height: 7px;
+      border-radius: 2px;
       transition: box-shadow 0.3s ease;
     }
-    .quadrant-cell:hover .q-dot { box-shadow: 0 0 10px currentColor; }
+    .quadrant-cell:hover .q-dot { box-shadow: 0 0 8px currentColor; }
     .quadrant-cell .q-title {
       font-size: 13px;
       font-weight: 700;
-      color: #EDEDEF;
+      color: #0F1629;
     }
     .quadrant-cell .q-subtitle {
       font-size: 9.5px;
-      color: rgba(255,255,255,0.3);
+      color: #9CA3AF;
       margin-bottom: 12px;
       padding-left: 14px;
     }
     .quadrant-cell .q-label {
       font-size: 8px;
       font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.06em;
       margin-bottom: 6px;
     }
     .vertical-pills {
@@ -783,9 +713,9 @@
     .vertical-pill {
       font-size: 10px;
       font-weight: 500;
-      color: rgba(255,255,255,0.75);
+      color: #3A3F4B;
       padding: 2px 7px;
-      border-radius: 100px;
+      border-radius: 4px;
     }
     .q-use-case {
       display: flex;
@@ -796,43 +726,41 @@
     .q-use-case:last-child { margin-bottom: 0; }
     .q-use-case .uc-dot {
       flex-shrink: 0;
-      width: 3px;
-      height: 3px;
-      border-radius: 50%;
+      width: 3px; height: 3px;
+      border-radius: 1px;
       margin-top: 5px;
     }
     .q-use-case span {
       font-size: 10.5px;
-      color: rgba(255,255,255,0.55);
+      color: #6B7280;
       line-height: 1.4;
     }
 
-    /* Quadrant color variants */
-    .quadrant-cell.q-teal:hover { background: rgba(13,110,110,0.08); border-color: rgba(13,110,110,0.2); }
+    /* Quadrant variants */
+    .quadrant-cell.q-teal:hover { background: rgba(13,110,110,0.04); border-color: rgba(13,110,110,0.15); }
     .quadrant-cell.q-teal .q-dot { background: #0D6E6E; color: #0D6E6E; }
     .quadrant-cell.q-teal .q-label { color: #0D6E6E; }
-    .quadrant-cell.q-teal .vertical-pill { background: rgba(13,110,110,0.15); border: 1px solid rgba(13,110,110,0.2); }
-    .quadrant-cell.q-teal .uc-dot { background: rgba(13,110,110,0.5); }
+    .quadrant-cell.q-teal .vertical-pill { background: rgba(13,110,110,0.08); border: 1px solid rgba(13,110,110,0.12); }
+    .quadrant-cell.q-teal .uc-dot { background: #0D6E6E; }
 
-    .quadrant-cell.q-red:hover { background: rgba(230,57,70,0.06); border-color: rgba(230,57,70,0.2); }
-    .quadrant-cell.q-red .q-dot { background: #EF4444; color: #EF4444; }
-    .quadrant-cell.q-red .q-label { color: #EF4444; }
-    .quadrant-cell.q-red .vertical-pill { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.18); }
-    .quadrant-cell.q-red .uc-dot { background: rgba(239,68,68,0.5); }
+    .quadrant-cell.q-red:hover { background: rgba(220,38,38,0.03); border-color: rgba(220,38,38,0.15); }
+    .quadrant-cell.q-red .q-dot { background: #DC2626; color: #DC2626; }
+    .quadrant-cell.q-red .q-label { color: #DC2626; }
+    .quadrant-cell.q-red .vertical-pill { background: rgba(220,38,38,0.06); border: 1px solid rgba(220,38,38,0.1); }
+    .quadrant-cell.q-red .uc-dot { background: #DC2626; }
 
-    .quadrant-cell.q-green:hover { background: rgba(45,212,191,0.06); border-color: rgba(45,212,191,0.2); }
-    .quadrant-cell.q-green .q-dot { background: #2DD4BF; color: #2DD4BF; }
-    .quadrant-cell.q-green .q-label { color: #2DD4BF; }
-    .quadrant-cell.q-green .vertical-pill { background: rgba(45,212,191,0.12); border: 1px solid rgba(45,212,191,0.18); }
-    .quadrant-cell.q-green .uc-dot { background: rgba(45,212,191,0.5); }
+    .quadrant-cell.q-green:hover { background: rgba(45,212,191,0.04); border-color: rgba(45,212,191,0.15); }
+    .quadrant-cell.q-green .q-dot { background: #0D9488; color: #0D9488; }
+    .quadrant-cell.q-green .q-label { color: #0D9488; }
+    .quadrant-cell.q-green .vertical-pill { background: rgba(13,148,136,0.08); border: 1px solid rgba(13,148,136,0.12); }
+    .quadrant-cell.q-green .uc-dot { background: #0D9488; }
 
-    .quadrant-cell.q-blue:hover { background: rgba(91,141,239,0.06); border-color: rgba(91,141,239,0.2); }
+    .quadrant-cell.q-blue:hover { background: rgba(91,141,239,0.04); border-color: rgba(91,141,239,0.15); }
     .quadrant-cell.q-blue .q-dot { background: #5B8DEF; color: #5B8DEF; }
     .quadrant-cell.q-blue .q-label { color: #5B8DEF; }
-    .quadrant-cell.q-blue .vertical-pill { background: rgba(91,141,239,0.12); border: 1px solid rgba(91,141,239,0.18); }
-    .quadrant-cell.q-blue .uc-dot { background: rgba(91,141,239,0.5); }
+    .quadrant-cell.q-blue .vertical-pill { background: rgba(91,141,239,0.08); border: 1px solid rgba(91,141,239,0.12); }
+    .quadrant-cell.q-blue .uc-dot { background: #5B8DEF; }
 
-    /* ── X-axis ── */
     .x-axis {
       display: flex;
       align-items: center;
@@ -841,39 +769,34 @@
       margin-top: 12px;
       font-size: 8px;
       font-weight: 700;
-      color: rgba(255,255,255,0.2);
+      color: #C4C9D4;
     }
     .x-axis .axis-line {
-      max-width: 100px;
-      flex: 1;
+      max-width: 100px; flex: 1;
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+      background: linear-gradient(90deg, transparent, rgba(0,0,0,0.08), transparent);
     }
     .x-axis .axis-center {
       font-size: 9px;
       font-weight: 600;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.25);
+      color: #9CA3AF;
     }
 
-    /* ── Page footer ── */
     .page-footer {
       text-align: center;
       padding: 32px 0 16px;
     }
     .page-footer .footer-line {
-      width: 36px;
-      height: 1px;
-      background: rgba(91,141,239,0.25);
+      width: 36px; height: 1px;
+      background: rgba(91,141,239,0.2);
       margin: 0 auto 16px;
     }
     .page-footer span {
       font-size: 10px;
-      color: rgba(255,255,255,0.2);
+      color: #9CA3AF;
       letter-spacing: 0.04em;
     }
 
-    /* ── Responsive (Section 2) ── */
     @media (max-width: 960px) {
       .divergence-grid { grid-template-columns: 1fr; }
       .quadrant-grid { min-height: auto; }
@@ -896,14 +819,13 @@
   </div>
 
   <div class="page-wrapper">
-    <!-- Decorative accent bar -->
     <div class="accent-bar"></div>
 
     <!-- Title block -->
     <div class="title-block">
       <div class="eyebrow">AI SaaS Market Overview</div>
-      <h1>Organizations Have Begun Dramatically<br>Scaling AI Budgets</h1>
-      <p>Capital is flowing into AI-native application spend at unprecedented speed, but durable value will accrue where AI is embedded into governed, system-of-record workflows</p>
+      <h1>Organizations Have Begun Dramatically Scaling AI Budgets</h1>
+      <p>Capital is flowing into AI native application spend at unprecedented speed, but durable value will accrue where AI is embedded into governed, system of record workflows</p>
     </div>
 
     <!-- Main content -->
@@ -915,8 +837,6 @@
         <div class="chart-header-line"></div>
 
         <div class="chart-area">
-
-          <!-- Axis labels -->
           <div class="axis-labels">
             <div></div>
             <div class="axis-labels-track">
@@ -925,7 +845,7 @@
             </div>
           </div>
 
-          <!-- Section 1: AI and Related Enablers -->
+          <!-- AI and Related Enablers -->
           <div class="section-group">
             <div class="section-annotation">AI and Related Enablers</div>
 
@@ -933,46 +853,42 @@
               <div class="bar-label">AI / ML, Including GenAI</div>
               <div class="bar-track-positive">
                 <div class="bar-fill-green" data-width="90%" style="width:0%"></div>
-                <span class="bar-value positive">45%</span>
+                <span class="bar-value green">45%</span>
               </div>
             </div>
-
             <div class="bar-row">
               <div class="bar-label">Cloud Services</div>
               <div class="bar-track-positive">
                 <div class="bar-fill-green" data-width="54%" style="width:0%"></div>
-                <span class="bar-value positive">27%</span>
+                <span class="bar-value green">27%</span>
               </div>
             </div>
-
             <div class="bar-row">
               <div class="bar-label">Security Infrastructure</div>
               <div class="bar-track-positive">
                 <div class="bar-fill-green" data-width="46%" style="width:0%"></div>
-                <span class="bar-value positive">23%</span>
+                <span class="bar-value green">23%</span>
               </div>
             </div>
-
             <div class="bar-row">
               <div class="bar-label">IT Services</div>
               <div class="bar-track-positive">
                 <div class="bar-fill-green" data-width="32%" style="width:0%"></div>
-                <span class="bar-value positive">16%</span>
+                <span class="bar-value green">16%</span>
               </div>
             </div>
-
             <div class="bar-row">
               <div class="bar-label">Analytics</div>
               <div class="bar-track-positive">
                 <div class="bar-fill-green" data-width="32%" style="width:0%"></div>
-                <span class="bar-value positive">16%</span>
+                <span class="bar-value green">16%</span>
               </div>
             </div>
           </div>
 
           <hr class="section-separator">
 
-          <!-- Section 2: Traditional Drivers (positive) -->
+          <!-- Traditional Drivers (positive) -->
           <div class="section-group">
             <div class="section-annotation">Traditional Drivers of Software Spend</div>
 
@@ -980,30 +896,28 @@
               <div class="bar-label">ERP</div>
               <div class="bar-track-positive">
                 <div class="bar-fill-teal" data-width="10%" style="width:0%"></div>
-                <span class="bar-value positive">5%</span>
+                <span class="bar-value blue">5%</span>
               </div>
             </div>
-
             <div class="bar-row">
               <div class="bar-label">CRM</div>
               <div class="bar-track-positive">
                 <div class="bar-fill-teal" data-width="8%" style="width:0%"></div>
-                <span class="bar-value positive">4%</span>
+                <span class="bar-value blue">4%</span>
               </div>
             </div>
-
             <div class="bar-row">
               <div class="bar-label">App Dev / DevOps</div>
               <div class="bar-track-positive">
                 <div class="bar-fill-teal" data-width="6%" style="width:0%"></div>
-                <span class="bar-value positive">3%</span>
+                <span class="bar-value blue">3%</span>
               </div>
             </div>
           </div>
 
           <hr class="section-separator">
 
-          <!-- Section 3: Traditional Drivers (negative) -->
+          <!-- Traditional Drivers (negative) -->
           <div class="section-group">
             <div class="section-annotation">Traditional Drivers of Software Spend</div>
 
@@ -1011,67 +925,60 @@
               <div class="bar-label">Network Infrastructure</div>
               <div class="bar-track-negative">
                 <div class="bar-fill-red" data-width="10%" style="width:0%"></div>
-                <span class="bar-value negative">(5%)</span>
+                <span class="bar-value red">(5%)</span>
               </div>
             </div>
-
             <div class="bar-row-negative">
               <div class="bar-label">System &amp; Service Mgmt.</div>
               <div class="bar-track-negative">
                 <div class="bar-fill-red" data-width="14%" style="width:0%"></div>
-                <span class="bar-value negative">(7%)</span>
+                <span class="bar-value red">(7%)</span>
               </div>
             </div>
-
             <div class="bar-row-negative">
               <div class="bar-label">Storage Infrastructure</div>
               <div class="bar-track-negative">
                 <div class="bar-fill-red" data-width="16%" style="width:0%"></div>
-                <span class="bar-value negative">(8%)</span>
+                <span class="bar-value red">(8%)</span>
               </div>
             </div>
-
             <div class="bar-row-negative">
               <div class="bar-label">IT Operations Mgmt.</div>
               <div class="bar-track-negative">
                 <div class="bar-fill-red" data-width="18%" style="width:0%"></div>
-                <span class="bar-value negative">(9%)</span>
+                <span class="bar-value red">(9%)</span>
               </div>
             </div>
-
             <div class="bar-row-negative">
               <div class="bar-label">Comm., Collab., &amp; Content Mgmt.</div>
               <div class="bar-track-negative">
                 <div class="bar-fill-red" data-width="20%" style="width:0%"></div>
-                <span class="bar-value negative">(10%)</span>
+                <span class="bar-value red">(10%)</span>
               </div>
             </div>
-
             <div class="bar-row-negative">
               <div class="bar-label">Devices</div>
               <div class="bar-track-negative">
                 <div class="bar-fill-red" data-width="34%" style="width:0%"></div>
-                <span class="bar-value negative">(17%)</span>
+                <span class="bar-value red">(17%)</span>
               </div>
             </div>
-
             <div class="bar-row-negative">
               <div class="bar-label">Server Infrastructure</div>
               <div class="bar-track-negative">
                 <div class="bar-fill-red" data-width="48%" style="width:0%"></div>
-                <span class="bar-value negative">(24%)</span>
+                <span class="bar-value red">(24%)</span>
               </div>
             </div>
           </div>
 
-        </div><!-- /chart-area -->
-      </div><!-- /chart-panel -->
+        </div>
+      </div>
 
       <!-- RIGHT: Key Themes -->
       <div class="themes-panel fade-in">
         <div class="themes-header">Key Themes</div>
 
-        <!-- Theme 1 -->
         <div class="theme-item">
           <div class="theme-icon">
             <svg viewBox="0 0 24 24">
@@ -1080,11 +987,10 @@
             </svg>
           </div>
           <div class="theme-text">
-            <strong>AI has moved from discretionary experiment to core line item</strong> — budgets reflect strategic commitment, not pilot-stage exploration
+            <strong>AI has moved from discretionary experiment to core line item</strong>, budgets reflect strategic commitment, not pilot stage exploration
           </div>
         </div>
 
-        <!-- Theme 2 -->
         <div class="theme-item">
           <div class="theme-icon">
             <svg viewBox="0 0 24 24">
@@ -1094,11 +1000,10 @@
             </svg>
           </div>
           <div class="theme-text">
-            <strong>IT spend is being both expanded and reallocated</strong> — traditional categories are funding the shift toward AI-first infrastructure
+            <strong>IT spend is being both expanded and reallocated</strong>, traditional categories are funding the shift toward AI first infrastructure
           </div>
         </div>
 
-        <!-- Theme 3 -->
         <div class="theme-item">
           <div class="theme-icon">
             <svg viewBox="0 0 24 24">
@@ -1109,11 +1014,10 @@
             </svg>
           </div>
           <div class="theme-text">
-            <strong>Incumbents face near-term budget pressure</strong> without demonstrating AI-driven ROI to justify renewal
+            <strong>Incumbents face near term budget pressure</strong> without demonstrating AI driven ROI to justify renewal
           </div>
         </div>
 
-        <!-- Theme 4 -->
         <div class="theme-item">
           <div class="theme-icon">
             <svg viewBox="0 0 24 24">
@@ -1121,11 +1025,10 @@
             </svg>
           </div>
           <div class="theme-text">
-            <strong>Infrastructure and security benefit as enabling layers</strong> — cloud and security spend grow alongside AI adoption
+            <strong>Infrastructure and security benefit as enabling layers</strong>, cloud and security spend grow alongside AI adoption
           </div>
         </div>
 
-        <!-- Theme 5 -->
         <div class="theme-item">
           <div class="theme-icon">
             <svg viewBox="0 0 24 24">
@@ -1138,12 +1041,12 @@
             </svg>
           </div>
           <div class="theme-text">
-            <strong>Vendors that cannot show measurable AI-driven ROI</strong> will lose budget to those that can
+            <strong>Vendors that cannot show measurable AI driven ROI</strong> will lose budget to those that can
           </div>
         </div>
-      </div><!-- /themes-panel -->
+      </div>
 
-    </div><!-- /content-grid -->
+    </div>
 
     <!-- Footer Banner -->
     <div class="footer-banner fade-in">
@@ -1158,7 +1061,6 @@
       <div class="divider-dot"></div>
     </div>
 
-    <!-- Divergence Hero -->
     <div class="divergence-hero fade-in">
       <div class="source-badge">
         <div class="badge-dot"></div>
@@ -1168,20 +1070,18 @@
         AI Divergence <span class="accent-blue">By Category</span>
         and <span class="accent-teal">By Segment</span>
       </h2>
-      <p>AI adoption is reshaping SaaS category dynamics — vendors positioned as <strong>systems of action</strong> are pulling ahead in both enterprise adoption and budget allocation.</p>
+      <p>AI adoption is reshaping SaaS category dynamics, vendors positioned as <strong>systems of action</strong> are pulling ahead in both enterprise adoption and budget allocation.</p>
     </div>
 
-    <!-- Two-Column Layout -->
     <div class="divergence-grid">
 
       <!-- LEFT: Category Divergence -->
       <div class="fade-in">
         <div class="section-label"><span>Category Divergence</span></div>
 
-        <!-- Systems of Action -->
         <div class="category-card card-teal">
           <div class="card-accent-bar"></div>
-          <div class="signal-badge">HIGHEST UPSIDE</div>
+          <div class="signal-badge">Highest Upside</div>
           <div class="card-body">
             <div class="card-icon">
               <svg viewBox="0 0 24 24"><circle cx="7" cy="17" r="3"/><line x1="10" y1="14" x2="18" y2="6"/><polyline points="14 6 18 6 18 10"/></svg>
@@ -1189,42 +1089,40 @@
             <div class="card-content">
               <div class="card-title">Systems of Action</div>
               <div class="card-tagline">Capture disproportionate levels of value as AI directly drives outcomes and decisions</div>
-              <div class="card-bullet"><div class="bullet-dot"></div><span>Platforms closest to "doing the work" benefit the most from AI-driven efficiency</span></div>
-              <div class="card-bullet"><div class="bullet-dot"></div><span>Value creation compounds as models learn from execution data and closed-loop feedback</span></div>
+              <div class="card-bullet"><div class="bullet-dot"></div><span>Platforms closest to "doing the work" benefit the most from AI driven efficiency</span></div>
+              <div class="card-bullet"><div class="bullet-dot"></div><span>Value creation compounds as models learn from execution data and closed loop feedback</span></div>
             </div>
           </div>
         </div>
 
-        <!-- Systems of Record -->
         <div class="category-card card-muted">
           <div class="card-accent-bar"></div>
-          <div class="signal-badge">STEADY STATE</div>
+          <div class="signal-badge">Steady State</div>
           <div class="card-body">
             <div class="card-icon">
               <svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><polyline points="10 16 12 18 16 14"/></svg>
             </div>
             <div class="card-content">
               <div class="card-title">Systems of Record</div>
-              <div class="card-tagline">Slower disruption — AI improves efficiency but limits incremental platform differentiation</div>
-              <div class="card-bullet"><div class="bullet-dot"></div><span>Data integrity, compliance, and reliability requirements constrain AI-driven change</span></div>
-              <div class="card-bullet"><div class="bullet-dot"></div><span>AI enhances workflows rather than instituting step-function product changes</span></div>
+              <div class="card-tagline">Slower disruption, AI improves efficiency but limits incremental platform differentiation</div>
+              <div class="card-bullet"><div class="bullet-dot"></div><span>Data integrity, compliance, and reliability requirements constrain AI driven change</span></div>
+              <div class="card-bullet"><div class="bullet-dot"></div><span>AI enhances workflows rather than instituting step function product changes</span></div>
             </div>
           </div>
         </div>
 
-        <!-- Systems of Engagement -->
         <div class="category-card card-red">
           <div class="card-accent-bar"></div>
-          <div class="signal-badge">&#9888; HIGH RISK</div>
+          <div class="signal-badge">&#9888; High Risk</div>
           <div class="card-body">
             <div class="card-icon">
               <svg viewBox="0 0 24 24"><polyline points="3 17 7 11 11 15 15 7 19 13 21 10"/><circle cx="18" cy="6" r="3" stroke-dasharray="4 2"/></svg>
             </div>
             <div class="card-content">
               <div class="card-title">Systems of Engagement</div>
-              <div class="card-tagline">Most crowded and dangerous place to be in 2026 — AI commoditizes the surface layer quickly</div>
+              <div class="card-tagline">Most crowded and dangerous place to be in 2026, AI commoditizes the surface layer quickly</div>
               <div class="card-bullet"><div class="bullet-dot"></div><span>Sustainable differentiation requires deep workflow integration and measurable ROI</span></div>
-              <div class="card-bullet"><div class="bullet-dot"></div><span>GenAI rapidly commoditizes surface-level engagement features (e.g., content, UX)</span></div>
+              <div class="card-bullet"><div class="bullet-dot"></div><span>GenAI rapidly commoditizes surface level engagement features (e.g., content, UX)</span></div>
             </div>
           </div>
         </div>
@@ -1234,17 +1132,16 @@
         </div>
       </div>
 
-      <!-- RIGHT: Adoption Curves by Vertical -->
+      <!-- RIGHT: Adoption Curves -->
       <div class="fade-in">
         <div class="section-label"><span>Adoption Curves by Vertical</span></div>
 
         <div class="quadrant-wrapper">
           <div class="axis-y-label">Regulation / Tech Maturity</div>
-          <div class="axis-y-marker top">HIGH</div>
-          <div class="axis-y-marker bottom">LOW</div>
+          <div class="axis-y-marker top">High</div>
+          <div class="axis-y-marker bottom">Low</div>
 
           <div class="quadrant-grid">
-            <!-- Row 1, Col 1: Governed Rollout -->
             <div class="quadrant-cell q-teal">
               <div class="q-title-row"><div class="q-dot"></div><div class="q-title">Governed Rollout</div></div>
               <div class="q-subtitle">High reg · Low complexity</div>
@@ -1259,7 +1156,6 @@
               <div class="q-use-case"><div class="uc-dot"></div><span>Transaction Monitoring &amp; Audit</span></div>
             </div>
 
-            <!-- Row 1, Col 2: Slowest Adoption -->
             <div class="quadrant-cell q-red">
               <div class="q-title-row"><div class="q-dot"></div><div class="q-title">Slowest Adoption</div></div>
               <div class="q-subtitle">High reg · High complexity</div>
@@ -1275,13 +1171,12 @@
               <div class="q-use-case"><div class="uc-dot"></div><span>Surgical Automation</span></div>
             </div>
 
-            <!-- Row 2, Col 1: Fastest Adoption -->
             <div class="quadrant-cell q-green">
               <div class="q-title-row"><div class="q-dot"></div><div class="q-title">Fastest Adoption</div></div>
               <div class="q-subtitle">Low reg · Low complexity</div>
               <div class="q-label">Verticals</div>
               <div class="vertical-pills">
-                <span class="vertical-pill">Marketing &amp; E-Commerce</span>
+                <span class="vertical-pill">Marketing &amp; Ecommerce</span>
                 <span class="vertical-pill">Customer Support</span>
                 <span class="vertical-pill">Human Resources</span>
               </div>
@@ -1291,9 +1186,8 @@
               <div class="q-use-case"><div class="uc-dot"></div><span>Marketing Content Generation</span></div>
             </div>
 
-            <!-- Row 2, Col 2: Co-Pilot, Assistive -->
             <div class="quadrant-cell q-blue">
-              <div class="q-title-row"><div class="q-dot"></div><div class="q-title">Co-Pilot, Assistive</div></div>
+              <div class="q-title-row"><div class="q-dot"></div><div class="q-title">Co Pilot, Assistive</div></div>
               <div class="q-subtitle">Low reg · High complexity</div>
               <div class="q-label">Verticals</div>
               <div class="vertical-pills">
@@ -1306,13 +1200,12 @@
             </div>
           </div>
 
-          <!-- X-axis -->
           <div class="x-axis">
-            <span>LOW</span>
+            <span>Low</span>
             <div class="axis-line"></div>
             <span class="axis-center">Task Complexity</span>
             <div class="axis-line"></div>
-            <span>HIGH</span>
+            <span>High</span>
           </div>
         </div>
 
@@ -1321,18 +1214,16 @@
         </div>
       </div>
 
-    </div><!-- /divergence-grid -->
-
-    <!-- Page Footer -->
-    <div class="page-footer fade-in">
-      <div class="footer-line"></div>
-      <span>AI &amp; SaaS Considerations — Category &amp; Segment Analysis</span>
     </div>
 
-  </div><!-- /page-wrapper -->
+    <div class="page-footer fade-in">
+      <div class="footer-line"></div>
+      <span>AI &amp; SaaS Considerations, Category &amp; Segment Analysis</span>
+    </div>
+
+  </div>
 
   <script>
-    // Fade-in on scroll
     const fadeObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -1343,7 +1234,6 @@
     }, { threshold: 0.12 });
     document.querySelectorAll('.fade-in').forEach(el => fadeObserver.observe(el));
 
-    // Animate bars on scroll
     const barObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
