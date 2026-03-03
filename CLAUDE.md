@@ -29,10 +29,14 @@ Because both branches rewrote the same monolithic file independently, the merge 
 
 5. **If a conflict does occur**, favour `--theirs` for the structural base when one branch is a rewrite and the other is incremental enhancements, then re-apply enhancements on top. Never blindly accept `--ours` on a rewritten file.
 
-## Design System (Current)
-- **Font:** Inter (400–800)
-- **Palette:** Navy `#0A3D62`, Teal `#0D6E6E`, Green `#4CAF50`, Red `#C0392B`
-- **Background:** Light `#F8F9FA` with dynamic animated orbs
-- **Layout:** CSS Grid (`1fr 340px`) for chart + themes side-by-side
-- **Animations:** IntersectionObserver-based fade-in + bar width transitions
-- **Cursor:** Custom SVG pin in navy/teal gradient
+## Design System (Current — Linear/Vercel-inspired dark theme)
+- **Font:** Inter (300–800), with weight hierarchy: 800 headings, 600 emphasis, 400 body, 300 subtitles
+- **Background:** Near-black `#0C0C0E` with animated gradient orbs + grid lines
+- **Text colors:** Headings `#EDEDEF`, body `rgba(255,255,255,0.85)`, secondary `rgba(255,255,255,0.55)`, muted `rgba(255,255,255,0.35)`
+- **Accent palette:** Blue `#5B8DEF`, Teal `#0D6E6E` / `#2DD4BF`, Green `#34D399`, Red `#EF4444` / `#F87171`, Yellow `#FBBF24`, Purple `rgba(139,92,246)`
+- **Cards:** Glassmorphism — `rgba(255,255,255,0.04)` bg, `rgba(255,255,255,0.06)` borders, `backdrop-filter: blur(12px)`
+- **Layout:** CSS Grid (`1fr 360px`) for chart + themes side-by-side
+- **Bar chart:** 24px height bars, 34px row height, 6px gap — more breathing room
+- **Hover:** Bars translate right 4px with glow; theme cards get subtle bg + border
+- **Animations:** IntersectionObserver fade-in (0.7s cubic-bezier), staggered bar width transitions (60ms per bar)
+- **Dynamic bg:** 3 blurred gradient orbs (blue, teal, purple) on `#0C0C0E`, animated grid lines, subtle noise texture
