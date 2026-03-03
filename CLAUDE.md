@@ -29,6 +29,13 @@ Because both branches rewrote the same monolithic file independently, the merge 
 
 5. **If a conflict does occur**, favour `--theirs` for the structural base when one branch is a rewrite and the other is incremental enhancements, then re-apply enhancements on top. Never blindly accept `--ours` on a rewritten file.
 
+6. **Before merging, rebase the branch onto the latest `main`** to resolve conflicts locally rather than in the PR.
+   ```
+   git fetch origin main
+   git rebase origin/main
+   git push --force-with-lease
+   ```
+
 ## Content & Copy Rules
 - **All text should render on a single line** where possible — use `white-space: nowrap` or remove `max-width` constraints as needed
 - **No hard stops (periods) at the end of sentences** — omit trailing periods on headings, subtitles, bullet points, card text, footer banners, and body copy. Abbreviations like "Mgmt." are fine
