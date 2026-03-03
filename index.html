@@ -102,6 +102,11 @@
 
     .section-group { margin-bottom: 20px; }
     .section-group:last-child { margin-bottom: 0; }
+    .section-group.outlined {
+      border: 1.5px dashed rgba(0,0,0,0.15);
+      border-radius: 10px;
+      padding: 14px 10px 10px;
+    }
     .section-annotation {
       font-size: 11px;
       font-weight: 600;
@@ -1039,7 +1044,7 @@
           </div>
 
           <!-- AI and Related Enablers -->
-          <div class="section-group">
+          <div class="section-group outlined">
             <div class="section-annotation">AI and Related Enablers</div>
 
             <div class="bar-row">
@@ -1086,8 +1091,8 @@
 
           <hr class="section-separator">
 
-          <!-- Traditional Drivers (positive) -->
-          <div class="section-group">
+          <!-- Traditional Drivers of Software Spend -->
+          <div class="section-group outlined">
             <div class="section-annotation">Traditional Drivers of Software Spend</div>
 
             <div class="bar-row">
@@ -1114,30 +1119,6 @@
                 <span class="bar-value blue">3%</span>
               </div>
             </div>
-          </div>
-
-          <hr class="section-separator">
-
-          <!-- Traditional Drivers (negative) -->
-          <div class="section-group">
-            <div class="section-annotation">Traditional Drivers of Software Spend</div>
-
-            <div class="bar-row">
-              <div class="bar-label">Network Infrastructure</div>
-              <div class="bar-neg-half">
-                <div class="bar-fill-red" data-width="10%" style="width:0%"></div>
-                <span class="bar-value red">(5%)</span>
-              </div>
-              <div class="bar-pos-half"></div>
-            </div>
-            <div class="bar-row">
-              <div class="bar-label">System &amp; Service Mgmt.</div>
-              <div class="bar-neg-half">
-                <div class="bar-fill-red" data-width="14%" style="width:0%"></div>
-                <span class="bar-value red">(7%)</span>
-              </div>
-              <div class="bar-pos-half"></div>
-            </div>
             <div class="bar-row">
               <div class="bar-label">Storage Infrastructure</div>
               <div class="bar-neg-half">
@@ -1159,6 +1140,29 @@
               <div class="bar-neg-half">
                 <div class="bar-fill-red" data-width="20%" style="width:0%"></div>
                 <span class="bar-value red">(10%)</span>
+              </div>
+              <div class="bar-pos-half"></div>
+            </div>
+          </div>
+
+          <hr class="section-separator">
+
+          <!-- Other categories (not traditional software spend) -->
+          <div class="section-group">
+
+            <div class="bar-row">
+              <div class="bar-label">Network Infrastructure</div>
+              <div class="bar-neg-half">
+                <div class="bar-fill-red" data-width="10%" style="width:0%"></div>
+                <span class="bar-value red">(5%)</span>
+              </div>
+              <div class="bar-pos-half"></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">System &amp; Service Mgmt.</div>
+              <div class="bar-neg-half">
+                <div class="bar-fill-red" data-width="14%" style="width:0%"></div>
+                <span class="bar-value red">(7%)</span>
               </div>
               <div class="bar-pos-half"></div>
             </div>
