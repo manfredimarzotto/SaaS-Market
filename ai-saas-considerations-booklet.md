@@ -614,7 +614,7 @@ Pillar 3 — "Distribution & Organizational Positioning"
 
 ---
 
-## Page 6 — Diligence Framework
+## Page 6 — Diligence Framework and Roadmap
 
 ### Required text (verbatim)
 
@@ -674,6 +674,48 @@ Row 4 — Market Exposure & Competitive Dynamics
 
 - "Evaluating structural risk and upside in an AI-driven market"
 
+**Headline 2**
+
+- "For Operators, a Practical AI Roadmap"
+
+**Roadmap intro line**
+
+- "Disciplined, thoughtful execution beats feature velocity"
+
+**Key Action Items (numbered steps with sub-bullets)**
+
+Step 1: "The Foundation"
+
+- "Audit proprietary data and workflow ownership"
+- "Establish governance and data hygiene"
+- "Ensure operational integration across the technology stack"
+
+Step 2: "Focused Deployment"
+
+- "Launch narrowly scoped use cases with measurable ROI"
+- "Align pricing and packaging with value delivered"
+- "Build internal AI fluency within product and ops teams"
+
+Step 3: "Proof Points Scale"
+
+- "Reinforce switching costs through system-of-record integration"
+- "Demonstrate measurable margin or revenue impact"
+- "Secure customer buy-in and reference wins"
+
+Step 4: "Acceleration Pricing Assessment"
+
+- "Design workflows optimized for AI agents, not just humans"
+- "Reinvest AI gains to widen moat before optimizing margin"
+- "Shift monetization toward usage outcome where practical"
+
+**Avoidable Errors**
+
+- "Shipping features without workflow integration"
+- "Selling autonomy before proving reliability"
+- "Neglecting governance, explainability, and auditability"
+- "Using AI as narrative rather than a business case"
+- "Treating AI as a one-time initiative rather than an ongoing operational capability"
+- "Scaling before measurable customer validation"
 
 ### Visuals to recreate (no images)
 
@@ -684,10 +726,19 @@ Row 4 — Market Exposure & Competitive Dynamics
 - **Data/labels (verbatim)**: All 4 topics, 4 focus questions, and 12 evaluation criteria lines as listed above. Sentence and caption below the table.
 - **Acceptance criteria**: All 4 rows present with correct topic, focus question, and 3 evaluation criteria each. Column headers present. Sentence and caption present.
 
+**Visual 2: Roadmap Steps vs. Avoidable Errors (Two-Column Layout)**
+
+- **Purpose**: Present a practical AI roadmap (left) alongside common mistakes to avoid (right).
+- **Layout blueprint**: Two-column flex/grid layout. Left column: "Key Action Items" header, then 4 numbered steps each with a bold step title and 3 sub-bullets. Right column: "Avoidable Errors" header, then 6 bullet items. On mobile, columns stack vertically.
+- **Data/labels (verbatim)**: 4 step titles with 12 total sub-bullets (left). 6 error lines (right). All text as listed above.
+- **Acceptance criteria**: Left column has 4 numbered steps with 3 sub-bullets each. Right column has 6 error items. Headers "Key Action Items" and "Avoidable Errors" present. All text verbatim.
+
 ### Implementation notes (non-content)
 
 - Diligence table should use `overflow-x-auto` for mobile.
 - Evaluation Criteria cells should render as mini-lists within the table cell.
+- The two-column roadmap layout can use `grid-cols-2` on desktop, stacking on mobile.
+- Step numbers can be styled as circled numerals or bold prefixes.
 
 ---
 
@@ -913,7 +964,7 @@ Row 4 — Market Exposure & Competitive Dynamics
 - [ ] Checklist: "Consistently Expanding NRR"
 - [ ] Checklist: "Operating Expense Discipline"
 
-### Page 6 — Diligence Framework
+### Page 6 — Diligence Framework and Roadmap
 
 - [ ] Headline: "AI Diligence Framework for Software Investors"
 - [ ] Diligence table column: "Topic"
@@ -925,6 +976,18 @@ Row 4 — Market Exposure & Competitive Dynamics
 - [ ] Diligence row: Market Exposure & Competitive Dynamics (focus question + 3 criteria)
 - [ ] Diligence sentence: "AI diligence should assess potential for both disruption risk and clear advantage"
 - [ ] Diligence caption: "Evaluating structural risk and upside in an AI-driven market"
+- [ ] Headline: "For Operators, a Practical AI Roadmap"
+- [ ] Roadmap intro: "Disciplined, thoughtful execution beats feature velocity"
+- [ ] Step 1: "The Foundation" (3 sub-bullets)
+- [ ] Step 2: "Focused Deployment" (3 sub-bullets)
+- [ ] Step 3: "Proof Points Scale" (3 sub-bullets)
+- [ ] Step 4: "Acceleration Pricing Assessment" (3 sub-bullets)
+- [ ] Error: "Shipping features without workflow integration"
+- [ ] Error: "Selling autonomy before proving reliability"
+- [ ] Error: "Neglecting governance, explainability, and auditability"
+- [ ] Error: "Using AI as narrative rather than a business case"
+- [ ] Error: "Treating AI as a one-time initiative rather than an ongoing operational capability"
+- [ ] Error: "Scaling before measurable customer validation"
 
 ### Page 7 — Conclusion
 
