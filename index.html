@@ -480,8 +480,12 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 40px;
-      align-items: start;
+      align-items: stretch;
       margin-bottom: 32px;
+    }
+    .divergence-grid > div {
+      display: flex;
+      flex-direction: column;
     }
 
     .section-label {
@@ -624,7 +628,8 @@
 
     /* ── Column footer ── */
     .col-footer {
-      margin-top: 16px;
+      margin-top: auto;
+      padding-top: 16px;
       border-radius: 10px;
       padding: 14px 20px;
       text-align: center;
@@ -637,9 +642,7 @@
       overflow: visible;
     }
     .col-footer strong { font-weight: 700; font-style: normal; }
-    .col-footer.footer-teal { margin-top: 16px; }
     .col-footer.footer-teal strong { color: #0D6E6E; }
-    .col-footer.footer-red { margin-top: 32px; }
     .col-footer.footer-red strong { color: #DC2626; }
 
     /* ── Quadrant matrix ── */
