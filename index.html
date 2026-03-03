@@ -874,8 +874,8 @@
     /* ── Column headers ── */
     .dim-col-headers {
       display: grid;
-      grid-template-columns: 80px 1fr 1fr;
-      padding-bottom: 10px;
+      grid-template-columns: 180px 1fr 1.5fr;
+      padding-bottom: 12px;
     }
     .dim-col-headers span {
       font-size: 9px;
@@ -883,84 +883,102 @@
       letter-spacing: 0.14em;
       color: #9CA3AF;
       text-transform: uppercase;
-    }
-    .dim-col-header-criteria {
-      padding-left: 24px;
+      text-align: center;
     }
 
-    /* ── Dimension rows ── */
+    /* ── Dimension chevron rows ── */
     .dim-row {
       display: grid;
-      grid-template-columns: 80px 1fr 1fr;
-      border-top: 1px solid rgba(0,0,0,0.08);
-      transition: background 0.2s ease;
+      grid-template-columns: 180px 1fr 1.5fr;
+      margin-bottom: 14px;
     }
-    .dim-row:hover {
-      background: rgba(91,141,239,0.03);
+    .dim-chevron {
+      display: flex;
+      align-items: center;
+      color: #fff;
     }
-    .dim-closing-rule {
-      border-top: 1px solid rgba(0,0,0,0.08);
+    .dim-chevron-left {
+      clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 50%, calc(100% - 18px) 100%, 0 100%);
+      padding: 18px 34px 18px 14px;
+      gap: 10px;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+    }
+    .dim-chevron-mid {
+      clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 50%, calc(100% - 18px) 100%, 0 100%, 18px 50%);
+      padding: 18px 36px 18px 34px;
+      justify-content: center;
+      text-align: center;
+    }
+    .dim-chevron-right {
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 18px 50%);
+      padding: 14px 16px 14px 34px;
     }
     .dim-number {
-      font-size: 48px;
-      font-weight: 800;
-      color: rgba(0,0,0,0.08);
-      letter-spacing: -0.04em;
-      line-height: 1;
-      padding: 28px 16px 24px 0;
-      text-align: right;
-      transition: color 0.35s ease;
-    }
-    .dim-row:hover .dim-number {
-      color: #5B8DEF;
-    }
-    .dim-topic {
-      padding: 24px;
-      border-right: 1px solid rgba(0,0,0,0.06);
-    }
-    .dim-topic h3 {
-      font-size: 18px;
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
       font-weight: 700;
-      color: #0F1629;
+      color: #fff;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+    .dim-chevron-left h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
       line-height: 1.25;
-      letter-spacing: -0.01em;
-      margin-bottom: 8px;
     }
     .dim-question {
-      font-size: 13.5px;
+      font-size: 14px;
       font-style: italic;
-      color: #6B7280;
+      color: rgba(255,255,255,0.95);
       line-height: 1.5;
-      transition: color 0.35s ease;
-    }
-    .dim-row:hover .dim-question {
-      color: #5B8DEF;
     }
     .dim-criteria {
-      padding: 24px 0 24px 24px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 5px;
     }
-    .criterion {
+    .dim-criteria li {
+      font-size: 13px;
+      color: rgba(255,255,255,0.95);
+      line-height: 1.45;
       display: flex;
       align-items: flex-start;
-      gap: 10px;
+      gap: 8px;
     }
-    .criterion .arrow {
-      font-size: 10px;
+    .dim-criteria li::before {
+      content: '\2022';
+      flex-shrink: 0;
       font-weight: 700;
-      color: #5B8DEF;
-      opacity: 0.6;
-      min-width: 8px;
-      line-height: 1.55;
-      margin-top: 1px;
+      color: rgba(255,255,255,0.6);
     }
-    .criterion span {
-      font-size: 13px;
-      line-height: 1.55;
-      color: #3A3F4B;
-    }
+
+    /* Row color variants — blue to teal to green flow */
+    .dim-row-1 .dim-chevron-left  { background: linear-gradient(135deg, #1e3a8a, #1d4ed8); }
+    .dim-row-1 .dim-chevron-mid   { background: linear-gradient(135deg, #2563EB, #3b82f6); }
+    .dim-row-1 .dim-chevron-right { background: linear-gradient(135deg, #3b82f6, #60a5fa); }
+
+    .dim-row-2 .dim-chevron-left  { background: linear-gradient(135deg, #164e63, #0e7490); }
+    .dim-row-2 .dim-chevron-mid   { background: linear-gradient(135deg, #0e7490, #0891b2); }
+    .dim-row-2 .dim-chevron-right { background: linear-gradient(135deg, #0891b2, #22d3ee); }
+
+    .dim-row-3 .dim-chevron-left  { background: linear-gradient(135deg, #134e4a, #0d9488); }
+    .dim-row-3 .dim-chevron-mid   { background: linear-gradient(135deg, #0d9488, #14b8a6); }
+    .dim-row-3 .dim-chevron-right { background: linear-gradient(135deg, #14b8a6, #2dd4bf); }
+
+    .dim-row-4 .dim-chevron-left  { background: linear-gradient(135deg, #064e3b, #047857); }
+    .dim-row-4 .dim-chevron-mid   { background: linear-gradient(135deg, #059669, #10b981); }
+    .dim-row-4 .dim-chevron-right { background: linear-gradient(135deg, #10b981, #34d399); }
 
     /* ── Diligence footer ── */
     .diligence-footer {
@@ -988,20 +1006,29 @@
     .diligence-footer strong { color: #0F1629; font-weight: 600; }
 
     @media (max-width: 768px) {
-      .dim-col-headers { grid-template-columns: 1fr; }
-      .dim-col-headers span { display: none; }
-      .dim-row { grid-template-columns: 1fr; }
-      .dim-number {
-        font-size: 36px;
+      .dim-col-headers { display: none; }
+      .dim-row {
+        grid-template-columns: 1fr;
+        gap: 4px;
+      }
+      .dim-chevron-left {
+        clip-path: none;
+        border-radius: 10px 10px 0 0;
+        flex-direction: row;
+        padding: 16px;
+        gap: 12px;
         text-align: left;
-        padding: 20px 0 4px 0;
       }
-      .dim-topic {
-        border-right: none;
-        padding: 12px 0;
-        border-bottom: 1px solid rgba(0,0,0,0.04);
+      .dim-chevron-mid {
+        clip-path: none;
+        padding: 12px 16px;
+        text-align: left;
       }
-      .dim-criteria { padding: 12px 0 20px; }
+      .dim-chevron-right {
+        clip-path: none;
+        border-radius: 0 0 10px 10px;
+        padding: 12px 16px;
+      }
     }
   </style>
 </head>
@@ -1443,68 +1470,82 @@
       </div>
 
       <div class="dim-col-headers fade-in">
-        <span></span>
-        <span>Dimension &amp; Focus</span>
-        <span class="dim-col-header-criteria">Evaluation Criteria</span>
+        <span>Topic</span>
+        <span>Area of Focus</span>
+        <span>Evaluation Criteria</span>
       </div>
 
       <!-- Row 1: Strategic Positioning -->
-      <div class="dim-row fade-in">
-        <div class="dim-number">01</div>
-        <div class="dim-topic">
+      <div class="dim-row dim-row-1 fade-in">
+        <div class="dim-chevron dim-chevron-left">
+          <div class="dim-number">1</div>
           <h3>Strategic Positioning</h3>
+        </div>
+        <div class="dim-chevron dim-chevron-mid">
           <div class="dim-question">Is AI value creating or defensive for this business?</div>
         </div>
-        <div class="dim-criteria">
-          <div class="criterion"><span class="arrow">&rarr;</span><span>Clear thesis for how AI drives revenue, margin, or retention</span></div>
-          <div class="criterion"><span class="arrow">&rarr;</span><span>Defined use cases tied to measurable outcomes</span></div>
-          <div class="criterion"><span class="arrow">&rarr;</span><span>Evidence of real economic impact from AI products</span></div>
+        <div class="dim-chevron dim-chevron-right">
+          <ul class="dim-criteria">
+            <li>Clear thesis for how AI drives revenue, margin, or retention</li>
+            <li>Defined use cases tied to measurable outcomes</li>
+            <li>Evidence of real economic impact from AI products</li>
+          </ul>
         </div>
       </div>
 
       <!-- Row 2: Operational Readiness -->
-      <div class="dim-row fade-in">
-        <div class="dim-number">02</div>
-        <div class="dim-topic">
+      <div class="dim-row dim-row-2 fade-in">
+        <div class="dim-chevron dim-chevron-left">
+          <div class="dim-number">2</div>
           <h3>Operational Readiness</h3>
+        </div>
+        <div class="dim-chevron dim-chevron-mid">
           <div class="dim-question">Can the company execute an AI strategy at scale?</div>
         </div>
-        <div class="dim-criteria">
-          <div class="criterion"><span class="arrow">&rarr;</span><span>Clean, governed, workflow relevant data</span></div>
-          <div class="criterion"><span class="arrow">&rarr;</span><span>Evidence of efficiency gains or margin improvement</span></div>
-          <div class="criterion"><span class="arrow">&rarr;</span><span>Architecture capable of supporting agentic workflows</span></div>
+        <div class="dim-chevron dim-chevron-right">
+          <ul class="dim-criteria">
+            <li>Clean, governed, workflow relevant data</li>
+            <li>Evidence of efficiency gains or margin improvement</li>
+            <li>Architecture capable of supporting agentic workflows</li>
+          </ul>
         </div>
       </div>
 
       <!-- Row 3: Product & Moat Durability -->
-      <div class="dim-row fade-in">
-        <div class="dim-number">03</div>
-        <div class="dim-topic">
+      <div class="dim-row dim-row-3 fade-in">
+        <div class="dim-chevron dim-chevron-left">
+          <div class="dim-number">3</div>
           <h3>Product &amp; Moat Durability</h3>
+        </div>
+        <div class="dim-chevron dim-chevron-mid">
           <div class="dim-question">Does AI strengthen or weaken defensibility?</div>
         </div>
-        <div class="dim-criteria">
-          <div class="criterion"><span class="arrow">&rarr;</span><span>AI embedded into core workflows, not surface level features</span></div>
-          <div class="criterion"><span class="arrow">&rarr;</span><span>Proprietary, outcome linked data assets</span></div>
-          <div class="criterion"><span class="arrow">&rarr;</span><span>Data advantage that grows with usage, not static</span></div>
+        <div class="dim-chevron dim-chevron-right">
+          <ul class="dim-criteria">
+            <li>AI embedded into core workflows, not surface level features</li>
+            <li>Proprietary, outcome linked data assets</li>
+            <li>Data advantage that grows with usage, not static</li>
+          </ul>
         </div>
       </div>
 
       <!-- Row 4: Market Exposure & Competitive Dynamics -->
-      <div class="dim-row fade-in">
-        <div class="dim-number">04</div>
-        <div class="dim-topic">
+      <div class="dim-row dim-row-4 fade-in">
+        <div class="dim-chevron dim-chevron-left">
+          <div class="dim-number">4</div>
           <h3>Market Exposure &amp; Competitive Dynamics</h3>
+        </div>
+        <div class="dim-chevron dim-chevron-mid">
           <div class="dim-question">Is the business structurally exposed or advantaged?</div>
         </div>
-        <div class="dim-criteria">
-          <div class="criterion"><span class="arrow">&rarr;</span><span>Replaceable labor vs mission critical workflow positioning</span></div>
-          <div class="criterion"><span class="arrow">&rarr;</span><span>Speed of AI native entrants in the category</span></div>
-          <div class="criterion"><span class="arrow">&rarr;</span><span>Ability to consolidate vs risk of being displaced</span></div>
+        <div class="dim-chevron dim-chevron-right">
+          <ul class="dim-criteria">
+            <li>Replaceable labor vs mission critical workflow positioning</li>
+            <li>Speed of AI native entrants in the category</li>
+            <li>Ability to consolidate vs risk of being displaced</li>
+          </ul>
         </div>
       </div>
-
-      <div class="dim-closing-rule"></div>
 
       <div class="diligence-footer fade-in">
         AI diligence should assess potential for both <strong>disruption risk and clear advantage</strong>
