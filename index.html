@@ -93,16 +93,17 @@
     .dark-table { width: 100%; border-collapse: collapse; font-size: 14px; }
     .dark-table thead { background: rgba(255,255,255,0.04); }
     .dark-table th {
-      padding: 12px 16px; text-align: left;
+      padding: 14px 20px; text-align: left;
       font-weight: 600; color: #f1f1f4;
+      font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em;
       border-bottom: 1px solid rgba(255,255,255,0.08);
     }
     .dark-table td {
-      padding: 10px 16px; color: rgba(255,255,255,0.75);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 16px 20px; color: rgba(255,255,255,0.75);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
     }
-    .dark-table tbody tr:nth-child(even) { background: rgba(255,255,255,0.02); }
-    .dark-table tbody tr:hover { background: rgba(99,102,241,0.05); }
+    .dark-table tbody tr { transition: background 0.2s ease; }
+    .dark-table tbody tr:hover { background: rgba(99,102,241,0.06); }
 
     /* Blockquotes */
     .dark-quote {
@@ -1230,68 +1231,88 @@
     <section id="page-6" class="section-card fade-in-up">
       <div class="page-label">06 — Diligence</div>
 
-      <h2 style="font-size:32px; font-weight:800; margin-bottom:24px;">AI Diligence Framework for Software Investors</h2>
+      <h2 style="font-size:28px; font-weight:800; margin-bottom:6px; white-space:nowrap;">AI Diligence Framework for Software Investors</h2>
+      <p class="text-secondary" style="font-size:14px; margin-bottom:32px;">Evaluating structural risk and upside in an AI-driven market</p>
 
       <!-- Diligence Table -->
-      <div class="table-wrap" style="margin-bottom:16px;">
+      <div class="table-wrap" style="margin-bottom:24px; border:1px solid rgba(255,255,255,0.06); border-radius:12px; overflow:hidden;">
         <table class="dark-table">
           <thead>
             <tr>
-              <th>Topic</th>
-              <th>Area of Focus</th>
-              <th>Evaluation Criteria</th>
+              <th style="width:18%;">Topic</th>
+              <th style="width:30%;">Area of Focus</th>
+              <th style="width:52%;">Evaluation Criteria</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td style="font-weight:600; color:#f1f1f4; vertical-align:top;">Strategic Positioning</td>
-              <td style="vertical-align:top;">Is AI value-creating or defensive for this business?</td>
+              <td style="font-weight:600; color:#f1f1f4; vertical-align:top;">
+                <span style="display:inline-flex; align-items:center; gap:8px;">
+                  <span style="display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:8px; background:rgba(99,102,241,0.12); color:#818cf8; font-size:14px;">&#9670;</span>
+                  Strategic Positioning
+                </span>
+              </td>
+              <td style="vertical-align:top; font-style:italic; color:rgba(255,255,255,0.6);">Is AI value-creating or defensive for this business?</td>
               <td>
-                <ul style="list-style:disc; padding-left:16px; display:flex; flex-direction:column; gap:4px;">
-                  <li>Clear thesis for how AI drives revenue, margin, or retention</li>
-                  <li>Defined use cases tied to measurable outcomes</li>
-                  <li>Ideally real economic impact from AI products</li>
+                <ul style="list-style:none; padding-left:0; display:flex; flex-direction:column; gap:6px;">
+                  <li style="display:flex; align-items:baseline; gap:8px;"><span style="color:#818cf8;">&#8250;</span> Clear thesis for how AI drives revenue, margin, or retention</li>
+                  <li style="display:flex; align-items:baseline; gap:8px;"><span style="color:#818cf8;">&#8250;</span> Defined use cases tied to measurable outcomes</li>
+                  <li style="display:flex; align-items:baseline; gap:8px;"><span style="color:#818cf8;">&#8250;</span> Ideally real economic impact from AI products</li>
                 </ul>
               </td>
             </tr>
             <tr>
-              <td style="font-weight:600; color:#f1f1f4; vertical-align:top;">Operational Readiness</td>
-              <td style="vertical-align:top;">Can the company execute an AI strategy at scale?</td>
+              <td style="font-weight:600; color:#f1f1f4; vertical-align:top;">
+                <span style="display:inline-flex; align-items:center; gap:8px;">
+                  <span style="display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:8px; background:rgba(45,212,191,0.12); color:#2dd4bf; font-size:14px;">&#9670;</span>
+                  Operational Readiness
+                </span>
+              </td>
+              <td style="vertical-align:top; font-style:italic; color:rgba(255,255,255,0.6);">Can the company execute an AI strategy at scale?</td>
               <td>
-                <ul style="list-style:disc; padding-left:16px; display:flex; flex-direction:column; gap:4px;">
-                  <li>Clean, governed, workflow-relevant data</li>
-                  <li>Evidence of efficiency gains or margin improvement</li>
-                  <li>Architecture capable of supporting agentic workflows</li>
+                <ul style="list-style:none; padding-left:0; display:flex; flex-direction:column; gap:6px;">
+                  <li style="display:flex; align-items:baseline; gap:8px;"><span style="color:#2dd4bf;">&#8250;</span> Clean, governed, workflow-relevant data</li>
+                  <li style="display:flex; align-items:baseline; gap:8px;"><span style="color:#2dd4bf;">&#8250;</span> Evidence of efficiency gains or margin improvement</li>
+                  <li style="display:flex; align-items:baseline; gap:8px;"><span style="color:#2dd4bf;">&#8250;</span> Architecture capable of supporting agentic workflows</li>
                 </ul>
               </td>
             </tr>
             <tr>
-              <td style="font-weight:600; color:#f1f1f4; vertical-align:top;">Product &amp; Moat Durability</td>
-              <td style="vertical-align:top;">Does AI strengthen or weaken defensibility?</td>
+              <td style="font-weight:600; color:#f1f1f4; vertical-align:top;">
+                <span style="display:inline-flex; align-items:center; gap:8px;">
+                  <span style="display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:8px; background:rgba(52,211,153,0.12); color:#34d399; font-size:14px;">&#9670;</span>
+                  Product &amp; Moat Durability
+                </span>
+              </td>
+              <td style="vertical-align:top; font-style:italic; color:rgba(255,255,255,0.6);">Does AI strengthen or weaken defensibility?</td>
               <td>
-                <ul style="list-style:disc; padding-left:16px; display:flex; flex-direction:column; gap:4px;">
-                  <li>AI embedded into core workflows not surface-level</li>
-                  <li>Proprietary, outcome-linked data</li>
-                  <li>Data advantage that grows with usage, not static</li>
+                <ul style="list-style:none; padding-left:0; display:flex; flex-direction:column; gap:6px;">
+                  <li style="display:flex; align-items:baseline; gap:8px;"><span style="color:#34d399;">&#8250;</span> AI embedded into core workflows not surface-level</li>
+                  <li style="display:flex; align-items:baseline; gap:8px;"><span style="color:#34d399;">&#8250;</span> Proprietary, outcome-linked data</li>
+                  <li style="display:flex; align-items:baseline; gap:8px;"><span style="color:#34d399;">&#8250;</span> Data advantage that grows with usage, not static</li>
                 </ul>
               </td>
             </tr>
             <tr>
-              <td style="font-weight:600; color:#f1f1f4; vertical-align:top;">Market Exposure &amp; Competitive Dynamics</td>
-              <td style="vertical-align:top;">Is the business structurally exposed or advantaged?</td>
+              <td style="font-weight:600; color:#f1f1f4; vertical-align:top;">
+                <span style="display:inline-flex; align-items:center; gap:8px;">
+                  <span style="display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:8px; background:rgba(251,191,36,0.12); color:#fbbf24; font-size:14px;">&#9670;</span>
+                  Market Exposure &amp; Competitive Dynamics
+                </span>
+              </td>
+              <td style="vertical-align:top; font-style:italic; color:rgba(255,255,255,0.6);">Is the business structurally exposed or advantaged?</td>
               <td>
-                <ul style="list-style:disc; padding-left:16px; display:flex; flex-direction:column; gap:4px;">
-                  <li>Replaceable labor vs mission-critical workflow</li>
-                  <li>Speed of AI-native entrants in the category</li>
-                  <li>Ability to consolidate vs. risk of being displaced</li>
+                <ul style="list-style:none; padding-left:0; display:flex; flex-direction:column; gap:6px;">
+                  <li style="display:flex; align-items:baseline; gap:8px;"><span style="color:#fbbf24;">&#8250;</span> Replaceable labor vs mission-critical workflow</li>
+                  <li style="display:flex; align-items:baseline; gap:8px;"><span style="color:#fbbf24;">&#8250;</span> Speed of AI-native entrants in the category</li>
+                  <li style="display:flex; align-items:baseline; gap:8px;"><span style="color:#fbbf24;">&#8250;</span> Ability to consolidate vs. risk of being displaced</li>
                 </ul>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-      <p class="text-body" style="font-size:14px; margin-bottom:4px;">AI diligence should assess potential for both disruption risk and clear advantage</p>
-      <p class="text-secondary" style="font-size:12px; margin-bottom:40px;">Evaluating structural risk and upside in an AI-driven market</p>
+      <p class="text-body" style="font-size:14px; margin-bottom:0;">AI diligence should assess potential for both disruption risk and clear advantage</p>
 
     </section>
 
