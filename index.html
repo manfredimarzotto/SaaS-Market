@@ -654,8 +654,15 @@
     }
     .quadrant-wrapper .axis-y-label {
       position: absolute;
-      left: -8px; top: 50%;
-      transform: translateY(-50%) rotate(-90deg);
+      top: 0;
+      bottom: 28px;
+      left: 0;
+      width: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
       font-size: 12px;
       font-weight: 600;
       color: #6B7280;
