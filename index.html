@@ -49,7 +49,7 @@
       color: #5B8DEF;
       margin-bottom: 12px;
     }
-    .title-block h1 {
+    .title-block h1, .title-block h2 {
       font-size: clamp(28px, 3.5vw, 40px);
       font-weight: 800;
       color: #0F1629;
@@ -66,6 +66,8 @@
       line-height: 1.6;
       white-space: nowrap;
     }
+    .title-block p strong { font-weight: 600; color: #0F1629; }
+    .section-title-wrapper { position: relative; }
 
     /* ── Main content grid ── */
     .content-grid {
@@ -298,12 +300,12 @@
       .bar-row { grid-template-columns: 140px 1fr 1fr; }
       .axis-labels { grid-template-columns: 140px 1fr 1fr; }
       .bar-label { font-size: 12px; padding-right: 12px; }
-      .title-block h1 { white-space: normal; font-size: 24px; }
+      .title-block h1, .title-block h2 { white-space: normal; font-size: 24px; }
       .title-block p { white-space: normal; }
     }
     @media (max-width: 600px) {
       body { padding: 24px 12px; }
-      .title-block h1 { font-size: 22px; }
+      .title-block h1, .title-block h2 { font-size: 22px; }
       .chart-panel { padding: 24px 20px; }
       .bar-row { grid-template-columns: 110px 1fr 1fr; }
       .axis-labels { grid-template-columns: 110px 1fr 1fr; }
@@ -1439,16 +1441,13 @@
       <div class="divider-dot"></div>
     </div>
 
-    <div id="ai-sas-considerations" class="divergence-hero fade-in">
-      <div class="source-badge">
-        <div class="badge-dot"></div>
-        <span>AI &amp; SaaS Considerations</span>
+    <div id="ai-sas-considerations" class="section-title-wrapper fade-in">
+      <div class="accent-bar"></div>
+      <div class="title-block" style="margin-bottom: 40px;">
+        <div class="eyebrow">AI &amp; SaaS Considerations</div>
+        <h2>AI Divergence By Category and By Segment</h2>
+        <p>AI adoption is reshaping SaaS category dynamics, vendors positioned as <strong>systems of action</strong> are pulling ahead in both enterprise adoption and budget allocation</p>
       </div>
-      <h2>
-        AI Divergence <span class="accent-blue">By Category</span>
-        and <span class="accent-teal">By Segment</span>
-      </h2>
-      <p>AI adoption is reshaping SaaS category dynamics, vendors positioned as <strong>systems of action</strong> are pulling ahead in both enterprise adoption and budget allocation</p>
     </div>
 
     <div class="divergence-grid">
@@ -1600,13 +1599,13 @@
 
     <div id="investor-lens" class="diligence-section">
 
-      <div class="diligence-hero">
-        <div class="diligence-badge fade-in">
-          <div class="badge-dot"></div>
-          <span>The Investor Lens</span>
+      <div class="section-title-wrapper">
+        <div class="accent-bar"></div>
+        <div class="title-block fade-in" style="margin-bottom: 64px;">
+          <div class="eyebrow">The Investor Lens</div>
+          <h2>AI Diligence Framework</h2>
+          <p>Evaluating structural risk and upside in an AI driven market — four dimensions that separate durable platforms from vulnerable ones</p>
         </div>
-        <h2 class="fade-in">AI Diligence Framework</h2>
-        <p class="fade-in">Evaluating structural risk and upside in an AI driven market — four dimensions that separate durable platforms from vulnerable ones</p>
       </div>
 
       <div class="dim-col-headers fade-in">
