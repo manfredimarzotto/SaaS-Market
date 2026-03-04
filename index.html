@@ -654,15 +654,10 @@
     }
     .quadrant-wrapper .axis-y-label {
       position: absolute;
-      top: 0;
-      bottom: 28px;
-      left: 0;
-      width: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      writing-mode: vertical-rl;
-      transform: rotate(180deg);
+      left: 10px;
+      top: calc(50% - 14px);
+      transform-origin: 0 0;
+      transform: rotate(-90deg) translateX(-50%);
       font-size: 12px;
       font-weight: 600;
       color: #6B7280;
@@ -1481,7 +1476,6 @@
 
         <div class="category-card card-red">
           <div class="card-accent-bar"></div>
-          <div class="signal-badge">HIGHEST RISK</div>
           <div class="card-body">
             <div class="card-icon">
               <svg viewBox="0 0 24 24"><polyline points="3 17 7 11 11 15 15 7 19 13 21 10"/><circle cx="18" cy="6" r="3" stroke-dasharray="4 2"/></svg>
@@ -1491,7 +1485,6 @@
               <div class="card-tagline">Most crowded and dangerous place to be in 2026, AI commoditizes the surface layer quickly</div>
               <div class="card-bullet"><div class="bullet-dot"></div><span>Sustainable differentiation requires deep workflow integration and measurable ROI</span></div>
               <div class="card-bullet"><div class="bullet-dot"></div><span>GenAI rapidly commoditizes surface level engagement features (e.g., content, UX)</span></div>
-              <div class="warning-badge">2026 Warning — Commoditization accelerating</div>
             </div>
           </div>
         </div>
