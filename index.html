@@ -465,8 +465,8 @@
       margin-bottom: 16px;
       white-space: nowrap;
     }
-    .divergence-hero h2 .accent-blue { color: #5B8DEF; }
-    .divergence-hero h2 .accent-teal { color: #0D6E6E; }
+    .divergence-hero h2 .accent-blue { color: #0F1629; }
+    .divergence-hero h2 .accent-teal { color: #0F1629; }
     .divergence-hero p {
       font-size: 16px;
       font-weight: 300;
@@ -654,7 +654,7 @@
     }
     .quadrant-wrapper .axis-y-label {
       position: absolute;
-      left: 4px;
+      left: 0px;
       top: calc(50% - 14px);
       transform-origin: 0 0;
       transform: rotate(-90deg) translateX(-50%);
@@ -662,13 +662,15 @@
       font-weight: 600;
       color: #6B7280;
       white-space: nowrap;
+      z-index: 2;
     }
     .quadrant-wrapper .axis-y-marker {
       position: absolute;
-      left: 18px;
+      left: 14px;
       font-size: 11px;
       font-weight: 700;
       color: #9CA3AF;
+      z-index: 2;
     }
     .quadrant-wrapper .axis-y-marker.top { top: 4px; }
     .quadrant-wrapper .axis-y-marker.bottom { bottom: 34px; }
