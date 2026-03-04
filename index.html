@@ -54,7 +54,7 @@
       font-weight: 800;
       color: #0F1629;
       line-height: 1.15;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
       letter-spacing: -0.03em;
       white-space: nowrap;
     }
@@ -433,7 +433,7 @@
       background: rgba(91,141,239,0.4);
     }
 
-    .divergence-hero { margin-bottom: 40px; }
+    .divergence-hero { margin-bottom: 40px; padding-left: 24px; }
     .source-badge {
       display: inline-flex;
       align-items: center;
@@ -630,19 +630,27 @@
     /* ── Column footer ── */
     .col-footer {
       margin-top: auto;
-      padding-top: 16px;
-      border-radius: 10px;
-      padding: 14px 20px;
-      text-align: center;
+      background: rgba(255,255,255,0.6);
       border: 1px solid rgba(0,0,0,0.06);
-      font-size: 13px;
-      font-style: italic;
       color: #6B7280;
-      background: rgba(255,255,255,0.65);
+      padding: 24px 36px;
+      border-radius: 14px;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.6;
+      position: relative;
+      overflow: hidden;
       box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-      overflow: visible;
     }
-    .col-footer strong { font-weight: 700; font-style: normal; }
+    .col-footer::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(91,141,239,0.3), rgba(52,211,153,0.2), transparent);
+    }
+    .col-footer strong { font-weight: 600; font-style: normal; }
     .col-footer.footer-teal strong { color: #0D6E6E; }
     .col-footer.footer-red strong { color: #DC2626; }
 
@@ -847,7 +855,7 @@
        ═══════════════════════════════════════════════ */
 
     .diligence-section {
-      margin-top: 80px;
+      margin-top: 0;
     }
 
     /* ── Hero block ── */
@@ -858,20 +866,23 @@
     .diligence-badge {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 24px;
+      gap: 7px;
+      padding: 5px 14px;
+      border-radius: 100px;
+      background: rgba(91,141,239,0.08);
+      border: 1px solid rgba(91,141,239,0.15);
+      margin-bottom: 20px;
     }
     .diligence-badge .badge-dot {
-      width: 8px; height: 8px;
+      width: 5px; height: 5px;
       border-radius: 50%;
       background: #5B8DEF;
     }
     .diligence-badge span {
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 600;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.06em;
       color: #5B8DEF;
-      text-transform: uppercase;
     }
     .diligence-hero h2 {
       font-size: clamp(28px, 3.5vw, 40px);
@@ -881,13 +892,13 @@
       line-height: 1.15;
       max-width: none;
       white-space: nowrap;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
     .diligence-hero p {
       font-size: 16px;
       font-weight: 300;
       color: #6B7280;
-      line-height: 1.65;
+      line-height: 1.6;
       max-width: none;
       white-space: nowrap;
     }
@@ -1583,6 +1594,10 @@
     <!-- ═══════════════════════════════════════════════
          SECTION 3 — AI Diligence Framework
          ═══════════════════════════════════════════════ -->
+    <div class="page-divider">
+      <div class="divider-dot"></div>
+    </div>
+
     <div id="investor-lens" class="diligence-section">
 
       <div class="diligence-hero">
